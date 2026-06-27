@@ -1,1035 +1,658 @@
 ---
-import Layout from '../layouts/Layout.astro'
+import Layout from "../layouts/Layout.astro";
 
-const projects = [
-  {
-    name: 'FoilGuard',
-    slug: 'foilguard',
-    phase: 1,
-    phaseLabel: 'Phase 1 · Active',
-    color: 'green',
-    desc: 'Browser extension that detects typosquatting, homoglyph attacks, and newly registered domains. Runs entirely locally — no API key, no data sent to external servers.',
-    tech: ['TypeScript', 'MV3', 'Vite', 'Chrome'],
-    github: 'https://github.com/nikolap994/foilguard',
-  },
-  {
-    name: 'FoilLab',
-    slug: 'foillab',
-    phase: 2,
-    phaseLabel: 'Phase 2 · Building',
-    color: 'amber',
-    desc: 'Weekly network and IoT CTF challenge platform. Every challenge ships with a write-up, building brand authority in the security community over time.',
-    tech: ['Astro', 'Node.js', 'SQLite', 'Hetzner'],
-    github: 'https://github.com/nikolap994/foillab',
-  },
-  {
-    name: 'FoilVault',
-    slug: 'foilvault',
-    phase: 3,
-    phaseLabel: 'Phase 3 · Planned',
-    color: 'purple',
-    desc: 'Privacy-first browser password manager with zero-knowledge architecture. Integrates with FoilGuard to block autofill on suspicious domains.',
-    tech: ['TypeScript', 'MV3', 'AES-GCM', 'Argon2id'],
-    github: 'https://github.com/nikolap994/foilvault',
-  },
-]
+const repo = "https://github.com/nikolap994/foilsuite";
 
-const svgGithub = `<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>`
+const products = [
+  {
+    name: "FoilGuard",
+    icon: "/icons/foilguard-128.png",
+    tag: "Browser Extension",
+    desc: "Detects typosquatting, homoglyph attacks, and newly-registered domains before you ever click the link.",
+    color: "var(--foilguard)",
+    phase: "Phase 1",
+    status: "Active",
+    dot: "#41d07f",
+    github: "https://github.com/nikolap994/foilguard",
+  },
+  {
+    name: "FoilLab",
+    icon: "/icons/foillab-128.png",
+    tag: "CTF Platform",
+    desc: "Weekly network & IoT capture-the-flag challenges with complete write-ups. Train against realistic targets.",
+    color: "var(--foillab)",
+    phase: "Phase 2",
+    status: "Building",
+    dot: "#e3b341",
+    github: "https://github.com/nikolap994/foillab",
+  },
+  {
+    name: "FoilVault",
+    icon: "/icons/foilvault-128.png",
+    tag: "Password Manager",
+    desc: "Zero-knowledge browser password manager with FoilGuard autofill protection built in from day one.",
+    color: "var(--foilvault)",
+    phase: "Phase 3",
+    status: "Planned",
+    dot: "#8b949e",
+    github: "https://github.com/nikolap994/foilvault",
+  },
+];
 ---
 
 <Layout>
-  <!-- NAV -->
-  <nav>
-    <div class="nav-inner">
-      <a href="/" class="logo">
-        <img src="/icons/foilsuite-48.png" width="28" height="28" alt="Foil" class="logo-icon" />
-        <span class="logo-text">Foil</span>
-      </a>
-      <div class="nav-links">
-        {projects.map((p) => (
-          <a href={p.github} target="_blank" rel="noopener noreferrer" class={`nav-link nav-link--${p.color}`}>
-            <img src={`/icons/${p.slug}-128.png`} width="16" height="16" alt="" />
-            {p.name}
-          </a>
-        ))}
-      </div>
-      <a href="https://github.com/nikolap994" target="_blank" rel="noopener noreferrer" class="nav-github">
-        <span set:html={svgGithub} />
-        GitHub
-      </a>
-    </div>
-  </nav>
+  <div class="page">
+    <div class="grid-layer" aria-hidden="true"></div>
+    <div class="glow" aria-hidden="true"></div>
 
-  <!-- HERO -->
-  <section class="hero">
-    <div class="hero-inner">
-      <div class="hero-badge">Open Source Security Suite</div>
-      <h1 class="hero-title">
-        <span class="hero-wordmark">FOIL</span>
-        <span class="hero-subtitle">Security Tools Suite</span>
-      </h1>
-      <p class="hero-desc">
-        A protective layer between you and the threat.<br />
-        Three open-source tools. One unified security ecosystem.
-      </p>
-      <div class="hero-actions">
-        <a href="#projects" class="btn btn-primary">Browse Projects</a>
-        <a href="https://github.com/nikolap994" target="_blank" rel="noopener noreferrer" class="btn btn-ghost">
-          <span set:html={svgGithub} />
-          View on GitHub
+    <div class="shell">
+      <!-- nav -->
+      <nav class="nav">
+        <a href="/" class="brand">
+          <img src="/icons/foilsuite-128.png" alt="" width="28" height="28" />
+          <span class="mono">foil<span class="slash">/</span>suite</span>
         </a>
-      </div>
-      <div class="hero-products">
-        {projects.map((p) => (
-          <a href="#projects" class={`hero-chip hero-chip--${p.color}`}>
-            <img src={`/icons/${p.slug}-128.png`} width="28" height="28" alt={p.name} class="chip-icon" />
-            <div class="chip-text">
-              <strong>{p.name}</strong>
-              <small>{p.phaseLabel}</small>
-            </div>
-            <span class={`chip-dot chip-dot--${p.color}`}></span>
-          </a>
-        ))}
-      </div>
-    </div>
-  </section>
+        <div class="nav-links mono">
+          <a href="#modules">modules</a>
+          <a href="#roadmap">roadmap</a>
+          <a href={repo} class="nav-cta">github ↗</a>
+        </div>
+      </nav>
 
-  <!-- PROJECTS -->
-  <section class="projects" id="projects">
-    <div class="section-inner">
-      <div class="section-header">
-        <span class="section-label">Projects</span>
-        <h2>Three tools, one vision</h2>
-        <p>Each project is useful on its own. Together they form a security ecosystem built for users who want control and transparency.</p>
-      </div>
-      <div class="projects-grid">
-        {projects.map((p) => (
-          <a href={p.github} target="_blank" rel="noopener noreferrer" class={`project-card project-card--${p.color}`}>
-            <div class="card-head">
-              <div class={`card-icon-wrap card-icon-wrap--${p.color}`}>
-                <img src={`/icons/${p.slug}-128.png`} alt={p.name} width="56" height="56" class="card-icon-img" />
-              </div>
-              <span class={`phase-badge phase-badge--${p.color}`}>{p.phaseLabel}</span>
-            </div>
-            <h3 class="card-name">{p.name}</h3>
-            <p class="card-desc">{p.desc}</p>
-            <div class="card-tech">
-              {p.tech.map((t) => <span class="tech-tag">{t}</span>)}
-            </div>
-            <div class="card-footer">
-              <span set:html={svgGithub} />
-              View on GitHub
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
-                <path d="M7 17L17 7M7 7h10v10" />
-              </svg>
-            </div>
+      <!-- hero -->
+      <header class="hero">
+        <div>
+          <a href="#modules" class="badge mono">
+            <span class="pulse"></span>
+            FoilGuard is live
+            <span class="badge-pill">v0.1 →</span>
           </a>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- ECOSYSTEM -->
-  <section class="ecosystem" id="ecosystem">
-    <div class="section-inner">
-      <div class="section-header">
-        <span class="section-label">Ecosystem</span>
-        <h2>How they connect</h2>
-        <p>Each project feeds the next, creating a compounding growth loop.</p>
-      </div>
-      <div class="eco-grid">
-        <a href="https://github.com/nikolap994/foilguard" target="_blank" rel="noopener noreferrer" class="eco-node eco-node--green">
-          <div class="eco-node-icon">
-            <img src="/icons/foilguard-128.png" alt="FoilGuard" width="48" height="48" />
-          </div>
-          <strong>FoilGuard</strong>
-          <span>Detects threats locally</span>
-          <span class="eco-phase eco-phase--green">Phase 1 · Active</span>
-        </a>
-        <div class="eco-arrows">
-          <div class="eco-arrow eco-arrow--right">
-            <span class="eco-arrow-label">→ "Test your skills"</span>
-          </div>
-          <div class="eco-arrow eco-arrow--right">
-            <span class="eco-arrow-label">→ "Secure your passwords"</span>
-          </div>
-          <div class="eco-arrow eco-arrow--left">
-            <span class="eco-arrow-label">← Risk API before autofill</span>
+          <h1 class="display">Security tooling,<br />built in layers.</h1>
+          <p class="lead">
+            A growing suite of focused tools for detection, training, and
+            protection. Open source. No noise — just the layer between you and
+            the threat.
+          </p>
+          <div class="cta-row">
+            <a href="#modules" class="btn btn-primary mono">$ explore the suite</a>
+            <a href={repo} class="btn btn-ghost mono">clone repo</a>
           </div>
         </div>
-        <div class="eco-targets">
-          <a href="https://github.com/nikolap994/foillab" target="_blank" rel="noopener noreferrer" class="eco-target eco-target--amber">
-            <img src="/icons/foillab-128.png" alt="FoilLab" width="32" height="32" />
-            <div>
-              <strong>FoilLab</strong>
-              <small>Phase 2 · Building</small>
-            </div>
-          </a>
-          <a href="https://github.com/nikolap994/foilvault" target="_blank" rel="noopener noreferrer" class="eco-target eco-target--purple">
-            <img src="/icons/foilvault-128.png" alt="FoilVault" width="32" height="32" />
-            <div>
-              <strong>FoilVault</strong>
-              <small>Phase 3 · Planned</small>
-            </div>
-          </a>
-        </div>
-      </div>
-    </div>
-  </section>
 
-  <!-- STACK -->
-  <section class="stack" id="stack">
-    <div class="section-inner">
-      <div class="section-header">
-        <span class="section-label">Technology</span>
-        <h2>Built to last</h2>
-        <p>Modern, auditable, open-source stack across all three projects.</p>
-      </div>
-      <div class="stack-table-wrap">
-        <table class="stack-table">
-          <thead>
-            <tr>
-              <th></th>
-              <th>
-                <span class="col-head col-head--green">
-                  <img src="/icons/foilguard-128.png" width="18" height="18" alt="" />
-                  FoilGuard
+        <!-- manifest panel -->
+        <div class="panel">
+          <div class="panel-bar">
+            <span class="tl" style="background:#ef6f6f"></span>
+            <span class="tl" style="background:#e3b341"></span>
+            <span class="tl" style="background:#41d07f"></span>
+            <span class="panel-title mono">~/foil-suite — status</span>
+          </div>
+          <div class="panel-body">
+            {
+              products.map((p) => (
+                <div class="status-row">
+                  <img src={p.icon} alt="" width="32" height="32" />
+                  <div class="status-name">
+                    <div class="mono name">{p.name}</div>
+                    <div class="mono tag">{p.tag}</div>
+                  </div>
+                  <div class="status-badge mono">
+                    <span class="dot" style={`background:${p.dot}`} />
+                    {p.status}
+                  </div>
+                </div>
+              ))
+            }
+            <div class="panel-foot mono">3 modules · 1 active · 2 incoming</div>
+          </div>
+        </div>
+      </header>
+
+      <!-- modules -->
+      <section id="modules" class="section">
+        <div class="section-head">
+          <div class="mono label">## modules</div>
+          <div class="section-sub display">Three tools, one protective layer.</div>
+        </div>
+        <div class="cards">
+          {
+            products.map((p) => (
+              <a href={p.github} target="_blank" rel="noopener noreferrer" class="card" style={`--c:${p.color}`}>
+                <span class="card-bar" />
+                <div class="card-top">
+                  <img src={p.icon} alt="" width="36" height="36" />
+                  <span class="mono card-tag">{p.tag}</span>
+                </div>
+                <h3 class="display card-name">{p.name}</h3>
+                <p class="card-desc">{p.desc}</p>
+                <div class="card-foot mono">
+                  <span>{p.phase}</span>
+                  <span class="card-status">
+                    <span class="dot" style={`background:${p.dot}`} />
+                    {p.status}
+                  </span>
+                </div>
+              </a>
+            ))
+          }
+        </div>
+      </section>
+
+      <!-- roadmap -->
+      <section id="roadmap" class="section">
+        <div class="mono label">## roadmap</div>
+        <h2 class="display roadmap-title">Shipping in deliberate phases.</h2>
+        <p class="roadmap-lead">
+          Each tool is hardened before the next begins — no half-built surfaces
+          to attack.
+        </p>
+        <div class="roadmap">
+          {
+            products.map((p) => (
+              <a href={p.github} target="_blank" rel="noopener noreferrer" class="road-row" style={`--c:${p.color}`}>
+                <span class="mono road-phase">{p.phase}</span>
+                <span class="road-node" />
+                <span class="display road-name">{p.name}</span>
+                <span class="road-desc">{p.desc}</span>
+                <span class="status-badge mono road-status">
+                  <span class="dot" style={`background:${p.dot}`} />
+                  {p.status}
                 </span>
-              </th>
-              <th>
-                <span class="col-head col-head--amber">
-                  <img src="/icons/foillab-128.png" width="18" height="18" alt="" />
-                  FoilLab
-                </span>
-              </th>
-              <th>
-                <span class="col-head col-head--purple">
-                  <img src="/icons/foilvault-128.png" width="18" height="18" alt="" />
-                  FoilVault
-                </span>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="row-label">Frontend</td>
-              <td>TypeScript + MV3</td>
-              <td>Astro</td>
-              <td>TypeScript + MV3</td>
-            </tr>
-            <tr>
-              <td class="row-label">Backend</td>
-              <td>Node.js (RDAP)</td>
-              <td>Node.js</td>
-              <td>Node.js (optional)</td>
-            </tr>
-            <tr>
-              <td class="row-label">Storage</td>
-              <td>—</td>
-              <td>SQLite → Postgres</td>
-              <td>IndexedDB (local)</td>
-            </tr>
-            <tr>
-              <td class="row-label">Hosting</td>
-              <td>Chrome Web Store</td>
-              <td>Hetzner VPS</td>
-              <td>Chrome Web Store</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="pillars">
-        <div class="pillar">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/>
-          </svg>
-          <strong>Zero-knowledge</strong>
-          <span>Server never sees plaintext data</span>
+              </a>
+            ))
+          }
         </div>
-        <div class="pillar">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-          </svg>
-          <strong>AES-GCM-256</strong>
-          <span>Encryption at rest for all sensitive data</span>
-        </div>
-        <div class="pillar">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
-          </svg>
-          <strong>Local-first</strong>
-          <span>No mandatory cloud account or telemetry</span>
-        </div>
-        <div class="pillar">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
-          </svg>
-          <strong>Open source</strong>
-          <span>Auditable code on GitHub</span>
-        </div>
-      </div>
-    </div>
-  </section>
+      </section>
 
-  <!-- FOOTER -->
-  <footer>
-    <div class="footer-inner">
-      <div class="footer-logo">
-        <img src="/icons/foilsuite-48.png" width="32" height="32" alt="Foil" class="footer-logo-icon" />
-        <span>Foil</span>
-      </div>
-      <p class="footer-tagline">A protective layer between you and the threat.</p>
-      <div class="footer-projects">
-        {projects.map((p) => (
-          <a href={p.github} target="_blank" rel="noopener noreferrer" class={`footer-project footer-project--${p.color}`}>
-            <img src={`/icons/${p.slug}-128.png`} width="20" height="20" alt="" />
-            {p.name}
-          </a>
-        ))}
-      </div>
-      <div class="footer-links">
-        <a href="https://github.com/nikolap994" target="_blank" rel="noopener noreferrer">
-          <span set:html={svgGithub} />
-          @nikolap994
-        </a>
-      </div>
-      <p class="footer-copy">Open source. Built with intent.</p>
+      <!-- closing cta -->
+      <section class="closing">
+        <div>
+          <h3 class="display">Foil the attack.</h3>
+          <p>
+            Follow the build, file an issue, or star the repo — the suite grows
+            in the open.
+          </p>
+        </div>
+        <a href={repo} class="btn btn-primary mono nowrap">★ star on github</a>
+      </section>
+
+      <!-- footer -->
+      <footer class="footer mono">
+        <span class="foot-brand">
+          <img src="/icons/foilsuite-128.png" alt="" width="20" height="20" />
+          foil/suite — foil the attack.
+        </span>
+        <span>© 2026 · <a href={repo}>github.com/nikolap994</a></span>
+      </footer>
     </div>
-  </footer>
+  </div>
 </Layout>
 
 <style>
-  /* ── NAV ───────────────────────────────── */
-  nav {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 100;
-    background: rgba(6, 13, 31, 0.88);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border-bottom: 1px solid var(--border);
+  .page {
+    position: relative;
+    min-height: 100vh;
+    overflow: hidden;
   }
-
-  .nav-inner {
-    max-width: 1140px;
+  .grid-layer {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.026) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.026) 1px, transparent 1px);
+    background-size: 46px 46px;
+    -webkit-mask-image: radial-gradient(1100px 700px at 70% 0%, #000 0%, transparent 75%);
+    mask-image: radial-gradient(1100px 700px at 70% 0%, #000 0%, transparent 75%);
+  }
+  .glow {
+    position: absolute;
+    top: -220px;
+    right: -120px;
+    width: 720px;
+    height: 520px;
+    pointer-events: none;
+    background: radial-gradient(circle at 60% 40%, var(--accent), transparent 65%);
+    opacity: 0.13;
+    filter: blur(40px);
+  }
+  .shell {
+    position: relative;
+    max-width: 1180px;
     margin: 0 auto;
-    padding: 0 24px;
-    height: 62px;
-    display: flex;
-    align-items: center;
-    gap: 28px;
+    padding: 0 40px;
   }
 
-  .logo {
+  /* nav */
+  .nav {
     display: flex;
     align-items: center;
-    gap: 9px;
-    font-weight: 700;
-    font-size: 17px;
-    letter-spacing: -0.02em;
+    justify-content: space-between;
+    padding: 26px 0;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 11px;
     text-decoration: none;
+    font-weight: 600;
+    font-size: 16px;
+    letter-spacing: 0.02em;
   }
-
-  .logo-icon {
+  .brand img {
     border-radius: 7px;
-    display: block;
   }
-
-  .logo-text { color: var(--text); }
-
+  .slash {
+    color: var(--dim);
+  }
   .nav-links {
     display: flex;
     align-items: center;
-    gap: 4px;
-    margin-left: auto;
-  }
-
-  .nav-link {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 5px 12px;
-    border-radius: 6px;
+    gap: 30px;
     font-size: 13px;
-    font-weight: 500;
-    color: var(--text-muted);
-    transition: all 0.15s;
+    color: var(--muted);
+  }
+  .nav-links a {
     text-decoration: none;
-  }
-
-  .nav-link img { border-radius: 4px; }
-
-  .nav-link:hover { color: var(--text); background: rgba(255,255,255,0.05); }
-  .nav-link--green:hover { color: var(--green); }
-  .nav-link--amber:hover { color: var(--amber); }
-  .nav-link--purple:hover { color: var(--purple); }
-
-  .nav-github {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 6px 14px;
-    border: 1px solid var(--border);
-    border-radius: 7px;
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--text-muted);
-    transition: all 0.2s;
-    text-decoration: none;
-    flex-shrink: 0;
-  }
-
-  .nav-github :global(svg) { width: 15px; height: 15px; }
-  .nav-github:hover { border-color: var(--brand); color: var(--text); }
-
-  /* ── HERO ───────────────────────────────── */
-  .hero {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 110px 24px 100px;
-    position: relative;
-    background-image:
-      radial-gradient(ellipse 90% 65% at 50% -5%, rgba(59, 130, 246, 0.18) 0%, transparent 60%),
-      radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px);
-    background-size: auto, 28px 28px;
-  }
-
-  .hero::after {
-    content: '';
-    position: absolute;
-    bottom: 0; left: 0; right: 0;
-    height: 120px;
-    background: linear-gradient(to bottom, transparent, var(--bg));
-    pointer-events: none;
-  }
-
-  .hero-inner {
-    max-width: 760px;
-    position: relative;
-    z-index: 1;
-  }
-
-  .hero-badge {
-    display: inline-block;
-    padding: 5px 14px;
-    border: 1px solid rgba(59, 130, 246, 0.35);
-    border-radius: 100px;
-    font-size: 11px;
-    font-weight: 700;
-    color: var(--brand);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    margin-bottom: 40px;
-    background: rgba(59, 130, 246, 0.06);
-  }
-
-  .hero-title {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    margin-bottom: 20px;
-  }
-
-  .hero-wordmark {
-    font-size: clamp(80px, 17vw, 140px);
-    font-weight: 800;
-    letter-spacing: -0.055em;
-    line-height: 1;
-    background: linear-gradient(160deg, #fff 20%, rgba(255,255,255,0.45) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .hero-subtitle {
-    font-size: clamp(13px, 2.2vw, 18px);
-    font-weight: 600;
-    color: var(--brand);
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    -webkit-text-fill-color: initial;
-  }
-
-  .hero-desc {
-    font-size: 17px;
-    color: var(--text-muted);
-    line-height: 1.8;
-    margin-bottom: 36px;
-  }
-
-  .hero-actions {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    flex-wrap: wrap;
-    margin-bottom: 56px;
-  }
-
-  /* ── HERO PRODUCT CHIPS ─────────────────── */
-  .hero-products {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    flex-wrap: wrap;
-  }
-
-  .hero-chip {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px 16px 10px 10px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 100px;
-    text-decoration: none;
-    transition: all 0.2s;
-    cursor: pointer;
-  }
-
-  .hero-chip:hover {
-    background: var(--surface-2);
-    transform: translateY(-2px);
-  }
-
-  .hero-chip--green:hover  { border-color: rgba(16, 185, 129, 0.35); }
-  .hero-chip--amber:hover  { border-color: rgba(245, 158, 11, 0.35); }
-  .hero-chip--purple:hover { border-color: rgba(139, 92, 246, 0.35); }
-
-  .chip-icon { border-radius: 7px; display: block; }
-
-  .chip-text {
-    display: flex;
-    flex-direction: column;
-    line-height: 1.25;
-    text-align: left;
-  }
-
-  .chip-text strong {
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--text);
-  }
-
-  .chip-text small {
-    font-size: 11px;
-    color: var(--text-muted);
-  }
-
-  .chip-dot {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    flex-shrink: 0;
-  }
-
-  .chip-dot--green  { background: var(--green);  box-shadow: 0 0 6px var(--green); }
-  .chip-dot--amber  { background: var(--amber);  }
-  .chip-dot--purple { background: var(--purple); }
-
-  /* ── BUTTONS ───────────────────────────── */
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 11px 24px;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 600;
-    transition: all 0.2s;
-    cursor: pointer;
-    text-decoration: none;
-  }
-
-  .btn :global(svg) { width: 15px; height: 15px; }
-
-  .btn-primary { background: var(--brand); color: #fff; }
-  .btn-primary:hover { background: #2563eb; transform: translateY(-1px); box-shadow: 0 4px 20px rgba(59,130,246,0.3); }
-
-  .btn-ghost { border: 1px solid var(--border); color: var(--text-muted); }
-  .btn-ghost:hover { border-color: var(--border-hover); color: var(--text); }
-
-  /* ── SHARED SECTION ─────────────────────── */
-  .section-inner {
-    max-width: 1140px;
-    margin: 0 auto;
-    padding: 0 24px;
-  }
-
-  .section-header {
-    text-align: center;
-    margin-bottom: 60px;
-  }
-
-  .section-label {
-    display: inline-block;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--brand);
-    margin-bottom: 14px;
-  }
-
-  .section-header h2 {
-    font-size: clamp(28px, 4vw, 42px);
-    font-weight: 700;
-    letter-spacing: -0.03em;
-    margin-bottom: 14px;
-  }
-
-  .section-header p {
-    font-size: 16px;
-    color: var(--text-muted);
-    max-width: 520px;
-    margin: 0 auto;
-    line-height: 1.75;
-  }
-
-  /* ── PROJECTS ───────────────────────────── */
-  .projects { padding: 110px 0; }
-
-  .projects-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-  }
-
-  .project-card {
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-    padding: 32px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    text-decoration: none;
-    transition: all 0.25s;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .project-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 3px;
-  }
-
-  .project-card--green::before  { background: var(--green); }
-  .project-card--amber::before  { background: var(--amber); }
-  .project-card--purple::before { background: var(--purple); }
-
-  .project-card--green:hover  { border-color: rgba(16, 185, 129, 0.3);  box-shadow: 0 16px 48px rgba(16, 185, 129, 0.1); }
-  .project-card--amber:hover  { border-color: rgba(245, 158, 11, 0.3);  box-shadow: 0 16px 48px rgba(245, 158, 11, 0.1); }
-  .project-card--purple:hover { border-color: rgba(139, 92, 246, 0.3);  box-shadow: 0 16px 48px rgba(139, 92, 246, 0.1); }
-
-  .project-card:hover {
-    transform: translateY(-5px);
-    background: var(--surface-2);
-  }
-
-  .card-head {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 12px;
-  }
-
-  .card-icon-wrap {
-    width: 80px;
-    height: 80px;
-    border-radius: 18px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    padding: 12px;
-  }
-
-  .card-icon-wrap--green  { background: var(--green-bg); }
-  .card-icon-wrap--amber  { background: var(--amber-bg); }
-  .card-icon-wrap--purple { background: var(--purple-bg); }
-
-  .card-icon-img { border-radius: 10px; display: block; }
-
-  .phase-badge {
-    font-size: 11px;
-    font-weight: 600;
-    padding: 4px 10px;
-    border-radius: 100px;
-    letter-spacing: 0.02em;
-    white-space: nowrap;
-    flex-shrink: 0;
-  }
-
-  .phase-badge--green  { background: var(--green-bg);  color: var(--green); }
-  .phase-badge--amber  { background: var(--amber-bg);  color: var(--amber); }
-  .phase-badge--purple { background: var(--purple-bg); color: var(--purple); }
-
-  .card-name {
-    font-size: 24px;
-    font-weight: 700;
-    letter-spacing: -0.025em;
-    color: var(--text);
-  }
-
-  .card-desc {
-    font-size: 14px;
-    color: var(--text-muted);
-    line-height: 1.75;
-    flex: 1;
-  }
-
-  .card-tech {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-  }
-
-  .tech-tag {
-    font-size: 11px;
-    font-weight: 500;
-    padding: 3px 9px;
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.07);
-    border-radius: 5px;
-    color: var(--text-dim);
-    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
-  }
-
-  .card-footer {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--text-dim);
-    padding-top: 14px;
-    border-top: 1px solid var(--border);
     transition: color 0.2s;
   }
-
-  .card-footer :global(svg) { width: 14px; height: 14px; }
-  .card-footer svg:last-child { margin-left: auto; }
-
-  .project-card:hover .card-footer { color: var(--text-muted); }
-
-  /* ── ECOSYSTEM ──────────────────────────── */
-  .ecosystem {
-    padding: 110px 0;
-    background: var(--surface);
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
+  .nav-links a:hover {
+    color: var(--accent);
+  }
+  .nav-cta {
+    color: #08090d !important;
+    background: var(--text);
+    font-weight: 600;
+    padding: 9px 16px;
+    border-radius: 7px;
+    transition: background 0.2s;
+  }
+  .nav-cta:hover {
+    background: var(--accent);
   }
 
-  .eco-grid {
+  /* hero */
+  .hero {
     display: grid;
-    grid-template-columns: 1fr auto 1fr;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: 54px;
     align-items: center;
-    gap: 32px;
-    max-width: 780px;
-    margin: 0 auto;
+    padding: 84px 0 80px;
   }
-
-  .eco-node {
-    display: flex;
-    flex-direction: column;
+  .badge {
+    display: inline-flex;
     align-items: center;
-    gap: 10px;
-    padding: 32px 24px;
-    border-radius: 14px;
-    border: 1px solid rgba(16, 185, 129, 0.25);
-    background: rgba(16, 185, 129, 0.05);
-    text-align: center;
+    gap: 9px;
     text-decoration: none;
-    transition: all 0.2s;
-  }
-
-  .eco-node:hover {
-    border-color: rgba(16, 185, 129, 0.4);
-    background: rgba(16, 185, 129, 0.08);
-    transform: translateY(-2px);
-  }
-
-  .eco-node-icon {
-    width: 72px;
-    height: 72px;
-    border-radius: 16px;
-    background: rgba(16, 185, 129, 0.12);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 12px;
-    margin-bottom: 4px;
-  }
-
-  .eco-node-icon img { border-radius: 10px; display: block; }
-
-  .eco-node strong {
-    font-size: 17px;
-    font-weight: 700;
-    color: var(--text);
-  }
-
-  .eco-node > span {
     font-size: 12px;
-    color: var(--text-muted);
-  }
-
-  .eco-phase {
-    font-size: 11px !important;
-    font-weight: 600 !important;
-    padding: 3px 10px;
+    color: #cdd4e0;
+    padding: 6px 6px 6px 14px;
     border-radius: 100px;
-    letter-spacing: 0.02em;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.02);
   }
-
-  .eco-phase--green { background: var(--green-bg); color: var(--green) !important; }
-
-  .eco-arrows {
+  .pulse {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #41d07f;
+    box-shadow: 0 0 9px #41d07f;
+  }
+  .badge-pill {
+    background: rgba(255, 255, 255, 0.06);
+    padding: 3px 9px;
+    border-radius: 100px;
+    color: var(--muted);
+  }
+  h1.display {
+    font-weight: 700;
+    font-size: 58px;
+    line-height: 1.04;
+    letter-spacing: -0.03em;
+    margin: 24px 0 0;
+  }
+  .lead {
+    font-size: 17.5px;
+    line-height: 1.65;
+    color: var(--muted);
+    max-width: 460px;
+    margin: 22px 0 0;
+  }
+  .cta-row {
     display: flex;
-    flex-direction: column;
+    gap: 13px;
+    margin-top: 34px;
+  }
+  .btn {
+    text-decoration: none;
+    padding: 14px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    transition: 0.2s;
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: #06130b;
+  }
+  .btn-ghost {
+    color: var(--text);
+    font-weight: 500;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+  }
+  .btn-ghost:hover {
+    border-color: rgba(255, 255, 255, 0.34);
+  }
+  .nowrap {
+    white-space: nowrap;
+  }
+  .meta {
+    display: flex;
     gap: 20px;
-    align-items: center;
+    margin-top: 30px;
+    font-size: 12px;
+    color: var(--dim);
   }
 
-  .eco-arrow {
+  /* panel */
+  .panel {
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--panel);
+    box-shadow: 0 40px 80px -34px rgba(0, 0, 0, 0.85);
+  }
+  .panel-bar {
     display: flex;
     align-items: center;
     gap: 8px;
+    padding: 14px 17px;
+    border-bottom: 1px solid var(--hair);
+    background: rgba(255, 255, 255, 0.02);
   }
-
-  .eco-arrow-label {
-    font-size: 11px;
-    color: var(--text-dim);
-    font-style: italic;
-    white-space: nowrap;
+  .tl {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
   }
-
-  .eco-arrow--right .eco-arrow-label { color: var(--text-dim); }
-  .eco-arrow--left  .eco-arrow-label { color: rgba(139, 92, 246, 0.6); }
-
-  .eco-targets {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+  .panel-title {
+    font-size: 12px;
+    color: var(--dim);
+    margin-left: 8px;
   }
-
-  .eco-target {
+  .panel-body {
+    padding: 6px 0;
+  }
+  .status-row {
     display: flex;
     align-items: center;
     gap: 14px;
-    padding: 16px 20px;
-    border-radius: 12px;
-    border: 1px solid;
-    text-decoration: none;
-    transition: all 0.2s;
+    padding: 16px 18px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
   }
-
-  .eco-target img { border-radius: 8px; display: block; flex-shrink: 0; }
-
-  .eco-target div { display: flex; flex-direction: column; gap: 2px; }
-  .eco-target strong { font-size: 14px; font-weight: 700; }
-  .eco-target small  { font-size: 11px; }
-
-  .eco-target--amber {
-    border-color: rgba(245, 158, 11, 0.25);
-    background: rgba(245, 158, 11, 0.05);
-    color: var(--amber);
+  .status-name {
+    flex: 1;
+    min-width: 0;
   }
-  .eco-target--amber strong { color: var(--text); }
-  .eco-target--amber small  { color: var(--amber); }
-  .eco-target--amber:hover  { border-color: rgba(245, 158, 11, 0.4); background: rgba(245, 158, 11, 0.08); }
-
-  .eco-target--purple {
-    border-color: rgba(139, 92, 246, 0.25);
-    background: rgba(139, 92, 246, 0.05);
-    color: var(--purple);
-  }
-  .eco-target--purple strong { color: var(--text); }
-  .eco-target--purple small  { color: var(--purple); }
-  .eco-target--purple:hover  { border-color: rgba(139, 92, 246, 0.4); background: rgba(139, 92, 246, 0.08); }
-
-  /* ── STACK ──────────────────────────────── */
-  .stack { padding: 110px 0; }
-
-  .stack-table-wrap {
-    overflow-x: auto;
-    margin-bottom: 56px;
-    border-radius: 12px;
-    border: 1px solid var(--border);
-  }
-
-  .stack-table {
-    width: 100%;
-    border-collapse: collapse;
+  .status-name .name {
     font-size: 14px;
-  }
-
-  .stack-table th,
-  .stack-table td {
-    padding: 16px 22px;
-    text-align: left;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .stack-table tr:last-child td { border-bottom: none; }
-  .stack-table thead { background: rgba(255,255,255,0.02); }
-
-  .col-head {
-    display: flex;
-    align-items: center;
-    gap: 7px;
-    font-size: 13px;
-    font-weight: 700;
-  }
-
-  .col-head img { border-radius: 4px; }
-
-  .col-head--green  { color: var(--green); }
-  .col-head--amber  { color: var(--amber); }
-  .col-head--purple { color: var(--purple); }
-
-  .stack-table tbody td { color: var(--text-muted); }
-
-  .row-label {
-    color: var(--text) !important;
     font-weight: 600;
-    font-size: 13px;
-    white-space: nowrap;
+  }
+  .status-name .tag {
+    font-size: 11.5px;
+    color: var(--dim);
+  }
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11.5px;
+    color: #aeb6c4;
+    padding: 5px 11px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+  }
+  .panel-foot {
+    padding: 13px 18px;
+    font-size: 12px;
+    color: #4f5666;
   }
 
-  .stack-table tbody tr:hover td { background: rgba(255,255,255,0.02); }
-
-  /* ── PILLARS ────────────────────────────── */
-  .pillars {
+  /* sections */
+  .section {
+    padding: 28px 0 8px;
+  }
+  #roadmap {
+    padding-top: 64px;
+  }
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    border-top: 1px solid var(--hair);
+    padding-top: 34px;
+  }
+  .label {
+    font-size: 13px;
+    color: var(--dim);
+    letter-spacing: 0.04em;
+  }
+  .section-sub {
+    font-size: 15px;
+    color: var(--muted);
+  }
+  .cards {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-top: 24px;
   }
-
-  .pillar {
+  .card {
+    position: relative;
     display: flex;
     flex-direction: column;
-    gap: 10px;
     padding: 26px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-  }
-
-  .pillar svg {
-    width: 22px;
-    height: 22px;
-    color: var(--brand);
-    flex-shrink: 0;
-  }
-
-  .pillar strong { font-size: 14px; font-weight: 700; }
-  .pillar span   { font-size: 13px; color: var(--text-muted); line-height: 1.55; }
-
-  /* ── FOOTER ─────────────────────────────── */
-  footer {
-    border-top: 1px solid var(--border);
-    padding: 60px 0;
-  }
-
-  .footer-inner {
-    max-width: 1140px;
-    margin: 0 auto;
-    padding: 0 24px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 22px;
-    text-align: center;
-  }
-
-  .footer-logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 20px;
-    font-weight: 700;
-    letter-spacing: -0.025em;
-    color: var(--text);
-  }
-
-  .footer-logo-icon { border-radius: 8px; display: block; }
-
-  .footer-tagline {
-    font-size: 13px;
-    color: var(--text-dim);
-    font-style: italic;
-  }
-
-  .footer-projects {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-
-  .footer-project {
-    display: flex;
-    align-items: center;
-    gap: 7px;
-    padding: 6px 14px 6px 8px;
-    border-radius: 100px;
-    border: 1px solid var(--border);
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--text-muted);
+    padding-top: 29px;
+    border-radius: 10px;
+    background: var(--panel);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    overflow: hidden;
+    transition: border-color 0.2s, transform 0.2s;
     text-decoration: none;
-    transition: all 0.2s;
+    color: inherit;
+  }
+  .card:hover {
+    border-color: rgba(255, 255, 255, 0.22);
+    transform: translateY(-3px);
+  }
+  .card-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--c);
+  }
+  .card-top {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .card-tag {
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--c);
+  }
+  .card-name {
+    font-weight: 600;
+    font-size: 21px;
+    margin: 17px 0 0;
+  }
+  .card-desc {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--muted);
+    margin: 10px 0 0;
+  }
+  .card-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 22px;
+    padding-top: 18px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    font-size: 12px;
+    color: var(--dim);
+  }
+  .card-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #aeb6c4;
   }
 
-  .footer-project img { border-radius: 4px; display: block; }
-
-  .footer-project--green:hover  { color: var(--green);  border-color: rgba(16, 185, 129, 0.3); }
-  .footer-project--amber:hover  { color: var(--amber);  border-color: rgba(245, 158, 11, 0.3); }
-  .footer-project--purple:hover { color: var(--purple); border-color: rgba(139, 92, 246, 0.3); }
-
-  .footer-links {
+  /* roadmap */
+  .roadmap-title {
+    font-weight: 600;
+    font-size: 24px;
+    letter-spacing: -0.01em;
+    margin: 10px 0 4px;
+  }
+  .roadmap-lead {
+    font-size: 15px;
+    color: var(--muted);
+    margin: 0 0 22px;
+  }
+  .roadmap {
+    border: 1px solid var(--hair);
+    border-radius: 11px;
+    overflow: hidden;
+  }
+  .road-row {
     display: flex;
     align-items: center;
     gap: 20px;
+    padding: 20px 24px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    background: rgba(255, 255, 255, 0.012);
+    text-decoration: none;
+    color: inherit;
+    transition: background 0.2s;
+  }
+  .road-row:hover {
+    background: rgba(255, 255, 255, 0.04);
+  }
+  .road-phase {
+    font-size: 13px;
+    color: var(--c);
+    width: 64px;
+    flex-shrink: 0;
+  }
+  .road-node {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--c);
+    box-shadow: 0 0 10px var(--c);
+    flex-shrink: 0;
+  }
+  .road-name {
+    font-weight: 600;
+    font-size: 16px;
+    width: 140px;
+    flex-shrink: 0;
+  }
+  .road-desc {
+    flex: 1;
+    font-size: 14px;
+    color: var(--muted);
+    min-width: 0;
+  }
+  .road-status {
+    white-space: nowrap;
+    flex-shrink: 0;
   }
 
-  .footer-links a {
+  /* closing */
+  .closing {
+    margin-top: 72px;
+    padding: 48px 44px;
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.005));
     display: flex;
     align-items: center;
-    gap: 6px;
+    justify-content: space-between;
+    gap: 30px;
+    flex-wrap: wrap;
+  }
+  .closing h3 {
+    font-weight: 700;
+    font-size: 26px;
+    letter-spacing: -0.02em;
+    margin: 0;
+  }
+  .closing p {
+    font-size: 15px;
+    color: var(--muted);
+    margin: 8px 0 0;
+    max-width: 460px;
+  }
+
+  /* footer */
+  .footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 34px 0 40px;
+    margin-top: 40px;
+    border-top: 1px solid rgba(255, 255, 255, 0.07);
     font-size: 13px;
-    font-weight: 500;
-    color: var(--text-muted);
+    color: var(--dim);
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .foot-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+  }
+  .foot-brand img {
+    border-radius: 5px;
+  }
+  .footer a {
+    color: var(--muted);
     text-decoration: none;
     transition: color 0.2s;
   }
-
-  .footer-links a :global(svg) { width: 15px; height: 15px; }
-  .footer-links a:hover { color: var(--text); }
-
-  .footer-copy { font-size: 12px; color: var(--text-dim); }
-
-  /* ── RESPONSIVE ─────────────────────────── */
-  @media (max-width: 960px) {
-    .projects-grid { grid-template-columns: 1fr; max-width: 500px; margin: 0 auto; }
-    .pillars { grid-template-columns: repeat(2, 1fr); }
-    .nav-links { display: none; }
-    .eco-grid { grid-template-columns: 1fr; max-width: 400px; }
-    .eco-arrows { flex-direction: row; flex-wrap: wrap; justify-content: center; }
+  .footer a:hover {
+    color: var(--accent);
   }
 
-  @media (max-width: 600px) {
-    .pillars { grid-template-columns: 1fr; }
-    .hero-products { flex-direction: column; align-items: stretch; max-width: 260px; margin: 0 auto; }
-    .hero-chip { border-radius: 12px; }
+  @media (max-width: 880px) {
+    .hero {
+      grid-template-columns: 1fr;
+      gap: 40px;
+      padding: 56px 0;
+    }
+    h1.display {
+      font-size: 44px;
+    }
+    .cards {
+      grid-template-columns: 1fr;
+    }
+    .road-row {
+      flex-wrap: wrap;
+      gap: 10px 16px;
+    }
+    .road-desc {
+      flex-basis: 100%;
+      order: 5;
+    }
   }
 </style>

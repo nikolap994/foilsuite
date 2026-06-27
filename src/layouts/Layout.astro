@@ -1,12 +1,12 @@
 ---
 interface Props {
-  title?: string
-  description?: string
+  title?: string;
+  description?: string;
 }
 const {
-  title = 'Foil — Security Tools Suite',
-  description = 'Three open-source security tools forming one unified ecosystem: FoilGuard, FoilLab, and FoilVault.',
-} = Astro.props
+  title = "FoilSuite — security tooling, built in layers",
+  description = "A growing suite of focused security tools for detection, training, and protection. Open source.",
+} = Astro.props;
 ---
 
 <!doctype html>
@@ -15,10 +15,14 @@ const {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
+    <link rel="icon" type="image/png" href="/icons/foilsuite-48.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
     <title>{title}</title>
-    <link rel="icon" type="image/png" sizes="16x16" href="/icons/foilsuite-16.png" />
-    <link rel="icon" type="image/png" sizes="48x48" href="/icons/foilsuite-48.png" />
-    <link rel="icon" type="image/png" sizes="128x128" href="/icons/foilsuite-128.png" />
   </head>
   <body>
     <slot />
@@ -26,58 +30,40 @@ const {
 </html>
 
 <style is:global>
-  *,
-  *::before,
-  *::after {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
-
   :root {
-    --bg: #060d1f;
-    --surface: #0c1530;
-    --surface-2: #111f3f;
-    --border: rgba(59, 130, 246, 0.12);
-    --border-hover: rgba(59, 130, 246, 0.3);
-    --brand: #3b82f6;
-    --brand-dim: rgba(59, 130, 246, 0.1);
-    --text: #e2e8f0;
-    --text-muted: #94a3b8;
-    --text-dim: #4a6080;
-    --green: #10b981;
-    --green-bg: rgba(16, 185, 129, 0.1);
-    --amber: #f59e0b;
-    --amber-bg: rgba(245, 158, 11, 0.1);
-    --purple: #8b5cf6;
-    --purple-bg: rgba(139, 92, 246, 0.1);
-    --radius: 10px;
+    --accent: #41d07f;
+    --bg: #08090d;
+    --panel: #0b0d12;
+    --text: #e8ebf0;
+    --muted: #9aa3b2;
+    --dim: #6f7888;
+    --hair: rgba(255, 255, 255, 0.08);
+
+    --foilguard: #41d07f;
+    --foillab: #4d9fff;
+    --foilvault: #b07cf0;
   }
 
+  * {
+    box-sizing: border-box;
+  }
   html {
-    background-color: var(--bg);
-    color: var(--text);
-    font-family:
-      -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue',
-      sans-serif;
-    font-size: 16px;
-    line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
     scroll-behavior: smooth;
   }
-
   body {
-    min-height: 100vh;
-    overflow-x: hidden;
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Manrope", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
   }
-
   a {
     color: inherit;
-    text-decoration: none;
   }
-
-  ::selection {
-    background: var(--brand);
-    color: #fff;
+  .mono {
+    font-family: "JetBrains Mono", monospace;
+  }
+  .display {
+    font-family: "Space Grotesk", sans-serif;
   }
 </style>
