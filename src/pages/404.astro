@@ -1,0 +1,62 @@
+---
+import Layout from '../layouts/Layout.astro'
+---
+<Layout title="404 — Page Not Found" description="This page doesn't exist.">
+  <main class="shell not-found">
+    <div class="nf-code mono">404</div>
+    <h1 class="nf-title">Page not found</h1>
+    <p class="nf-sub">That route doesn't exist — or was moved.</p>
+    <div class="nf-links mono">
+      <a href="/">← home</a>
+      <a href="/blog">blog</a>
+      <a href="https://github.com/nikolap994/foilsuite" target="_blank" rel="noopener">github ↗</a>
+    </div>
+  </main>
+</Layout>
+
+<style>
+.not-found {
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 80px 32px;
+}
+.nf-code {
+  font-size: 6rem;
+  font-weight: 800;
+  color: var(--accent);
+  opacity: 0.25;
+  line-height: 1;
+  margin-bottom: 24px;
+  letter-spacing: -0.04em;
+}
+.nf-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+.nf-sub {
+  color: var(--dim);
+  font-size: 14px;
+  margin-bottom: 40px;
+}
+.nf-links {
+  display: flex;
+  gap: 24px;
+  font-size: 13px;
+}
+.nf-links a {
+  color: var(--dim);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.nf-links a:hover { color: var(--accent); }
+@media (max-width: 480px) {
+  .nf-code { font-size: 4rem; }
+  .nf-title { font-size: 1.4rem; }
+  .nf-links { flex-direction: column; gap: 12px; }
+}
+</style>
