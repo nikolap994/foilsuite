@@ -1,0 +1,214 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+const repos = [
+  {
+    name: "FoilGuard",
+    slug: "foilguard",
+    owner: "nikolap994",
+    color: "#41d07f",
+    live: null as string | null,
+  },
+  {
+    name: "FoilLab",
+    slug: "foillab",
+    owner: "nikolap994",
+    color: "#818cf8",
+    live: "https://foillab.netlify.app",
+  },
+  {
+    name: "FoilVault",
+    slug: "foilvault",
+    owner: "nikolap994",
+    color: "#f59e0b",
+    live: null as string | null,
+  },
+  {
+    name: "FoilSuite",
+    slug: "foilsuite",
+    owner: "nikolap994",
+    color: "#e2e8f0",
+    live: "https://foilsuite.netlify.app",
+  },
+];
+---
+
+<Layout title="FoilSuite — Status" description="Build status and health for all Foil suite repositories.">
+  <div class="page">
+    <div class="shell">
+      <header class="page-header">
+        <a href="/" class="back-link mono">← foilsuite</a>
+        <h1>Status</h1>
+        <p class="page-sub">Build badges and repository health for all Foil suite components.</p>
+      </header>
+
+      <div class="status-grid">
+        {repos.map(r => (
+          <div class="status-card">
+            <div class="card-header">
+              <span class="repo-name" style={`color: ${r.color}`}>{r.name}</span>
+              {r.live && (
+                <a href={r.live} class="live-link mono" target="_blank" rel="noopener">live ↗</a>
+              )}
+            </div>
+
+            <div class="badges">
+              <a href={`https://github.com/${r.owner}/${r.slug}`} target="_blank" rel="noopener" class="badge-row">
+                <img
+                  src={`https://img.shields.io/github/last-commit/${r.owner}/${r.slug}?style=flat-square&color=3b4252&labelColor=1a1f2e&label=last+commit`}
+                  alt="last commit"
+                  loading="lazy"
+                />
+              </a>
+              <a href={`https://github.com/${r.owner}/${r.slug}/issues`} target="_blank" rel="noopener" class="badge-row">
+                <img
+                  src={`https://img.shields.io/github/issues/${r.owner}/${r.slug}?style=flat-square&color=3b4252&labelColor=1a1f2e`}
+                  alt="open issues"
+                  loading="lazy"
+                />
+              </a>
+              <a href={`https://github.com/${r.owner}/${r.slug}/blob/master/LICENSE`} target="_blank" rel="noopener" class="badge-row">
+                <img
+                  src={`https://img.shields.io/github/license/${r.owner}/${r.slug}?style=flat-square&color=3b4252&labelColor=1a1f2e`}
+                  alt="license"
+                  loading="lazy"
+                />
+              </a>
+              <a href={`https://github.com/${r.owner}/${r.slug}`} target="_blank" rel="noopener" class="badge-row">
+                <img
+                  src={`https://img.shields.io/github/stars/${r.owner}/${r.slug}?style=flat-square&color=3b4252&labelColor=1a1f2e`}
+                  alt="stars"
+                  loading="lazy"
+                />
+              </a>
+            </div>
+
+            <a
+              href={`https://github.com/${r.owner}/${r.slug}`}
+              class="repo-link mono"
+              target="_blank"
+              rel="noopener"
+            >
+              github.com/{r.owner}/{r.slug} ↗
+            </a>
+          </div>
+        ))}
+      </div>
+
+      <p class="footer-note mono">Badges are fetched live from shields.io and GitHub. Status reflects the public repository.</p>
+    </div>
+  </div>
+</Layout>
+
+<style>
+.page {
+  min-height: 100vh;
+  padding: 48px 0 80px;
+}
+
+.page-header {
+  margin-bottom: 48px;
+}
+
+.back-link {
+  display: inline-block;
+  font-size: 12px;
+  color: var(--muted);
+  text-decoration: none;
+  margin-bottom: 20px;
+  transition: color 0.15s;
+}
+.back-link:hover { color: var(--text); }
+
+h1 {
+  font-size: 2.4rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin-bottom: 12px;
+}
+
+.page-sub {
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.6;
+  max-width: 480px;
+}
+
+.status-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+  margin-bottom: 40px;
+}
+
+.status-card {
+  background: var(--card, #0f1117);
+  border: 1px solid var(--border, rgba(255,255,255,0.07));
+  border-radius: 12px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.repo-name {
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.live-link {
+  font-size: 11px;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.live-link:hover { color: var(--text); }
+
+.badges {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.badge-row {
+  display: block;
+  line-height: 0;
+  text-decoration: none;
+}
+
+.badge-row img {
+  max-width: 100%;
+  height: 18px;
+  border-radius: 3px;
+  opacity: 0.9;
+  transition: opacity 0.15s;
+}
+.badge-row:hover img { opacity: 1; }
+
+.repo-link {
+  font-size: 11px;
+  color: var(--muted, #475569);
+  text-decoration: none;
+  transition: color 0.15s;
+  margin-top: auto;
+}
+.repo-link:hover { color: var(--text, #e2e8f0); }
+
+.footer-note {
+  font-size: 11px;
+  color: var(--dim, #1e293b);
+  text-align: center;
+}
+
+@media (max-width: 600px) {
+  .status-grid { grid-template-columns: 1fr; }
+  h1 { font-size: 1.8rem; }
+}
+</style>

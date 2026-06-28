@@ -57,6 +57,7 @@ const products = [
         <div class="nav-links mono">
           <a href="#modules">modules</a>
           <a href="#roadmap">roadmap</a>
+          <a href="/status">status</a>
           <a href={repo} class="nav-cta">github ↗</a>
         </div>
       </nav>
@@ -701,5 +702,23 @@ const products = [
       flex-basis: 100%;
       order: 5;
     }
+  }
+
+  @media (max-width: 640px) {
+    .shell { padding: 0 20px; }
+    .nav { padding: 16px 0; }
+    .nav-links { gap: 16px; font-size: 11px; }
+    .nav-cta { padding: 7px 12px !important; font-size: 11px; }
+    h1.display { font-size: 32px; line-height: 1.15; }
+    .hero { padding: 40px 0 36px; gap: 28px; }
+    .lead { font-size: 14px; }
+    .cta-row { flex-direction: column; gap: 10px; }
+    .cta-row .btn { text-align: center; }
+    .footer-grid { grid-template-columns: 1fr; gap: 24px; }
+    .foot-nav { flex-wrap: wrap; gap: 12px 24px; }
+  }
+
+  @media (max-width: 400px) {
+    .nav-links a:not(.nav-cta) { display: none; }
   }
 </style>
