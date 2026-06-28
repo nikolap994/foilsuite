@@ -57,6 +57,7 @@ const products = [
         <div class="nav-links mono">
           <a href="#modules">modules</a>
           <a href="#roadmap">roadmap</a>
+          <a href="/blog">blog</a>
           <a href="/status">status</a>
           <a href={repo} class="nav-cta">github ↗</a>
         </div>
@@ -67,8 +68,8 @@ const products = [
         <div>
           <a href="#modules" class="badge mono">
             <span class="pulse"></span>
-            FoilGuard is live
-            <span class="badge-pill">v0.3 →</span>
+            FoilGuard 0.4 is live
+            <span class="badge-pill">new →</span>
           </a>
           <h1 class="display">Security tooling,<br />built in layers.</h1>
           <p class="lead">
@@ -77,7 +78,7 @@ const products = [
             the threat.
           </p>
           <div class="cta-row">
-            <a href="https://github.com/nikolap994/foilguard/releases" class="btn btn-primary mono">↓ install FoilGuard</a>
+            <a href="https://github.com/nikolap994/foilguard/releases" class="btn btn-primary mono">↓ install FoilGuard free</a>
             <a href="#modules" class="btn btn-ghost mono">$ explore the suite</a>
           </div>
         </div>
@@ -184,6 +185,39 @@ const products = [
         <a href={repo} class="btn btn-primary mono nowrap">★ star on github</a>
       </section>
 
+      <!-- changelog -->
+      <section id="changelog" class="section changelog-section">
+        <div class="mono label">## changelog</div>
+        <h2 class="display changelog-title">Recent updates.</h2>
+        <div class="changelog-list">
+          <div class="cl-entry">
+            <span class="cl-date mono">2026-06-28</span>
+            <div class="cl-body">
+              <strong>FoilGuard 0.4</strong> — Visit history trust, phishing path signals, high-risk TLD expansion (.zip, .download), redirect chain detection, daily badge counter, side panel context menu, false positive reports, allowlist expiry tracking
+            </div>
+          </div>
+          <div class="cl-entry">
+            <span class="cl-date mono">2026-06-21</span>
+            <div class="cl-body">
+              <strong>FoilGuard 0.3</strong> — Popup blocker, chrome.storage.sync migration, export/import settings, quick-allow from popup, mobile subdomain normalization, remote domain list sync
+            </div>
+          </div>
+          <div class="cl-entry">
+            <span class="cl-date mono">2026-06-14</span>
+            <div class="cl-body">
+              <strong>FoilLab 0.2</strong> — Ghost Protocol hard challenge (DNS TTL covert channel, 300pts), hint timer gate, challenge ratings, scoreboard, dedicated challenges page with filters
+            </div>
+          </div>
+          <div class="cl-entry">
+            <span class="cl-date mono">2026-06-07</span>
+            <div class="cl-body">
+              <strong>FoilLab 0.1</strong> — CTF platform launched with Silent Channel and Phantom Heartbeat challenges. FoilSuite website live at foilsuite.netlify.app
+            </div>
+          </div>
+        </div>
+        <a href={`${repo}/releases`} class="cl-all mono" target="_blank" rel="noopener">all releases on GitHub ↗</a>
+      </section>
+
       <!-- footer -->
       <footer class="footer mono">
         <div class="foot-left">
@@ -197,6 +231,9 @@ const products = [
           <a href="https://github.com/nikolap994/foilguard" target="_blank" rel="noopener">FoilGuard</a>
           <a href="https://foillab.netlify.app" target="_blank" rel="noopener">FoilLab</a>
           <a href="https://github.com/nikolap994/foilvault" target="_blank" rel="noopener">FoilVault</a>
+          <span class="foot-sep">·</span>
+          <a href="/blog">Blog</a>
+          <a href="/status">Status</a>
           <span class="foot-sep">·</span>
           <a href="https://github.com/nikolap994/foilguard/blob/master/LICENSE" target="_blank" rel="noopener">MIT</a>
           <a href="https://github.com/nikolap994/foillab/blob/master/LICENSE" target="_blank" rel="noopener">AGPL-3.0</a>
@@ -635,6 +672,22 @@ const products = [
     color: var(--muted);
     margin: 8px 0 0;
     max-width: 460px;
+  }
+
+  /* changelog */
+  .changelog-section { padding-bottom: 80px; }
+  .changelog-title { font-size: 2.4rem; font-weight: 800; letter-spacing: -0.03em; margin: 16px 0 36px; }
+  .changelog-list { display: flex; flex-direction: column; gap: 0; border-left: 2px solid var(--hair); padding-left: 24px; margin-bottom: 24px; }
+  .cl-entry { display: grid; grid-template-columns: 120px 1fr; gap: 16px; padding: 16px 0; border-bottom: 1px solid var(--hair); }
+  .cl-entry:last-child { border-bottom: none; }
+  .cl-date { font-size: 12px; color: var(--dim); padding-top: 2px; }
+  .cl-body { font-size: 14px; color: var(--muted); line-height: 1.6; }
+  .cl-body strong { color: var(--text); font-weight: 600; }
+  .cl-all { font-size: 12px; color: var(--dim); text-decoration: none; transition: color 0.15s; }
+  .cl-all:hover { color: var(--accent); }
+  @media (max-width: 600px) {
+    .cl-entry { grid-template-columns: 1fr; gap: 4px; }
+    .changelog-title { font-size: 1.8rem; }
   }
 
   /* footer */

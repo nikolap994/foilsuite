@@ -1,0 +1,108 @@
+---
+import Layout from '../../layouts/Layout.astro'
+
+const post = {
+  title: 'How Typosquatting Works — and How FoilGuard Catches It',
+  date: '2026-06-28',
+  category: 'DEEP DIVE',
+  readTime: '6 min',
+  author: 'Nikola Pavlović',
+}
+---
+<Layout title={post.title} description="A deep dive into typosquatting, homoglyph attacks, and combosquatting — and how FoilGuard detects each technique.">
+  <main class="shell post-page">
+    <div class="breadcrumb mono"><a href="/blog">blog</a> / {post.category.toLowerCase()}</div>
+
+    <article>
+      <header class="post-header">
+        <div class="post-meta mono">
+          <span class="post-cat">{post.category}</span>
+          <span>{post.date}</span>
+          <span>{post.readTime} read</span>
+          <span>by {post.author}</span>
+        </div>
+        <h1>{post.title}</h1>
+      </header>
+
+      <div class="post-body">
+        <p class="lead-para">Every year, millions of people land on fraudulent websites that look exactly like their bank, their email provider, or their employer — because the URL is only one character away from the real thing. This technique is called <strong>typosquatting</strong>, and it remains one of the most effective social engineering attacks in use today.</p>
+
+        <h2>The anatomy of a typosquatting attack</h2>
+        <p>Attackers register domains that exploit predictable human errors: common misspellings, swapped adjacent keys, and transposed characters. When a user types <code>paypa1.com</code> instead of <code>paypal.com</code>, or clicks a phishing link to <code>arnazon.com</code>, they land on a page designed to harvest credentials.</p>
+        <p>The most common variants:</p>
+        <ul>
+          <li><strong>Character substitution</strong> — replacing a letter with a visually similar one: <code>0</code> for <code>o</code>, <code>1</code> for <code>l</code>, <code>rn</code> for <code>m</code></li>
+          <li><strong>Addition/omission</strong> — inserting or removing a single character: <code>gooogle.com</code>, <code>facbook.com</code></li>
+          <li><strong>Transposition</strong> — swapping adjacent characters: <code>gooogle.com</code>, <code>amzaon.com</code></li>
+          <li><strong>Homoglyph attacks</strong> — using Unicode characters that look identical to ASCII: Cyrillic <code>а</code> (U+0430) instead of Latin <code>a</code>, <code>ο</code> (Greek omicron) instead of <code>o</code></li>
+          <li><strong>Combosquatting</strong> — appending brand names to misleading words: <code>paypal-secure.com</code>, <code>login-apple-id.com</code></li>
+        </ul>
+
+        <h2>Homoglyph attacks: the invisible threat</h2>
+        <p>Homoglyph attacks are the hardest for humans to spot. The domain <code>аpple.com</code> (with Cyrillic а) is visually indistinguishable from <code>apple.com</code> in most fonts. Your brain reads it as "apple" — but the DNS resolver sees a completely different string.</p>
+        <p>Modern browsers mitigate this by showing the punycode form (<code>xn--pple-43d.com</code>) when a domain mixes scripts. But many users never notice the address bar, especially on mobile — which is where homoglyph attacks are most effective.</p>
+        <p>FoilGuard detects homoglyphs by normalizing the domain through a lookalike character map before computing edit distance. Every <code>а</code> becomes <code>a</code>, every <code>ο</code> becomes <code>o</code>, and the result is compared against the top 1000 domains.</p>
+
+        <h2>Combosquatting: the most common technique</h2>
+        <p>Studies consistently find combosquatting — adding brand keywords to an unrelated domain — is more prevalent than typosquatting. <code>paypal-update.com</code>, <code>amazon-verification.net</code>, and <code>microsoft-support-center.com</code> are the templates phishing kits use out of the box.</p>
+        <p>FoilGuard scores combosquatting by checking if the domain's base label contains a brand name from its top-1000 list but the registrable domain doesn't exactly match. A domain like <code>paypal-secure.io</code> will score +40 for brand match combined with a suspicious surrounding pattern.</p>
+
+        <h2>How FoilGuard's scoring engine works</h2>
+        <p>Every domain you visit is scored synchronously before the page loads, using a layered signal system:</p>
+        <ol>
+          <li><strong>Edit distance</strong> — Levenshtein distance ≤ 3 from a known brand: +30</li>
+          <li><strong>Homoglyph normalization</strong> — After normalizing lookalike chars, edit distance ≤ 3: +40</li>
+          <li><strong>Combosquatting</strong> — Brand name embedded in a different domain: +40</li>
+          <li><strong>Phishing keywords</strong> — Domain contains words like "secure", "update", "verify": +15</li>
+          <li><strong>Suspicious TLD</strong> — .zip, .download, .loan, .work, etc.: +25</li>
+          <li><strong>New domain</strong> — Registered under 30 days ago (via RDAP): +25</li>
+          <li><strong>Suspicious path</strong> — /login, /verify, /account on a non-zero-score domain: +10</li>
+          <li><strong>History trust</strong> — 5+ visits in 6 months: −30</li>
+          <li><strong>Safe Browsing</strong> — Google confirmed threat: +60</li>
+        </ol>
+        <p>If the total reaches the configured threshold (default: 65), navigation is intercepted and the warning page shown.</p>
+
+        <h2>False positives and the trust model</h2>
+        <p>Any heuristic engine will produce false positives. FoilGuard handles this through several mechanisms:</p>
+        <ul>
+          <li><strong>Visit history</strong> — if you've visited a domain 5+ times in 6 months, it's de-scored automatically</li>
+          <li><strong>Personal allowlist</strong> — one-click trust from the warning page or popup</li>
+          <li><strong>False positive reports</strong> — the warning page links to a pre-filled GitHub issue, feeding signal back to improve the detection list</li>
+          <li><strong>Rescan</strong> — re-run detection including fresh RDAP data without navigating away</li>
+        </ul>
+
+        <h2>What's next</h2>
+        <p>FoilGuard 0.4 added real-time Safe Browsing API integration (optional, requires free API key), redirect chain detection, and a daily block counter. The next major addition is a live threat feed from Phishtank and URLhaus — moving from pure heuristics to confirmed IOCs.</p>
+        <p>FoilGuard is <a href="https://github.com/nikolap994/foilguard" target="_blank" rel="noopener">MIT licensed on GitHub</a>. Load it from <code>dist/</code> after running <code>npm run build</code>.</p>
+      </div>
+    </article>
+
+    <div class="post-footer mono">
+      <a href="/blog">← all posts</a>
+    </div>
+  </main>
+</Layout>
+
+<style>
+.post-page { padding-top: 40px; padding-bottom: 80px; max-width: 720px; }
+.breadcrumb { font-size: 12px; color: var(--dim); margin-bottom: 32px; }
+.breadcrumb a { text-decoration: none; color: var(--dim); }
+.breadcrumb a:hover { color: var(--accent); }
+.post-header { margin-bottom: 40px; }
+.post-meta { display: flex; gap: 14px; font-size: 11px; color: var(--dim); margin-bottom: 16px; flex-wrap: wrap; }
+.post-cat { color: var(--accent); font-weight: 600; letter-spacing: 0.08em; }
+.post-header h1 { font-size: 2rem; font-weight: 800; letter-spacing: -0.02em; line-height: 1.3; }
+.post-body { display: flex; flex-direction: column; gap: 0; }
+.post-body .lead-para { font-size: 17px; color: var(--muted); line-height: 1.8; margin-bottom: 36px; }
+.post-body h2 { font-size: 1.25rem; font-weight: 700; margin: 36px 0 14px; }
+.post-body p { font-size: 15px; color: var(--muted); line-height: 1.8; margin-bottom: 16px; }
+.post-body ul, .post-body ol { padding-left: 22px; display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+.post-body li { font-size: 15px; color: var(--muted); line-height: 1.7; }
+.post-body li strong { color: var(--text); }
+.post-body code { background: rgba(0,0,0,0.3); padding: 1px 5px; border-radius: 3px; font-size: 13px; color: var(--accent); font-family: 'Courier New', monospace; }
+.post-body a { color: var(--accent); text-decoration: underline; text-decoration-color: rgba(65,208,127,0.3); }
+.post-footer { padding-top: 48px; border-top: 1px solid var(--hair); font-size: 13px; }
+.post-footer a { text-decoration: none; color: var(--dim); }
+.post-footer a:hover { color: var(--accent); }
+@media (max-width: 600px) { .post-header h1 { font-size: 1.5rem; } .post-body .lead-para { font-size: 15px; } }
+</style>

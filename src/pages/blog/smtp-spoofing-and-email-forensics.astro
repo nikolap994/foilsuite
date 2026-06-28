@@ -1,0 +1,127 @@
+---
+import Layout from '../../layouts/Layout.astro'
+const title = 'How attackers spoof email — and how to catch them'
+const description = 'A practical guide to SMTP spoofing, SPF, DKIM, and DMARC — with a walkthrough of the FoilLab mail-trap challenge.'
+const date = '2026-06-28'
+const readTime = '7 min'
+---
+<Layout title={title} description={description}>
+  <main class="shell blog-post">
+    <div class="post-meta mono">
+      <a href="/blog" class="back-link">← blog</a>
+      <span class="meta-sep">·</span>
+      <span>{date}</span>
+      <span class="meta-sep">·</span>
+      <span>{readTime} read</span>
+    </div>
+    <h1>{title}</h1>
+    <p class="post-lead">{description}</p>
+
+    <h2>The trust model email was built on</h2>
+    <p>SMTP — Simple Mail Transfer Protocol — was designed in 1982 for a world where every node on the internet was a trusted research institution. The <code>MAIL FROM</code> field (the envelope sender) and the <code>From:</code> header are <strong>free-text strings</strong>. Nothing in the original protocol verifies them. An attacker can set them to anything.</p>
+    <p>This means a message that looks like it came from <code>ceo@example.com</code> can originate from any mail server on the planet. This is email spoofing, and it has been responsible for billions of dollars in Business Email Compromise (BEC) fraud.</p>
+
+    <h2>How SMTP spoofing works</h2>
+    <p>When your mail server receives a message, the conversation looks like this:</p>
+    <pre class="code-block"><code>EHLO attacker.example
+MAIL FROM: &lt;ceo@victim-corp.com&gt;        ← envelope sender, free text
+RCPT TO: &lt;finance@victim-corp.com&gt;
+DATA
+From: CEO Name &lt;ceo@victim-corp.com&gt;     ← display header, also free text
+Subject: Urgent wire transfer
+...
+</code></pre>
+    <p>The receiving server sees the <code>From:</code> header and renders it for the user. Unless the server is configured to check authentication records, it has no idea the sender is lying.</p>
+
+    <h2>SPF — the first line of defense</h2>
+    <p>Sender Policy Framework (SPF) is a DNS TXT record that lists which IP addresses are allowed to send mail for a domain:</p>
+    <pre class="code-block"><code>v=spf1 include:_spf.google.com ~all</code></pre>
+    <p>When a mail server receives a message, it checks whether the sending IP is in the SPF record. If not, the result is <code>FAIL</code> or <code>SOFTFAIL</code> (~all). But SPF only checks the <strong>envelope sender</strong> (MAIL FROM), not the <code>From:</code> header the user sees. An attacker can spoof the header while using a valid envelope that passes SPF — this is called a <em>header-from mismatch</em>.</p>
+
+    <h2>DKIM — cryptographic signature</h2>
+    <p>DomainKeys Identified Mail (DKIM) adds a cryptographic signature to outgoing messages using a private key. The receiving server looks up the public key in DNS and verifies the signature covers the message body and selected headers:</p>
+    <pre class="code-block"><code>DKIM-Signature: v=1; a=rsa-sha256; d=example.com; s=mail;
+  h=from:to:subject:date;
+  bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+  b=MEQCIBj...
+</code></pre>
+    <p>If a message arrives claiming to be from <code>@example.com</code> but has no valid DKIM signature (DKIM: NONE), or if the signature verification fails (DKIM: FAIL), that is a strong signal the message is spoofed or tampered with.</p>
+
+    <h2>DMARC — the policy layer</h2>
+    <p>DMARC (Domain-based Message Authentication, Reporting &amp; Conformance) ties SPF and DKIM together. It requires that at least one of them <em>aligns</em> with the From: header domain, and lets domain owners specify what to do with failures:</p>
+    <pre class="code-block"><code>v=DMARC1; p=reject; rua=mailto:dmarc@example.com</code></pre>
+    <p><code>p=none</code> = monitor only. <code>p=quarantine</code> = send to spam. <code>p=reject</code> = drop the message. Most domains have no DMARC record at all, or use <code>p=none</code> because they are afraid of breaking legitimate mail flows.</p>
+
+    <h2>Reading email headers like a forensic analyst</h2>
+    <p>When you receive a suspicious message, download the raw source and look for:</p>
+    <ul>
+      <li><strong>Received:</strong> headers — trace the actual hop path, bottom to top. The bottom-most Received header is the origin.</li>
+      <li><strong>Authentication-Results:</strong> — shows the mail server's SPF/DKIM/DMARC verdict</li>
+      <li><strong>X-Originating-IP:</strong> — some servers add the client IP that submitted the message</li>
+      <li><strong>DKIM-Signature d= vs From: domain mismatch</strong> — the signed domain should match the From: domain</li>
+      <li><strong>Message-ID domain</strong> — should match the sender's domain</li>
+    </ul>
+
+    <h2>FoilLab mail-trap challenge walkthrough</h2>
+    <p>The <a href="https://foillab.netlify.app/challenges/mail-trap">mail-trap challenge</a> gives you an SMTP transaction log. The log shows a message claiming to be from <code>cfo@acmecorp.io</code>, but the metadata tells a different story:</p>
+    <pre class="code-block"><code>Authentication-Results: mx.foillab.internal;
+  spf=fail (no matching record) smtp.mailfrom=suspicious-host.xyz;
+  dkim=none
+</code></pre>
+    <p>SPF fails because the sending server (<code>suspicious-host.xyz</code>) is not in <code>acmecorp.io</code>'s SPF record. DKIM is absent entirely. The message body is base64-encoded — decoding it reveals the flag.</p>
+    <p>Steps to solve:</p>
+    <ol>
+      <li>Download <code>smtp.log</code> from the challenge page</li>
+      <li>Find the <code>DATA</code> section — the body will be a base64 blob</li>
+      <li>Run <code>echo "BASE64STRING" | base64 -d</code> to decode it</li>
+      <li>The decoded text contains the flag in <code>FOIL{...}</code> format</li>
+    </ol>
+
+    <h2>Defending your organization</h2>
+    <ul>
+      <li>Publish a <strong>strict DMARC policy</strong> (<code>p=reject</code>) for your domain — it prevents spoofed messages from reaching recipients</li>
+      <li>Sign all outbound mail with <strong>DKIM</strong> using at least 2048-bit RSA keys (or Ed25519)</li>
+      <li>Keep your <strong>SPF record tight</strong> — use <code>-all</code> (hard fail) not <code>~all</code> once you've audited all your sending sources</li>
+      <li>Enable <strong>DMARC reporting</strong> (<code>rua</code>) and process the reports weekly — you will see who is trying to spoof you</li>
+      <li>Train users to check the full <code>From:</code> address, not just the display name</li>
+    </ul>
+
+    <div class="post-footer">
+      <span class="mono tag">email-security</span>
+      <span class="mono tag">smtp</span>
+      <span class="mono tag">forensics</span>
+      <span class="mono tag">foillab</span>
+      <a href="https://foillab.netlify.app/challenges/mail-trap" class="cta-link" target="_blank" rel="noopener">Try the mail-trap challenge on FoilLab →</a>
+    </div>
+  </main>
+</Layout>
+
+<style>
+.blog-post { padding-top: 40px; padding-bottom: 80px; max-width: 720px; }
+.post-meta { font-size: 12px; color: var(--dim); margin-bottom: 24px; display: flex; align-items: center; gap: 8px; }
+.back-link { color: var(--muted); text-decoration: none; }
+.back-link:hover { color: var(--accent); }
+.meta-sep { color: var(--dim); }
+h1 { font-size: 2.4rem; font-weight: 800; letter-spacing: -0.03em; line-height: 1.2; margin-bottom: 20px; }
+.post-lead { font-size: 17px; color: var(--muted); line-height: 1.6; margin-bottom: 40px; padding-bottom: 32px; border-bottom: 1px solid var(--hair); }
+h2 { font-size: 1.3rem; font-weight: 700; margin: 36px 0 14px; }
+p { color: var(--muted); line-height: 1.75; font-size: 15px; margin-bottom: 16px; }
+ul, ol { color: var(--muted); line-height: 1.75; font-size: 15px; padding-left: 22px; margin-bottom: 16px; }
+li { margin-bottom: 8px; }
+strong { color: var(--text); }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+code { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #818cf8; background: rgba(129,140,248,0.08); padding: 2px 5px; border-radius: 3px; }
+.code-block {
+  background: rgba(0,0,0,0.5); border: 1px solid var(--hair); border-radius: 8px;
+  padding: 20px; margin: 20px 0; overflow-x: auto;
+}
+.code-block code { background: none; padding: 0; color: #a5b4fc; font-size: 13px; white-space: pre; }
+.post-footer { margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--hair); display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.tag { font-size: 11px; color: var(--dim); border: 1px solid var(--hair); border-radius: 20px; padding: 3px 10px; }
+.cta-link { margin-left: auto; font-size: 14px; font-weight: 700; color: var(--accent); }
+@media (max-width: 600px) {
+  h1 { font-size: 1.8rem; }
+  .cta-link { margin-left: 0; }
+}
+</style>
