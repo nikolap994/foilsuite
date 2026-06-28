@@ -26,6 +26,7 @@ const products = [
     status: "Live",
     dot: "#41d07f",
     github: "https://github.com/nikolap994/foillab",
+    live: "https://nikolap994.github.io/foillab",
   },
   {
     name: "FoilVault",
@@ -118,7 +119,7 @@ const products = [
         <div class="cards">
           {
             products.map((p) => (
-              <a href={p.github} target="_blank" rel="noopener noreferrer" class="card" style={`--c:${p.color}`}>
+              <a href={'live' in p && p.live ? p.live : p.github} target="_blank" rel="noopener noreferrer" class="card" style={`--c:${p.color}`}>
                 <span class="card-bar" />
                 <div class="card-top">
                   <img src={p.icon} alt="" width="36" height="36" />
@@ -184,11 +185,21 @@ const products = [
 
       <!-- footer -->
       <footer class="footer mono">
-        <span class="foot-brand">
-          <img src="/icons/foilsuite-128.png" alt="" width="20" height="20" />
-          foil/suite — foil the attack.
-        </span>
-        <span>© 2026 · <a href={repo}>github.com/nikolap994</a></span>
+        <div class="foot-left">
+          <span class="foot-brand">
+            <img src="/icons/foilsuite-128.png" alt="" width="20" height="20" />
+            foil/suite
+          </span>
+          <span class="foot-copy">© 2026 · <a href={repo}>github.com/nikolap994</a></span>
+        </div>
+        <nav class="foot-nav">
+          <a href="https://github.com/nikolap994/foilguard" target="_blank" rel="noopener">FoilGuard</a>
+          <a href="https://nikolap994.github.io/foillab" target="_blank" rel="noopener">FoilLab</a>
+          <a href="https://github.com/nikolap994/foilvault" target="_blank" rel="noopener">FoilVault</a>
+          <span class="foot-sep">·</span>
+          <a href="https://github.com/nikolap994/foilguard/blob/master/LICENSE" target="_blank" rel="noopener">MIT</a>
+          <a href="https://github.com/nikolap994/foillab/blob/master/LICENSE" target="_blank" rel="noopener">AGPL-3.0</a>
+        </nav>
       </footer>
     </div>
   </div>
@@ -636,18 +647,33 @@ const products = [
     font-size: 13px;
     color: var(--dim);
     flex-wrap: wrap;
-    gap: 12px;
+    gap: 16px 30px;
+  }
+  .foot-left {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    flex-wrap: wrap;
   }
   .foot-brand {
     display: inline-flex;
     align-items: center;
     gap: 9px;
+    color: var(--muted);
   }
   .foot-brand img {
     border-radius: 5px;
   }
+  .foot-copy { color: var(--dim); }
+  .foot-nav {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .foot-sep { color: var(--hair); }
   .footer a {
-    color: var(--muted);
+    color: var(--dim);
     text-decoration: none;
     transition: color 0.2s;
   }
