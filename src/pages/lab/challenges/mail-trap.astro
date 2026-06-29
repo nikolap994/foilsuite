@@ -1,12 +1,10 @@
 ---
 import Layout from '../../../layouts/Layout.astro'
-import LabNav from '../../../components/LabNav.astro'
 import { getChallengeById } from '../../../data/challenges'
 
 const challenge = getChallengeById('mail-trap')!
 ---
 <Layout title={challenge.title} description={challenge.description}>
-  <LabNav />
   <main class="shell challenge-page">
     <div class="breadcrumb mono">
       <a href="/lab">foil/lab</a> / <a href="/lab/challenges">challenges</a> / {challenge.id}

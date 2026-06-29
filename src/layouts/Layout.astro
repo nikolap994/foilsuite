@@ -12,6 +12,10 @@ const {
 const canonicalTitle = title.includes('FoilSuite') ? title : `${title} — FoilSuite`
 const siteUrl = "https://foilsuite.netlify.app"
 const repo = "https://github.com/nikolap994/foilsuite"
+const isLab = Astro.url.pathname.startsWith('/lab')
+const labPath = Astro.url.pathname
+const labActive = (href: string) =>
+  href === '/lab' ? labPath === '/lab' : labPath === href || labPath.startsWith(href + '/')
 ---
 
 <!doctype html>
@@ -54,11 +58,22 @@ const repo = "https://github.com/nikolap994/foilsuite"
           <a href="/#modules">modules</a>
           <a href="/lab">lab</a>
           <a href="/blog">blog</a>
-          <a href="/status">status</a>
           <a href={repo} class="nav-cta" target="_blank" rel="noopener">github ↗</a>
         </div>
       </div>
     </nav>
+
+    {isLab && (
+      <nav class="lab-subnav">
+        <div class="shell lab-subnav-inner mono">
+          <a href="/lab/challenges" class:list={['lab-sub-link', { 'lab-sub-active': labActive('/lab/challenges') }]}>challenges</a>
+          <a href="/lab/scoreboard" class:list={['lab-sub-link', { 'lab-sub-active': labActive('/lab/scoreboard') }]}>scoreboard</a>
+          <a href="/lab/certificate" class:list={['lab-sub-link', { 'lab-sub-active': labActive('/lab/certificate') }]}>certificate</a>
+          <a href="/lab/about" class:list={['lab-sub-link', { 'lab-sub-active': labActive('/lab/about') }]}>about</a>
+          <a href={repo} class="lab-sub-link lab-sub-cta" target="_blank" rel="noopener">github ↗</a>
+        </div>
+      </nav>
+    )}
 
     <slot />
 
@@ -77,10 +92,8 @@ const repo = "https://github.com/nikolap994/foilsuite"
           <a href="https://github.com/nikolap994/foilvault" target="_blank" rel="noopener">FoilVault</a>
           <span class="foot-sep">·</span>
           <a href="/blog">Blog</a>
-          <a href="/status">Status</a>
           <span class="foot-sep">·</span>
           <a href="https://github.com/nikolap994/foilguard/blob/master/LICENSE" target="_blank" rel="noopener">MIT</a>
-          <a href="https://github.com/nikolap994/foillab/blob/master/LICENSE" target="_blank" rel="noopener">AGPL-3.0</a>
         </nav>
       </div>
     </footer>
@@ -255,6 +268,30 @@ const repo = "https://github.com/nikolap994/foilsuite"
   .post-footer a { text-decoration: none; color: var(--dim); transition: color 0.15s; }
   .post-footer a:hover { color: var(--accent); }
   .post-footer .cta-link { color: var(--accent); font-weight: 600; margin-left: auto; }
+
+  /* ── Lab sub-nav ── */
+  .lab-subnav {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    background: rgba(8, 9, 13, 0.5);
+  }
+  .lab-subnav-inner {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    overflow-x: auto;
+  }
+  .lab-sub-link {
+    font-size: 12px;
+    color: var(--dim);
+    text-decoration: none;
+    transition: color 0.15s;
+    white-space: nowrap;
+  }
+  .lab-sub-link:hover { color: var(--muted); }
+  .lab-sub-active { color: var(--text) !important; }
+  .lab-sub-cta { margin-left: auto; }
 
   /* ── Badge chips (used in challenge pages) ── */
   .badge {

@@ -6,7 +6,6 @@ const staticPages = [
   { url: '/blog/smtp-spoofing-and-email-forensics', priority: '0.7', changefreq: 'monthly' },
   { url: '/blog/how-typosquatting-works', priority: '0.7', changefreq: 'monthly' },
   { url: '/blog/password-manager-threat-models', priority: '0.7', changefreq: 'monthly' },
-  { url: '/status', priority: '0.5', changefreq: 'daily' },
   { url: '/lab', priority: '0.9', changefreq: 'weekly' },
   { url: '/lab/challenges', priority: '0.9', changefreq: 'weekly' },
   { url: '/lab/challenges/dns-exfil', priority: '0.8', changefreq: 'monthly' },

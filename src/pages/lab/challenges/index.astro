@@ -1,12 +1,10 @@
 ---
 import Layout from '../../../layouts/Layout.astro'
-import LabNav from '../../../components/LabNav.astro'
 import { challenges } from '../../../data/challenges'
 
 const totalPts = challenges.reduce((s, c) => s + c.points, 0)
 ---
 <Layout title="FoilLab Challenges" description="Browse all FoilLab CTF challenges — DNS forensics, packet analysis, email forensics and more.">
-  <LabNav />
   <main class="shell challenges-page">
     <div class="page-header">
       <div class="mono label">## challenges</div>

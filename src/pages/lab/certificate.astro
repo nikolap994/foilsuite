@@ -1,13 +1,11 @@
 ---
 import Layout from '../../layouts/Layout.astro'
-import LabNav from '../../components/LabNav.astro'
 import { challenges } from '../../data/challenges'
 
 const totalPts = challenges.reduce((s, c) => s + c.points, 0)
 const challengeCount = challenges.length
 ---
 <Layout title="FoilLab Certificate" description="Your FoilLab completion certificate — download and share.">
-  <LabNav />
   <main class="shell cert-page">
     <div class="page-header">
       <div class="mono label">## certificate</div>
