@@ -1,0 +1,137 @@
+---
+import Layout from '../../layouts/Layout.astro'
+import LabNav from '../../components/LabNav.astro'
+import { challenges } from '../../data/challenges'
+
+const totalPts = challenges.reduce((s, c) => s + c.points, 0)
+---
+<Layout title="About FoilLab" description="About FoilLab — a cybersecurity CTF platform focused on network forensics and threat analysis.">
+  <LabNav />
+  <main class="shell about-page">
+    <div class="page-header">
+      <div class="mono label">## about</div>
+      <h1>About FoilLab</h1>
+    </div>
+
+    <div class="about-grid">
+      <section class="about-card">
+        <h2>What is FoilLab?</h2>
+        <p>FoilLab is a free Capture The Flag (CTF) platform specializing in defensive security scenarios: log forensics, DNS analysis, packet captures, and email threat analysis. All challenges are based on realistic incident response scenarios.</p>
+        <p>Challenges are designed for SOC analysts, threat hunters, and anyone learning network security. No registration required — just download the challenge files and start investigating.</p>
+      </section>
+
+      <section class="about-card">
+        <h2>Rules</h2>
+        <ol class="rules-list">
+          <li>Don't share flags publicly. Write-ups are welcome after 7 days.</li>
+          <li>Don't attack the FoilLab infrastructure — all challenges are solved locally with provided files.</li>
+          <li>Scores are stored locally in your browser. There is no server-side leaderboard (yet).</li>
+          <li>Multiple devices? Submit your score on each one independently.</li>
+          <li>Found a bug or wrong flag? Open an issue on GitHub.</li>
+        </ol>
+      </section>
+
+      <section class="about-card">
+        <h2>Scoring</h2>
+        <div class="scoring-grid">
+          <div class="score-tier">
+            <span class="tier-label diff-easy">Easy</span>
+            <span class="tier-pts mono">100–150 pts</span>
+            <span class="tier-desc">Intro-level log analysis. Tools: basic Linux CLI.</span>
+          </div>
+          <div class="score-tier">
+            <span class="tier-label diff-medium">Medium</span>
+            <span class="tier-pts mono">200–250 pts</span>
+            <span class="tier-desc">Multi-step analysis. Requires pattern matching and decoding.</span>
+          </div>
+          <div class="score-tier">
+            <span class="tier-label diff-hard">Hard</span>
+            <span class="tier-pts mono">300+ pts</span>
+            <span class="tier-desc">Covert channels, obfuscation, advanced forensics techniques.</span>
+          </div>
+        </div>
+        <p class="scoring-total mono">Total available: <strong>{totalPts} pts</strong> across {challenges.length} challenges</p>
+      </section>
+
+      <section class="about-card">
+        <h2>Tools you may need</h2>
+        <div class="tools-grid">
+          <div class="tool-item"><code>tshark / Wireshark</code><span>Packet capture analysis</span></div>
+          <div class="tool-item"><code>python3</code><span>Decoding, scripting</span></div>
+          <div class="tool-item"><code>jq</code><span>JSON processing</span></div>
+          <div class="tool-item"><code>base64</code><span>Encoding/decoding</span></div>
+          <div class="tool-item"><code>dig / nslookup</code><span>DNS queries</span></div>
+          <div class="tool-item"><code>grep / awk / cut</code><span>Log filtering</span></div>
+        </div>
+      </section>
+
+      <section class="about-card">
+        <h2>Submit a challenge</h2>
+        <p>Have a realistic forensics scenario to contribute? FoilLab accepts community challenge submissions. Requirements:</p>
+        <ul class="submit-list">
+          <li>Original scenario — not from existing CTF competitions</li>
+          <li>Realistic artifact file (pcap, log, csv, etc.) — synthetic data only, no real PII</li>
+          <li>Clear flag in format <code>FOIL&#123;...&#125;</code></li>
+          <li>A solution write-up included in the submission</li>
+        </ul>
+        <a href="https://github.com/nikolap994/foilsuite/issues/new?labels=foillab&title=[CHALLENGE]+Your+Title+Here" target="_blank" rel="noopener" class="submit-btn">Submit via GitHub Issues ↗</a>
+      </section>
+
+      <section class="about-card">
+        <h2>Part of the Foil suite</h2>
+        <p>FoilLab is one of four open-source projects in the Foil security suite:</p>
+        <div class="suite-list">
+          <div class="suite-item"><strong>FoilGuard</strong> — phishing &amp; typosquatting detection Chrome extension</div>
+          <div class="suite-item"><strong>FoilLab</strong> — this platform</div>
+          <div class="suite-item"><strong>FoilVault</strong> — local-first encrypted password manager</div>
+          <div class="suite-item"><strong>FoilSuite</strong> — project hub at <a href="/">foilsuite.netlify.app</a></div>
+        </div>
+        <a href="https://github.com/nikolap994" class="submit-btn" target="_blank" rel="noopener">GitHub ↗</a>
+      </section>
+    </div>
+  </main>
+</Layout>
+
+<style>
+.about-page { padding-top: 40px; padding-bottom: 80px; }
+.page-header { margin-bottom: 48px; }
+.page-header h1 { font-size: 2.4rem; font-weight: 800; letter-spacing: -0.02em; margin: 16px 0 8px; }
+.label { font-size: 12px; color: var(--dim); margin-bottom: 8px; }
+.about-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; }
+.about-card { background: var(--panel); border: 1px solid var(--hair); border-radius: 10px; padding: 24px; }
+.about-card h2 { font-size: 16px; font-weight: 700; margin-bottom: 14px; color: var(--text); }
+.about-card p { font-size: 14px; color: var(--muted); line-height: 1.7; margin-bottom: 10px; }
+.about-card p:last-child { margin-bottom: 0; }
+.rules-list { list-style: decimal; padding-left: 18px; display: flex; flex-direction: column; gap: 8px; }
+.rules-list li { font-size: 14px; color: var(--muted); line-height: 1.6; }
+.scoring-grid { display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; }
+.score-tier { display: grid; grid-template-columns: 80px 100px 1fr; gap: 12px; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--hair); }
+.score-tier:last-child { border-bottom: none; }
+.tier-label { font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 3px; text-align: center; }
+.diff-easy { background: rgba(65,208,127,0.1); color: #41d07f; border: 1px solid rgba(65,208,127,0.2); }
+.diff-medium { background: rgba(251,191,36,0.1); color: #fbbf24; border: 1px solid rgba(251,191,36,0.2); }
+.diff-hard { background: rgba(239,68,68,0.1); color: #ef4444; border: 1px solid rgba(239,68,68,0.2); }
+.tier-pts { font-size: 13px; color: var(--accent); }
+.tier-desc { font-size: 12px; color: var(--dim); }
+.scoring-total { font-size: 13px; color: var(--dim); margin-top: 8px; }
+.scoring-total strong { color: var(--accent); }
+.tools-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.tool-item { display: flex; flex-direction: column; gap: 3px; }
+.tool-item code { font-size: 12px; color: var(--accent); font-family: 'JetBrains Mono', monospace; }
+.tool-item span { font-size: 11px; color: var(--dim); }
+.submit-list { list-style: disc; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
+.submit-list li { font-size: 14px; color: var(--muted); }
+.submit-list code { font-size: 12px; color: var(--accent); }
+.submit-btn { display: inline-block; font-size: 13px; color: var(--accent); text-decoration: none; border: 1px solid rgba(65,208,127,0.3); border-radius: 6px; padding: 10px 18px; transition: background 0.15s; }
+.submit-btn:hover { background: rgba(65,208,127,0.06); }
+.suite-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+.suite-item { font-size: 13px; color: var(--muted); }
+.suite-item strong { color: var(--text); }
+.suite-item a { color: var(--accent); text-decoration: none; }
+@media (max-width: 600px) {
+  .about-grid { grid-template-columns: 1fr; }
+  .page-header h1 { font-size: 1.8rem; }
+  .score-tier { grid-template-columns: 1fr; }
+  .tools-grid { grid-template-columns: 1fr; }
+}
+</style>

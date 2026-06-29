@@ -1,0 +1,170 @@
+---
+import Layout from '../../layouts/Layout.astro'
+import LabNav from '../../components/LabNav.astro'
+import { challenges } from '../../data/challenges'
+
+const totalPts = challenges.reduce((s, c) => s + c.points, 0)
+const challengeCount = challenges.length
+---
+<Layout title="FoilLab Certificate" description="Your FoilLab completion certificate — download and share.">
+  <LabNav />
+  <main class="shell cert-page">
+    <div class="page-header">
+      <div class="mono label">## certificate</div>
+      <h1>Completion Certificate</h1>
+      <p class="page-lead">Solve all {challengeCount} challenges to unlock a shareable certificate.</p>
+    </div>
+
+    <div id="cert-locked" class="cert-locked hidden">
+      <div class="lock-icon">🔒</div>
+      <p class="lock-msg">Complete all <strong>{challengeCount}</strong> challenges to unlock your certificate.</p>
+      <div id="progress-bar-wrap" class="progress-bar-wrap">
+        <div id="progress-bar" class="progress-bar"></div>
+      </div>
+      <p id="progress-text" class="progress-text mono">0 / {challengeCount} solved</p>
+      <a href="/lab/challenges" class="cert-cta">Browse challenges →</a>
+    </div>
+
+    <div id="cert-unlocked" class="cert-unlocked hidden">
+      <canvas id="cert-canvas" class="cert-canvas" width="900" height="636"></canvas>
+      <div class="cert-actions">
+        <button id="btn-download" class="cert-btn">Download PNG</button>
+        <button id="btn-share" class="cert-btn cert-btn-ghost">Copy share text</button>
+        <div id="share-status" class="share-status"></div>
+      </div>
+    </div>
+  </main>
+
+  <script define:vars={{ challenges, totalPts }}>
+    const SOLVED_PREFIX = 'foillab_solved_'
+    const solvedIds = challenges.filter(c => sessionStorage.getItem(SOLVED_PREFIX + c.id)).map(c => c.id)
+    const allSolved = solvedIds.length === challenges.length
+
+    const lockedEl = document.getElementById('cert-locked')
+    const unlockedEl = document.getElementById('cert-unlocked')
+    const progressBar = document.getElementById('progress-bar')
+    const progressText = document.getElementById('progress-text')
+
+    const pct = Math.round((solvedIds.length / challenges.length) * 100)
+    progressBar.style.width = pct + '%'
+    progressText.textContent = `${solvedIds.length} / ${challenges.length} solved`
+
+    lockedEl.classList.toggle('hidden', allSolved)
+    unlockedEl.classList.toggle('hidden', !allSolved)
+
+    if (allSolved) {
+      const canvas = document.getElementById('cert-canvas')
+      const ctx = canvas.getContext('2d')
+      const W = canvas.width, H = canvas.height
+
+      const sb = JSON.parse(localStorage.getItem('foillab_scoreboard') || '[]')
+      const player = sb.length > 0 ? sb.sort((a, b) => b.pts - a.pts)[0].name : 'Challenger'
+
+      ctx.fillStyle = '#0a0d14'
+      ctx.fillRect(0, 0, W, H)
+
+      ctx.strokeStyle = '#41d07f'
+      ctx.lineWidth = 2
+      ctx.strokeRect(20, 20, W - 40, H - 40)
+      ctx.strokeStyle = 'rgba(65,208,127,0.15)'
+      ctx.lineWidth = 1
+      ctx.strokeRect(28, 28, W - 56, H - 56)
+
+      const cm = (x, y, sx, sy) => {
+        ctx.beginPath(); ctx.moveTo(x, y + sy * 20); ctx.lineTo(x, y); ctx.lineTo(x + sx * 20, y); ctx.stroke()
+      }
+      ctx.strokeStyle = '#41d07f'; ctx.lineWidth = 2
+      cm(36, 36, 1, 1); cm(W - 36, 36, -1, 1); cm(36, H - 36, 1, -1); cm(W - 36, H - 36, -1, -1)
+
+      ctx.font = '56px serif'
+      ctx.textAlign = 'center'
+      ctx.fillStyle = '#41d07f'
+      ctx.fillText('⛨', W / 2, 130)
+
+      ctx.font = 'bold 13px monospace'
+      ctx.fillStyle = 'rgba(65,208,127,0.6)'
+      ctx.letterSpacing = '4px'
+      ctx.fillText('CERTIFICATE OF COMPLETION', W / 2, 175)
+
+      ctx.font = '13px monospace'
+      ctx.fillStyle = 'rgba(255,255,255,0.3)'
+      ctx.letterSpacing = '0px'
+      ctx.fillText('This certifies that', W / 2, 220)
+
+      ctx.font = 'bold 38px -apple-system, sans-serif'
+      ctx.fillStyle = '#e2e8f0'
+      ctx.fillText(player, W / 2, 275)
+
+      ctx.font = '16px -apple-system, sans-serif'
+      ctx.fillStyle = 'rgba(255,255,255,0.5)'
+      ctx.fillText(`has successfully completed all ${challenges.length} FoilLab challenges`, W / 2, 315)
+      ctx.fillText(`demonstrating expertise in network forensics, packet analysis, and threat detection`, W / 2, 342)
+
+      ctx.font = 'bold 28px monospace'
+      ctx.fillStyle = '#41d07f'
+      ctx.fillText(`${totalPts} pts`, W / 2, 400)
+      ctx.font = '12px monospace'
+      ctx.fillStyle = 'rgba(65,208,127,0.5)'
+      ctx.fillText('total score', W / 2, 420)
+
+      ctx.strokeStyle = 'rgba(65,208,127,0.2)'; ctx.lineWidth = 1
+      ctx.beginPath(); ctx.moveTo(100, 450); ctx.lineTo(W - 100, 450); ctx.stroke()
+
+      const date = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+      ctx.font = '12px monospace'
+      ctx.fillStyle = 'rgba(255,255,255,0.2)'
+      ctx.textAlign = 'left'
+      ctx.fillText(date, 60, 490)
+      ctx.textAlign = 'right'
+      ctx.fillText('foilsuite.netlify.app/lab', W - 60, 490)
+      ctx.textAlign = 'center'
+      ctx.fillStyle = 'rgba(65,208,127,0.3)'
+      ctx.fillText('FOIL SECURITY · FOILLAB', W / 2, 575)
+
+      document.getElementById('btn-download').addEventListener('click', () => {
+        const a = document.createElement('a')
+        a.href = canvas.toDataURL('image/png')
+        a.download = `foillab-certificate-${player.toLowerCase().replace(/\s+/g, '-')}.png`
+        a.click()
+      })
+
+      document.getElementById('btn-share').addEventListener('click', async () => {
+        const text = `I just completed all ${challenges.length} FoilLab security challenges with ${totalPts} pts! 🔒⛨ #FoilLab #CyberSecurity #CTF https://foilsuite.netlify.app/lab`
+        await navigator.clipboard.writeText(text)
+        const status = document.getElementById('share-status')
+        status.textContent = '✓ Copied to clipboard!'
+        setTimeout(() => { status.textContent = '' }, 2000)
+      })
+    }
+  </script>
+</Layout>
+
+<style>
+.cert-page { padding-top: 40px; padding-bottom: 80px; }
+.page-header { margin-bottom: 48px; }
+.page-header h1 { font-size: 2.4rem; font-weight: 800; letter-spacing: -0.02em; margin: 16px 0 8px; }
+.page-lead { color: var(--dim); font-size: 14px; }
+.label { font-size: 12px; color: var(--dim); margin-bottom: 8px; }
+.cert-locked { display: flex; flex-direction: column; align-items: center; gap: 20px; padding: 60px 20px; }
+.lock-icon { font-size: 48px; }
+.lock-msg { font-size: 16px; color: var(--muted); text-align: center; }
+.lock-msg strong { color: var(--text); }
+.progress-bar-wrap { width: 100%; max-width: 400px; background: var(--hair); border-radius: 4px; height: 6px; }
+.progress-bar { height: 100%; background: var(--accent); border-radius: 4px; transition: width 0.4s; }
+.progress-text { font-size: 12px; color: var(--dim); }
+.cert-cta { font-size: 13px; color: var(--accent); text-decoration: none; border: 1px solid rgba(65,208,127,0.3); border-radius: 6px; padding: 10px 20px; transition: background 0.15s; }
+.cert-cta:hover { background: rgba(65,208,127,0.06); }
+.cert-unlocked { display: flex; flex-direction: column; align-items: center; gap: 24px; }
+.cert-canvas { width: 100%; max-width: 900px; border: 1px solid var(--hair); border-radius: 8px; }
+.cert-actions { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; align-items: center; }
+.cert-btn { background: var(--accent); color: #08090d; border: none; border-radius: 6px; padding: 12px 24px; font-size: 13px; font-weight: 700; cursor: pointer; transition: opacity 0.15s; }
+.cert-btn:hover { opacity: 0.85; }
+.cert-btn-ghost { background: none; color: var(--accent); border: 1px solid rgba(65,208,127,0.3); }
+.cert-btn-ghost:hover { background: rgba(65,208,127,0.06); opacity: 1; }
+.share-status { font-size: 12px; color: var(--accent); }
+.hidden { display: none !important; }
+@media (max-width: 600px) {
+  .page-header h1 { font-size: 1.8rem; }
+  .cert-actions { flex-direction: column; }
+}
+</style>

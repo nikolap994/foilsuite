@@ -28,7 +28,7 @@ const products = [
     status: "Active",
     dot: "#41d07f",
     github: "https://github.com/nikolap994/foillab",
-    live: "https://foillab.netlify.app",
+    live: "/lab",
   },
   {
     name: "FoilVault",
@@ -51,21 +51,6 @@ const products = [
     <div class="glow" aria-hidden="true"></div>
 
     <div class="shell">
-      <!-- nav -->
-      <nav class="nav">
-        <a href="/" class="brand">
-          <img src="/icons/foilsuite-128.png" alt="" width="28" height="28" />
-          <span class="mono">foil<span class="slash">/</span>suite</span>
-        </a>
-        <div class="nav-links mono">
-          <a href="#modules">modules</a>
-          <a href="#roadmap">roadmap</a>
-          <a href="/blog">blog</a>
-          <a href="/status">status</a>
-          <a href={repo} class="nav-cta">github ↗</a>
-        </div>
-      </nav>
-
       <!-- hero -->
       <header class="hero">
         <div>
@@ -110,7 +95,7 @@ const products = [
                 </div>
               ))
             }
-            <div class="panel-foot mono">4 modules · all live · open source</div>
+            <div class="panel-foot mono">3 modules · all live · open source</div>
           </div>
         </div>
       </header>
@@ -166,7 +151,7 @@ const products = [
         <div class="roadmap">
           {
             products.map((p) => (
-              <a href={p.github} target="_blank" rel="noopener noreferrer" class="road-row" style={`--c:${p.color}`}>
+              <a href={'live' in p && p.live ? String(p.live) : p.github} target={'live' in p && p.live && !String(p.live).startsWith('http') ? undefined : "_blank"} rel={'live' in p && p.live && !String(p.live).startsWith('http') ? undefined : "noopener noreferrer"} class="road-row" style={`--c:${p.color}`}>
                 <span class="mono road-phase">{p.phase}</span>
                 <span class="road-node" />
                 <span class="display road-name">{p.name}</span>
@@ -226,27 +211,6 @@ const products = [
         <a href={`${repo}/releases`} class="cl-all mono" target="_blank" rel="noopener">all releases on GitHub ↗</a>
       </section>
 
-      <!-- footer -->
-      <footer class="footer mono">
-        <div class="foot-left">
-          <span class="foot-brand">
-            <img src="/icons/foilsuite-128.png" alt="" width="20" height="20" />
-            foil/suite
-          </span>
-          <span class="foot-copy">© 2026 · <a href={repo}>github.com/nikolap994</a></span>
-        </div>
-        <nav class="foot-nav">
-          <a href="https://github.com/nikolap994/foilguard" target="_blank" rel="noopener">FoilGuard</a>
-          <a href="https://foillab.netlify.app" target="_blank" rel="noopener">FoilLab</a>
-          <a href="https://github.com/nikolap994/foilvault" target="_blank" rel="noopener">FoilVault</a>
-          <span class="foot-sep">·</span>
-          <a href="/blog">Blog</a>
-          <a href="/status">Status</a>
-          <span class="foot-sep">·</span>
-          <a href="https://github.com/nikolap994/foilguard/blob/master/LICENSE" target="_blank" rel="noopener">MIT</a>
-          <a href="https://github.com/nikolap994/foillab/blob/master/LICENSE" target="_blank" rel="noopener">AGPL-3.0</a>
-        </nav>
-      </footer>
     </div>
   </div>
 </Layout>
@@ -278,61 +242,6 @@ const products = [
     opacity: 0.13;
     filter: blur(40px);
   }
-  .shell {
-    position: relative;
-    max-width: 1180px;
-    margin: 0 auto;
-    padding: 0 40px;
-  }
-
-  /* nav */
-  .nav {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 26px 0;
-  }
-  .brand {
-    display: flex;
-    align-items: center;
-    gap: 11px;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 16px;
-    letter-spacing: 0.02em;
-  }
-  .brand img {
-    border-radius: 7px;
-  }
-  .slash {
-    color: var(--dim);
-  }
-  .nav-links {
-    display: flex;
-    align-items: center;
-    gap: 30px;
-    font-size: 13px;
-    color: var(--muted);
-  }
-  .nav-links a {
-    text-decoration: none;
-    transition: color 0.2s;
-  }
-  .nav-links a:hover {
-    color: var(--accent);
-  }
-  .nav-cta {
-    color: #08090d !important;
-    background: var(--text);
-    font-weight: 600;
-    padding: 9px 16px;
-    border-radius: 7px;
-    transition: background 0.2s;
-  }
-  .nav-cta:hover {
-    background: var(--accent);
-  }
-
   /* hero */
   .hero {
     display: grid;
@@ -713,51 +622,6 @@ const products = [
     .changelog-title { font-size: 1.8rem; }
   }
 
-  /* footer */
-  .footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 34px 0 40px;
-    margin-top: 40px;
-    border-top: 1px solid rgba(255, 255, 255, 0.07);
-    font-size: 13px;
-    color: var(--dim);
-    flex-wrap: wrap;
-    gap: 16px 30px;
-  }
-  .foot-left {
-    display: flex;
-    align-items: center;
-    gap: 18px;
-    flex-wrap: wrap;
-  }
-  .foot-brand {
-    display: inline-flex;
-    align-items: center;
-    gap: 9px;
-    color: var(--muted);
-  }
-  .foot-brand img {
-    border-radius: 5px;
-  }
-  .foot-copy { color: var(--dim); }
-  .foot-nav {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    flex-wrap: wrap;
-  }
-  .foot-sep { color: var(--hair); }
-  .footer a {
-    color: var(--dim);
-    text-decoration: none;
-    transition: color 0.2s;
-  }
-  .footer a:hover {
-    color: var(--accent);
-  }
-
   @media (max-width: 880px) {
     .hero {
       grid-template-columns: 1fr;
@@ -781,20 +645,10 @@ const products = [
   }
 
   @media (max-width: 640px) {
-    .shell { padding: 0 20px; }
-    .nav { padding: 16px 0; }
-    .nav-links { gap: 16px; font-size: 11px; }
-    .nav-cta { padding: 7px 12px !important; font-size: 11px; }
     h1.display { font-size: 32px; line-height: 1.15; }
     .hero { padding: 40px 0 36px; gap: 28px; }
     .lead { font-size: 14px; }
     .cta-row { flex-direction: column; gap: 10px; }
     .cta-row .btn { text-align: center; }
-    .footer-grid { grid-template-columns: 1fr; gap: 24px; }
-    .foot-nav { flex-wrap: wrap; gap: 12px 24px; }
-  }
-
-  @media (max-width: 400px) {
-    .nav-links a:not(.nav-cta) { display: none; }
   }
 </style>

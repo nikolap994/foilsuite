@@ -1,0 +1,223 @@
+---
+import Layout from '../../layouts/Layout.astro'
+import LabNav from '../../components/LabNav.astro'
+import { challenges } from '../../data/challenges'
+---
+<Layout title="FoilLab — CTF Platform" description="Network forensics CTF challenges for defensive security. DNS exfiltration, beacon analysis, email forensics — with full write-ups.">
+  <LabNav />
+  <main>
+    <section class="hero shell">
+      <div class="hero-tag mono">foil / lab</div>
+      <h1>Train against<br /><span class="accent">real attacks.</span></h1>
+      <p class="hero-sub">
+        Weekly CTF challenges based on network forensics, phishing infrastructure,
+        DNS abuse, and IoT exploits. Every challenge ships with a full write-up.
+      </p>
+      <div class="hero-meta mono">
+        <span class="pill">{ challenges.length } challenge{ challenges.length !== 1 ? 's' : '' } live</span>
+        <span class="pill pill-dim">write-ups included</span>
+        <span class="pill pill-dim">no account required</span>
+      </div>
+    </section>
+
+    <section class="challenges shell">
+      <h2 class="section-title mono">— challenges</h2>
+      <div class="challenge-grid">
+        {challenges.map(c => (
+          <a href={`/lab/challenges/${c.id}`} class="challenge-card" data-id={c.id}>
+            <div class="card-top">
+              <span class={`badge badge-${c.difficulty}`}>
+                <span class="dot" style={`background: ${c.difficulty === 'easy' ? '#41d07f' : c.difficulty === 'medium' ? '#f59e0b' : '#ef4444'}`}></span>
+                {c.difficulty}
+              </span>
+              <span class="badge badge-cat">{c.category}</span>
+              <span class="solved-badge" style="display:none">✓ solved</span>
+            </div>
+            <h3 class="card-title">{c.title}</h3>
+            <p class="card-desc">{c.description}</p>
+            <div class="card-footer mono">
+              <span class="pts">{c.points} pts</span>
+              {c.writeupAvailable && <span class="writeup-chip">write-up ✓</span>}
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <section class="about-strip">
+      <div class="shell strip-inner">
+        <div class="strip-col">
+          <span class="strip-label mono">What is FoilLab?</span>
+          <p>
+            FoilLab is the challenge platform for the <a href="/">Foil Security Suite</a>.
+            Challenges are based on attack patterns that FoilGuard detects — so you can see exactly how defenders think about the same threats.
+          </p>
+        </div>
+        <div class="strip-col">
+          <span class="strip-label mono">Part of the Foil suite</span>
+          <ul class="suite-list mono">
+            <li><a href="https://github.com/nikolap994/foilguard">FoilGuard ↗</a> — browser extension</li>
+            <li><a href="/lab">FoilLab</a> — CTF platform (you are here)</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+</Layout>
+
+<style>
+.hero {
+  padding: 80px 32px 64px;
+  text-align: center;
+}
+.hero-tag {
+  font-size: 12px;
+  color: var(--dim);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+h1 {
+  font-size: clamp(2.4rem, 5vw, 4rem);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: 20px;
+}
+.accent { color: var(--accent); }
+.hero-sub {
+  max-width: 540px;
+  margin: 0 auto 28px;
+  color: var(--muted);
+  font-size: 16px;
+  line-height: 1.6;
+}
+.hero-meta {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.pill {
+  font-size: 12px;
+  padding: 5px 12px;
+  border-radius: 20px;
+  background: rgba(65,208,127,0.1);
+  border: 1px solid rgba(65,208,127,0.25);
+  color: var(--accent);
+}
+.pill-dim {
+  background: rgba(255,255,255,0.04);
+  border-color: var(--hair);
+  color: var(--muted);
+}
+
+.challenges { padding-bottom: 64px; }
+.section-title {
+  font-size: 13px;
+  color: var(--dim);
+  font-weight: 400;
+  margin-bottom: 28px;
+  letter-spacing: 0.04em;
+}
+.challenge-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+}
+.challenge-card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 24px;
+  background: var(--panel);
+  border: 1px solid var(--hair);
+  border-radius: 10px;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.15s, transform 0.15s;
+}
+.challenge-card:hover {
+  border-color: rgba(65,208,127,0.3);
+  transform: translateY(-2px);
+}
+.card-top { display: flex; gap: 8px; flex-wrap: wrap; }
+.card-title { font-size: 18px; font-weight: 700; }
+.card-desc { color: var(--muted); font-size: 14px; line-height: 1.6; flex: 1; }
+.card-footer {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 12px;
+  color: var(--dim);
+  margin-top: auto;
+}
+.pts { color: var(--accent); font-weight: 600; }
+.writeup-chip {
+  background: rgba(65,208,127,0.08);
+  border: 1px solid rgba(65,208,127,0.2);
+  color: var(--accent);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 10px;
+}
+.solved-badge {
+  background: rgba(65,208,127,0.12);
+  border: 1px solid rgba(65,208,127,0.35);
+  color: var(--accent);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  margin-left: auto;
+}
+.challenge-card.is-solved { border-color: rgba(65,208,127,0.2); }
+
+.about-strip {
+  background: var(--panel);
+  border-top: 1px solid var(--hair);
+  border-bottom: 1px solid var(--hair);
+  padding: 48px 0;
+}
+.strip-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+}
+.strip-label {
+  display: block;
+  font-size: 11px;
+  color: var(--accent);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.strip-col p, .strip-col ul {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.7;
+}
+.strip-col a { color: var(--text); text-decoration: none; }
+.strip-col a:hover { color: var(--accent); }
+.suite-list { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+
+@media (max-width: 640px) {
+  .strip-inner { grid-template-columns: 1fr; }
+  .hero { padding: 48px 16px 36px; }
+  h1 { font-size: clamp(1.9rem, 7vw, 2.4rem); }
+  .hero-meta { flex-direction: column; align-items: center; gap: 6px; }
+  .challenge-grid { grid-template-columns: 1fr; }
+}
+</style>
+
+<script>
+  document.querySelectorAll<HTMLAnchorElement>('.challenge-card[data-id]').forEach(card => {
+    const id = card.dataset.id!
+    const solved = sessionStorage.getItem(`foillab_solved_${id}`)
+    if (solved) {
+      card.classList.add('is-solved')
+      const badge = card.querySelector<HTMLElement>('.solved-badge')
+      if (badge) badge.style.display = ''
+    }
+  })
+</script>

@@ -1,0 +1,72 @@
+--- SMTP Transaction Log ---
+Gateway: mail.company.local
+Timestamp: 2026-06-28 09:14:50 UTC
+Session ID: 4F2A-88C1-E730
+
+> CONNECT from [185.220.101.47] port 51823
+
+< 220 mail.company.local ESMTP Postfix (Ubuntu 24.04)
+
+> EHLO badactor-mail.cc
+< 250-mail.company.local
+< 250-PIPELINING
+< 250-SIZE 10240000
+< 250-STARTTLS
+< 250-AUTH PLAIN LOGIN
+< 250 8BITMIME
+
+> STARTTLS
+< 220 2.0.0 Ready to start TLS
+
+[TLS handshake completed — cipher: TLS_AES_256_GCM_SHA384]
+
+> EHLO badactor-mail.cc
+< 250-mail.company.local
+< 250-PIPELINING
+< 250-SIZE 10240000
+< 250 8BITMIME
+
+> MAIL FROM:<ceo@company.com>
+< 250 2.1.0 Ok
+
+> RCPT TO:<finance@company.local>
+< 250 2.1.5 Ok
+
+> DATA
+< 354 End data with <CR><LF>.<CR><LF>
+
+Received: from badactor-mail.cc (badactor-mail.cc [185.220.101.47])
+        by mail.company.local (Postfix) with ESMTPS id 4F2A88C1E730
+        for <finance@company.local>; Mon, 28 Jun 2026 09:14:52 +0000 (UTC)
+Received: from localhost (localhost [127.0.0.1])
+        by badactor-mail.cc (Postfix) with ESMTP id A1B2C3D4E5
+        for <finance@company.local>; Mon, 28 Jun 2026 09:14:50 +0000 (UTC)
+From: "John Smith, CFO" <ceo@company.com>
+To: Finance Department <finance@company.local>
+Reply-To: payments-processing@badactor-mail.cc
+Subject: URGENT: Wire Transfer Required — Action Needed Today
+Date: Mon, 28 Jun 2026 09:14:50 +0000
+Message-ID: <20260628091450.A1B2C3D4E5@badactor-mail.cc>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
+X-Mailer: Swaks v20231116.0
+X-Priority: 1 (Highest)
+
+Rk9JTHtzcDAwZjNkX2Zyb21faDM0ZDNyfQ==
+
+> .
+< 250 2.0.0 Ok: queued as 4F2A88C1E730
+
+> QUIT
+< 221 2.0.0 Bye
+
+--- End of SMTP Transaction ---
+
+SPF check result: FAIL
+  company.com SPF record: v=spf1 include:_spf.google.com ~all
+  Sending IP 185.220.101.47 not authorised by company.com SPF record
+
+DKIM check result: NONE (no DKIM signature present)
+
+Gateway action: QUARANTINE (delivered to finance@company.local junk folder)

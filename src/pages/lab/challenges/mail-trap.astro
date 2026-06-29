@@ -1,0 +1,325 @@
+---
+import Layout from '../../../layouts/Layout.astro'
+import LabNav from '../../../components/LabNav.astro'
+import { getChallengeById } from '../../../data/challenges'
+
+const challenge = getChallengeById('mail-trap')!
+---
+<Layout title={challenge.title} description={challenge.description}>
+  <LabNav />
+  <main class="shell challenge-page">
+    <div class="breadcrumb mono">
+      <a href="/lab">foil/lab</a> / <a href="/lab/challenges">challenges</a> / {challenge.id}
+    </div>
+
+    <div class="challenge-header">
+      <div class="header-badges">
+        <span class={`badge badge-${challenge.difficulty}`}>
+          <span class="dot" style="background:#41d07f"></span>
+          {challenge.difficulty}
+        </span>
+        <span class="badge badge-cat">{challenge.category}</span>
+        <span class="badge badge-cat mono">{challenge.points} pts</span>
+      </div>
+      <h1>{challenge.title}</h1>
+      <p class="subtitle">{challenge.description}</p>
+    </div>
+
+    <div class="two-col">
+      <div class="main-col">
+        <section class="card">
+          <h2 class="card-heading mono">— scenario</h2>
+          <div class="scenario-body" set:html={challenge.scenario.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br />')} />
+        </section>
+
+        <section class="card">
+          <h2 class="card-heading mono">— challenge file</h2>
+          {challenge.files.map(f => (
+            <a href={f.path} download class="file-row" target="_blank" rel="noopener">
+              <span class="file-icon">⬇</span>
+              <span class="file-info">
+                <span class="file-name mono">{f.name}</span>
+                <span class="file-size mono">{f.size}</span>
+              </span>
+            </a>
+          ))}
+        </section>
+
+        <section class="card writeup-card">
+          <h2 class="card-heading mono">— write-up</h2>
+          <p class="writeup-teaser">The write-up explains SMTP header spoofing, SPF/DKIM failures, and how attackers use MIME base64 encoding to hide payloads in plain sight.</p>
+          <details class="writeup-reveal">
+            <summary class="mono">reveal write-up (spoilers)</summary>
+            <div class="writeup-content">
+              <h3>Step 1 — identify the spoofed header</h3>
+              <p>The <code>From:</code> header claims the email came from <code>ceo@company.com</code>. But the first <code>Received:</code> header (added by the receiving gateway) shows the actual origin:</p>
+              <pre><code>Received: from badactor-mail.cc (badactor-mail.cc [185.220.101.47])</code></pre>
+              <p>The sending server is <code>badactor-mail.cc</code> — completely unrelated to <code>company.com</code>. The SPF check at the bottom of the log confirms this: <code>FAIL</code>.</p>
+              <p>Also note the <code>Reply-To:</code> header points to <code>payments-processing@badactor-mail.cc</code> — any reply would go to the attacker, not the real CFO.</p>
+
+              <h3>Step 2 — extract the base64 body</h3>
+              <p>The email headers declare:</p>
+              <pre><code>Content-Transfer-Encoding: base64</code></pre>
+              <p>The body contains a single base64 string:</p>
+              <pre><code>Rk9JTHtzcDAwZjNkX2Zyb21faDM0ZDNyfQ==</code></pre>
+
+              <h3>Step 3 — decode</h3>
+              <pre><code>python3 -c "import base64; print(base64.b64decode('Rk9JTHtzcDAwZjNkX2Zyb21faDM0ZDNyfQ==').decode())"</code></pre>
+              <p>Result: <code>FOIL&#123;sp00f3d_from_h34d3r&#125;</code></p>
+
+              <h3>Why this attack works</h3>
+              <p>SMTP's <code>MAIL FROM</code> (envelope sender) and <code>From:</code> (header sender) are completely independent. A mail server will accept and deliver a message whose header <code>From:</code> says anything at all — the gateway only checks the envelope. Without strict DMARC enforcement (<code>p=reject</code>), spoofed emails reach inboxes.</p>
+              <p>Detection: always check the topmost <code>Received:</code> header and compare the sending domain to the claimed <code>From:</code> domain. SPF <code>FAIL</code> + missing DKIM = strong spoofing indicators.</p>
+            </div>
+          </details>
+        </section>
+      </div>
+
+      <aside class="side-col">
+        <section class="card flag-card">
+          <h2 class="card-heading mono">— submit flag</h2>
+          <p class="flag-hint">Format: <code>FOIL&#123;...&#125;</code></p>
+          <form id="flag-form" data-hash={challenge.flagHash} data-id={challenge.id} data-pts={challenge.points}>
+            <input id="flag-input" type="text" class="flag-input mono" placeholder="FOIL{flag_here}" autocomplete="off" spellcheck="false" />
+            <button type="submit" class="flag-submit mono">check →</button>
+          </form>
+          <div id="flag-result" class="flag-result" aria-live="polite"></div>
+        </section>
+
+        <section id="scoreboard-section" class="card sb-card hidden">
+          <h2 class="card-heading mono">— add to scoreboard</h2>
+          <form id="sb-form">
+            <input id="sb-name" type="text" class="flag-input mono" placeholder="Your handle" maxlength="32" autocomplete="off" />
+            <button type="submit" class="flag-submit mono">submit score →</button>
+          </form>
+          <div id="sb-result" class="flag-result"></div>
+        </section>
+
+        <section class="card hints-card">
+          <h2 class="card-heading mono">— hints</h2>
+          <p class="hint-gate-note mono">Hints unlock progressively as you spend time on the challenge.</p>
+          <ol class="hints-list">
+            {challenge.hints.map((h, i) => {
+              const unlockMins = [5, 10, 20, 30][i] ?? 30
+              return (
+                <li>
+                  <details data-hint-unlock={String(unlockMins)}>
+                    <summary class="mono">hint {i + 1}</summary>
+                    <p>{h}</p>
+                  </details>
+                </li>
+              )
+            })}
+          </ol>
+        </section>
+
+        <section class="card meta-card mono">
+          <div class="meta-row"><span class="meta-k">published</span><span class="meta-v">{challenge.published}</span></div>
+          <div class="meta-row"><span class="meta-k">author</span><span class="meta-v">{challenge.author}</span></div>
+          <div class="meta-row"><span class="meta-k">solved</span><span class="meta-v mono" id="solved-status">—</span></div>
+          <div class="meta-row"><span class="meta-k">time</span><span class="meta-v mono" id="challenge-timer">0:00</span></div>
+          <div class="meta-row"><span class="meta-k">rate</span><span class="meta-v"><span class="rating-btns"><button id="btn-up" class="rating-btn" title="Good challenge">👍</button><button id="btn-down" class="rating-btn" title="Needs work">👎</button></span></span></div>
+        </section>
+      </aside>
+    </div>
+  </main>
+
+  <script>
+    const form = document.getElementById('flag-form') as HTMLFormElement
+    const input = document.getElementById('flag-input') as HTMLInputElement
+    const result = document.getElementById('flag-result') as HTMLElement
+    const flagHash = form.dataset.hash!
+    const challengeId = form.dataset.id!
+    const challengePts = Number(form.dataset.pts!)
+    const timerEl = document.getElementById('challenge-timer')!
+    const sbSection = document.getElementById('scoreboard-section')!
+    const sbForm = document.getElementById('sb-form') as HTMLFormElement
+    const sbResult = document.getElementById('sb-result')!
+
+    const TIMER_KEY = `foillab_start_${challengeId}`
+    const SOLVED_KEY = `foillab_solved_${challengeId}`
+
+    function fmtTime(ms: number): string {
+      const s = Math.floor(ms / 1000)
+      return `${Math.floor(s / 60)}:${(s % 60).toString().padStart(2, '0')}`
+    }
+
+    let startTs = Number(sessionStorage.getItem(TIMER_KEY))
+    if (!startTs) { startTs = Date.now(); sessionStorage.setItem(TIMER_KEY, String(startTs)) }
+
+    const solvedTime = sessionStorage.getItem(SOLVED_KEY)
+    const solvedStatusEl = document.getElementById('solved-status')
+    if (solvedStatusEl) {
+      solvedStatusEl.textContent = solvedTime ? `✓ ${solvedTime}` : 'not yet'
+      if (solvedTime) (solvedStatusEl as HTMLElement).style.color = 'var(--accent)'
+    }
+    let timerInterval: ReturnType<typeof setInterval> | null = null
+
+    if (solvedTime) {
+      timerEl.textContent = solvedTime
+    } else {
+      timerEl.textContent = fmtTime(Date.now() - startTs)
+      timerInterval = setInterval(() => { timerEl.textContent = fmtTime(Date.now() - startTs) }, 1000)
+    }
+
+    async function sha256(text: string): Promise<string> {
+      const buf = new TextEncoder().encode(text)
+      const digest = await crypto.subtle.digest('SHA-256', buf)
+      return Array.from(new Uint8Array(digest), b => b.toString(16).padStart(2, '0')).join('')
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault()
+      const flag = input.value.trim()
+      if (!flag) return
+      const hash = await sha256(flag)
+      if (hash === flagHash) {
+        if (timerInterval) { clearInterval(timerInterval); timerInterval = null }
+        const elapsed = fmtTime(Date.now() - startTs)
+        sessionStorage.setItem(SOLVED_KEY, elapsed)
+        timerEl.textContent = elapsed
+        result.className = 'flag-result flag-correct'
+        result.textContent = `✓ Correct! Solved in ${elapsed}.`
+        sbSection.classList.remove('hidden')
+      } else {
+        result.className = 'flag-result flag-wrong'
+        result.textContent = '✗ Incorrect. Keep digging.'
+        input.select()
+      }
+    })
+
+    if (solvedTime) {
+      result.className = 'flag-result flag-correct'
+      result.textContent = `✓ Already solved in ${solvedTime}.`
+      sbSection.classList.remove('hidden')
+    }
+
+    function applyHintGates(): void {
+      const elapsedMins = (Date.now() - startTs) / 60000
+      document.querySelectorAll<HTMLElement>('.hints-list details').forEach((det) => {
+        const unlock = Number(det.dataset.hintUnlock ?? 30)
+        const remaining = Math.ceil(unlock - elapsedMins)
+        if (elapsedMins >= unlock) {
+          det.classList.remove('hint-locked')
+          det.querySelector('.hint-lock-msg')?.remove()
+        } else {
+          det.classList.add('hint-locked')
+          let msg = det.querySelector('.hint-lock-msg')
+          if (!msg) { msg = document.createElement('p'); msg.className = 'hint-lock-msg'; det.appendChild(msg) }
+          msg.textContent = `Unlocks after ${unlock} min  (${remaining} min left)`
+        }
+      })
+    }
+    applyHintGates()
+    setInterval(applyHintGates, 30_000)
+
+    const RATING_KEY = `foillab_rating_${challengeId}`
+    const btnUp = document.getElementById('btn-up') as HTMLButtonElement
+    const btnDown = document.getElementById('btn-down') as HTMLButtonElement
+    function applyRating(r: string | null): void {
+      btnUp.classList.toggle('rating-active', r === 'up')
+      btnDown.classList.toggle('rating-active', r === 'down')
+    }
+    applyRating(localStorage.getItem(RATING_KEY))
+    btnUp.addEventListener('click', () => {
+      const next = localStorage.getItem(RATING_KEY) === 'up' ? null : 'up'
+      next ? localStorage.setItem(RATING_KEY, next) : localStorage.removeItem(RATING_KEY)
+      applyRating(next)
+    })
+    btnDown.addEventListener('click', () => {
+      const next = localStorage.getItem(RATING_KEY) === 'down' ? null : 'down'
+      next ? localStorage.setItem(RATING_KEY, next) : localStorage.removeItem(RATING_KEY)
+      applyRating(next)
+    })
+
+    sbForm.addEventListener('submit', (e) => {
+      e.preventDefault()
+      const nameInput = document.getElementById('sb-name') as HTMLInputElement
+      const name = nameInput.value.trim()
+      if (!name) return
+      const key = 'foillab_scoreboard'
+      type Entry = { name: string; pts: number; solved: string[]; ts: number }
+      const existing: Entry[] = JSON.parse(localStorage.getItem(key) ?? '[]')
+      const idx = existing.findIndex(entry => entry.name.toLowerCase() === name.toLowerCase())
+      if (idx >= 0) {
+        if (!existing[idx].solved.includes(challengeId)) {
+          existing[idx].pts += challengePts
+          existing[idx].solved.push(challengeId)
+          existing[idx].ts = Date.now()
+        }
+      } else {
+        existing.push({ name, pts: challengePts, solved: [challengeId], ts: Date.now() })
+      }
+      localStorage.setItem(key, JSON.stringify(existing))
+      sbForm.style.display = 'none'
+      sbResult.className = 'flag-result flag-correct'
+      sbResult.innerHTML = 'Score added! <a href="/lab/scoreboard" style="color:inherit">View scoreboard →</a>'
+    })
+  </script>
+</Layout>
+
+<style>
+.challenge-page { padding-top: 40px; padding-bottom: 80px; }
+.breadcrumb { font-size: 12px; color: var(--dim); margin-bottom: 32px; }
+.breadcrumb a { text-decoration: none; color: var(--dim); }
+.breadcrumb a:hover { color: var(--accent); }
+.challenge-header { margin-bottom: 40px; }
+.header-badges { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+h1 { font-size: 2.2rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 12px; }
+.subtitle { color: var(--muted); font-size: 16px; line-height: 1.6; max-width: 600px; }
+.two-col { display: grid; grid-template-columns: 1fr 340px; gap: 24px; align-items: start; }
+@media (max-width: 860px) { .two-col { grid-template-columns: 1fr; } .side-col { order: -1; } }
+.card { background: var(--panel); border: 1px solid var(--hair); border-radius: 10px; padding: 24px; margin-bottom: 16px; }
+.card-heading { font-size: 12px; color: var(--dim); font-weight: 400; letter-spacing: 0.05em; margin-bottom: 18px; }
+.scenario-body { color: var(--muted); font-size: 14px; line-height: 1.8; }
+.scenario-body strong { color: var(--text); }
+.file-row { display: flex; align-items: center; gap: 14px; padding: 14px 16px; background: rgba(255,255,255,0.03); border: 1px solid var(--hair); border-radius: 8px; text-decoration: none; color: inherit; transition: border-color 0.15s; }
+.file-row:hover { border-color: rgba(65,208,127,0.3); }
+.file-icon { font-size: 18px; }
+.file-info { display: flex; flex-direction: column; gap: 3px; }
+.file-name { font-size: 13px; font-weight: 600; }
+.file-size { font-size: 11px; color: var(--dim); }
+.writeup-teaser { color: var(--muted); font-size: 14px; line-height: 1.6; margin-bottom: 16px; }
+.writeup-reveal summary { cursor: pointer; font-size: 12px; color: var(--muted); padding: 8px 0; list-style: none; user-select: none; }
+.writeup-reveal summary:hover { color: var(--accent); }
+.writeup-content { margin-top: 20px; }
+.writeup-content h3 { font-size: 14px; font-weight: 700; color: var(--text); margin: 20px 0 8px; }
+.writeup-content h3:first-child { margin-top: 0; }
+.writeup-content p { color: var(--muted); font-size: 14px; line-height: 1.7; margin-bottom: 10px; }
+.writeup-content pre { background: rgba(0,0,0,0.4); border: 1px solid var(--hair); border-radius: 6px; padding: 14px 16px; overflow-x: auto; margin: 10px 0; }
+.writeup-content pre code { background: none; padding: 0; color: var(--accent); font-size: 13px; }
+.writeup-content code { background: rgba(0,0,0,0.3); padding: 1px 5px; border-radius: 3px; font-size: 12px; }
+.flag-hint { font-size: 12px; color: var(--dim); margin-bottom: 14px; }
+#flag-form { display: flex; flex-direction: column; gap: 10px; }
+.flag-input { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--hair); border-radius: 6px; padding: 11px 14px; color: var(--text); font-size: 14px; outline: none; transition: border-color 0.15s; }
+.flag-input:focus { border-color: rgba(65,208,127,0.4); }
+.flag-submit { background: var(--accent); color: #08090d; border: none; border-radius: 6px; padding: 11px; font-size: 13px; font-weight: 700; cursor: pointer; transition: opacity 0.15s; }
+.flag-submit:hover { opacity: 0.85; }
+.flag-result { font-size: 13px; font-weight: 600; min-height: 20px; text-align: center; margin-top: 8px; }
+.flag-correct { color: var(--accent); }
+.flag-wrong { color: #ef4444; }
+.sb-card #sb-form { display: flex; flex-direction: column; gap: 10px; }
+.hidden { display: none; }
+.hints-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.hints-list details summary { font-size: 12px; color: var(--muted); cursor: pointer; list-style: none; padding: 6px 0; border-bottom: 1px solid var(--hair); user-select: none; }
+.hints-list details summary:hover { color: var(--accent); }
+.hints-list details p { margin-top: 10px; font-size: 13px; color: var(--muted); line-height: 1.6; }
+.hint-gate-note { font-size: 11px; color: var(--dim); margin-bottom: 12px; letter-spacing: 0.02em; }
+.hint-locked > summary { pointer-events: none; opacity: 0.45; cursor: default; }
+.hint-lock-msg { font-size: 11px; color: var(--dim); margin-top: 6px; font-family: var(--mono); }
+.meta-card { padding: 18px 24px; }
+.meta-row { display: flex; justify-content: space-between; align-items: center; font-size: 12px; padding: 6px 0; border-bottom: 1px solid var(--hair); }
+.meta-row:last-child { border-bottom: none; }
+.meta-k { color: var(--dim); }
+.meta-v { color: var(--muted); }
+.rating-btns { display: flex; gap: 6px; }
+.rating-btn { background: none; border: 1px solid var(--hair); border-radius: 4px; padding: 1px 6px; cursor: pointer; font-size: 13px; line-height: 1.6; transition: border-color 0.15s, background 0.15s; }
+.rating-btn:hover { border-color: rgba(65,208,127,0.4); }
+.rating-btn.rating-active { border-color: var(--accent); background: rgba(65,208,127,0.1); }
+@media (max-width: 600px) {
+  .challenge-page { padding-top: 24px; padding-bottom: 48px; }
+  h1 { font-size: 1.6rem; }
+  .subtitle { font-size: 14px; }
+  .card { padding: 18px 16px; }
+}
+</style>
