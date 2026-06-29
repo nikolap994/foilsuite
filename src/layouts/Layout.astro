@@ -51,8 +51,8 @@ const labActive = (href: string) =>
     <nav class="site-nav">
       <div class="shell nav-inner">
         <a href="/" class="brand mono">
-          <img src="/icons/foilsuite-128.png" alt="" width="24" height="24" />
-          foil<span class="slash">/</span>suite
+          <img src={isLab ? "/icons/foillab-128.png" : "/icons/foilsuite-128.png"} alt="" width="24" height="24" />
+          foil<span class="slash">/</span>{isLab ? "lab" : "suite"}
         </a>
         <div class="nav-links mono">
           <a href="/#modules">modules</a>
@@ -66,6 +66,11 @@ const labActive = (href: string) =>
     {isLab && (
       <nav class="lab-subnav">
         <div class="shell lab-subnav-inner mono">
+          <a href="/lab" class:list={['lab-sub-brand', { 'lab-sub-active': labActive('/lab') }]}>
+            <img src="/icons/foillab-128.png" width="16" height="16" alt="" />
+            foil/lab
+          </a>
+          <span class="lab-sub-sep">·</span>
           <a href="/lab/challenges" class:list={['lab-sub-link', { 'lab-sub-active': labActive('/lab/challenges') }]}>challenges</a>
           <a href="/lab/scoreboard" class:list={['lab-sub-link', { 'lab-sub-active': labActive('/lab/scoreboard') }]}>scoreboard</a>
           <a href="/lab/certificate" class:list={['lab-sub-link', { 'lab-sub-active': labActive('/lab/certificate') }]}>certificate</a>
@@ -281,6 +286,24 @@ const labActive = (href: string) =>
     padding-top: 10px;
     padding-bottom: 10px;
     overflow-x: auto;
+  }
+  .lab-sub-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.15s;
+    flex-shrink: 0;
+  }
+  .lab-sub-brand img { border-radius: 4px; }
+  .lab-sub-brand:hover { color: var(--text); }
+  .lab-sub-sep {
+    color: var(--hair);
+    font-size: 12px;
+    flex-shrink: 0;
   }
   .lab-sub-link {
     font-size: 12px;
