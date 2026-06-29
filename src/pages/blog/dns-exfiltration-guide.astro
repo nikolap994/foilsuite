@@ -64,7 +64,7 @@ import math, collections
 label = '5a65726f5472757374'
 freq = collections.Counter(label)
 entropy = -sum(p/len(label) * math.log2(p/len(label)) for p in freq.values())
-print(f'entropy: {entropy:.2f} bits/char')
+print(f'entropy: &#123;entropy:.2f&#125; bits/char')
 "</code></pre>
         <p>A real hostname like <code>mail.google.com</code> has entropy around 3.0. An exfiltration label will be above 4.5.</p>
 
