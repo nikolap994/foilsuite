@@ -2,6 +2,34 @@ const SITE = 'https://foilsuite.netlify.app'
 
 const posts = [
   {
+    slug: 'foilguard-detection-architecture',
+    title: 'FoilGuard Detection Architecture — Multi-Signal Scoring and False Positive Analysis',
+    date: '2026-06-29',
+    category: 'RESEARCH',
+    description: 'Signal architecture, scoring weights, benchmark against 60+ labeled domains, and false positive analysis for FoilGuard\'s domain impersonation detection engine.',
+  },
+  {
+    slug: 'dns-exfiltration-guide',
+    title: 'DNS Exfiltration — How Attackers Tunnel Data Through Name Queries',
+    date: '2026-06-29',
+    category: 'DEEP DIVE',
+    description: 'DNS was designed to translate names to IPs — not carry stolen data. How attackers encode files in DNS queries, why firewalls miss it, and how to detect it.',
+  },
+  {
+    slug: 'c2-beacon-analysis',
+    title: 'C2 Beacon Analysis — Recognising Command-and-Control Traffic in Packet Captures',
+    date: '2026-06-29',
+    category: 'DEEP DIVE',
+    description: 'After initial compromise, malware phones home on a schedule. Beaconing patterns, jitter analysis, and how to find a beacon hiding in normal HTTP traffic.',
+  },
+  {
+    slug: 'ttl-covert-channels',
+    title: 'TTL Covert Channels — Encoding Data in DNS Time-to-Live Fields',
+    date: '2026-06-29',
+    category: 'DEEP DIVE',
+    description: 'A TTL covert channel hides binary data inside a field nobody watches — the Time-to-Live value in DNS responses. How it works and how to detect it.',
+  },
+  {
     slug: 'smtp-spoofing-and-email-forensics',
     title: 'How attackers spoof email — and how to catch them',
     date: '2026-06-28',

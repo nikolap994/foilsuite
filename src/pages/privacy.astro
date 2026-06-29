@@ -1,0 +1,67 @@
+---
+import Layout from '../layouts/Layout.astro'
+---
+<Layout title="Privacy Policy" description="FoilSuite privacy policy — what data FoilGuard and FoilSuite collect, and what they do not.">
+  <main class="shell post-page">
+    <div class="breadcrumb mono"><a href="/">home</a> / privacy</div>
+
+    <article>
+      <header class="post-header">
+        <div class="post-meta mono">
+          <span class="post-cat">LEGAL</span>
+          <span>Last updated: 2026-06-29</span>
+        </div>
+        <h1>Privacy Policy</h1>
+      </header>
+
+      <div class="post-body">
+        <p class="lead-para">Foil Security Suite is built on a single principle: your data is yours. This policy describes exactly what each product collects, stores, and transmits — which is as little as possible.</p>
+
+        <h2>FoilGuard (Chrome / Firefox extension)</h2>
+        <p><strong>What FoilGuard does not do:</strong></p>
+        <ul>
+          <li>It does not send your browsing history anywhere.</li>
+          <li>It does not create an account or require one.</li>
+          <li>It does not require an API key to function.</li>
+          <li>It does not use third-party analytics, telemetry, or crash reporting.</li>
+        </ul>
+        <p><strong>What FoilGuard stores locally in your browser:</strong></p>
+        <ul>
+          <li>Your settings (block threshold, allowlist, blocklist, toggles) — stored in <code>chrome.storage.sync</code> and synced across your own Chrome devices via your Google account. Google's privacy policy governs this sync.</li>
+          <li>The audit log (blocked domains, timestamps) — stored in <code>chrome.storage.local</code> on your device only.</li>
+          <li>A cached copy of the remote domain list — stored in <code>chrome.storage.local</code>.</li>
+        </ul>
+        <p><strong>Optional network requests:</strong></p>
+        <ul>
+          <li><strong>Remote domain list:</strong> FoilGuard fetches an updated domain list from <code>raw.githubusercontent.com/nikolap994/foilguard</code> once per day to keep detection current. No personal data is included in this request.</li>
+          <li><strong>Google Safe Browsing:</strong> If you enter your own Google Safe Browsing API key in settings, FoilGuard will send visited URLs to Google's Safe Browsing API for real-time threat checking. This is opt-in and governed by Google's privacy policy. FoilGuard never sees or stores your API key beyond your local browser storage.</li>
+        </ul>
+
+        <h2>FoilVault (browser extension)</h2>
+        <p>FoilVault is local-first by design. All credential data is encrypted with AES-GCM 256-bit and stored only in <code>chrome.storage.local</code> on your device. The master password and derived key are never stored — they exist in memory only while the vault is unlocked. No credentials, passwords, or keys are transmitted to any server.</p>
+        <p>The optional breach check feature sends a k-anonymity hash prefix to the Have I Been Pwned API. Your full password is never sent.</p>
+
+        <h2>FoilSuite website (foilsuite.netlify.app)</h2>
+        <ul>
+          <li>No cookies are set.</li>
+          <li>No analytics or tracking scripts are loaded.</li>
+          <li>No user accounts exist.</li>
+          <li>FoilLab challenge progress (solved state, scores, timer) is stored in your browser's <code>sessionStorage</code> and <code>localStorage</code> only. Nothing is sent to a server.</li>
+          <li>The site is hosted on Netlify. Netlify may collect standard server access logs (IP address, request path, timestamp) as part of its infrastructure. See <a href="https://www.netlify.com/privacy/" target="_blank" rel="noopener">Netlify's privacy policy</a>.</li>
+        </ul>
+
+        <h2>Third-party services</h2>
+        <ul>
+          <li><strong>GitHub:</strong> Source code is hosted on GitHub. GitHub's privacy policy applies to repository visits and issue submissions.</li>
+          <li><strong>GitHub Sponsors:</strong> Sponsorship payments are processed by GitHub and Stripe. Foil Security Suite does not handle payment data.</li>
+        </ul>
+
+        <h2>Contact</h2>
+        <p>Questions about this policy: <a href="mailto:nikolap994@gmail.com">nikolap994@gmail.com</a></p>
+
+        <h2>Changes to this policy</h2>
+        <p>If this policy changes materially, the updated date at the top of this page will reflect it. The current version is always at <code>foilsuite.netlify.app/privacy</code>.</p>
+      </div>
+    </article>
+  </main>
+</Layout>

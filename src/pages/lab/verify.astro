@@ -1,0 +1,121 @@
+---
+import Layout from '../../layouts/Layout.astro'
+---
+<Layout title="Verify FoilLab Certificate" description="Verify the authenticity of a FoilLab completion certificate.">
+  <main class="shell verify-page">
+    <div class="breadcrumb mono"><a href="/lab">lab</a> / verify</div>
+
+    <div class="verify-card">
+      <div class="verify-icon" id="verify-icon">⛨</div>
+      <h1 id="verify-title">Verifying certificate…</h1>
+      <div id="verify-details" class="verify-details hidden"></div>
+      <p id="verify-sub" class="verify-sub"></p>
+      <a href="/lab" class="verify-back mono">← back to lab</a>
+    </div>
+  </main>
+
+  <script>
+    const params = new URLSearchParams(location.search)
+    const n = params.get('n') ?? ''
+    const d = params.get('d') ?? ''
+    const p = params.get('p') ?? ''
+    const t = params.get('t') ?? ''
+
+    const icon = document.getElementById('verify-icon')!
+    const title = document.getElementById('verify-title')!
+    const details = document.getElementById('verify-details')!
+    const sub = document.getElementById('verify-sub')!
+
+    async function verify() {
+      if (!n || !d || !p || !t) {
+        icon.textContent = '✕'
+        icon.className = 'verify-icon invalid'
+        title.textContent = 'Invalid verification link'
+        sub.textContent = 'The URL is missing required parameters.'
+        return
+      }
+
+      const tokenInput = `${n}|${d}|${p}|foillab-v1`
+      const tokenBytes = new TextEncoder().encode(tokenInput)
+      const hashBuf = await crypto.subtle.digest('SHA-256', tokenBytes)
+      const expected = Array.from(new Uint8Array(hashBuf))
+        .map(b => b.toString(16).padStart(2, '0')).join('').slice(0, 24)
+
+      if (expected !== t) {
+        icon.textContent = '✕'
+        icon.className = 'verify-icon invalid'
+        title.textContent = 'Certificate not verified'
+        sub.textContent = 'The token does not match the certificate data. This certificate may have been tampered with.'
+        return
+      }
+
+      icon.textContent = '✓'
+      icon.className = 'verify-icon valid'
+      title.textContent = 'Certificate verified'
+      details.innerHTML = `
+        <div class="cert-row"><span class="cert-label">Name</span><span class="cert-value">${n}</span></div>
+        <div class="cert-row"><span class="cert-label">Date</span><span class="cert-value">${d}</span></div>
+        <div class="cert-row"><span class="cert-label">Score</span><span class="cert-value">${p} pts</span></div>
+        <div class="cert-row"><span class="cert-label">Status</span><span class="cert-value cert-status">All challenges completed ✓</span></div>
+      `
+      details.classList.remove('hidden')
+      sub.textContent = 'This FoilLab certificate is authentic.'
+    }
+
+    verify()
+  </script>
+</Layout>
+
+<style>
+.verify-page {
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: 40px;
+  padding-bottom: 80px;
+  max-width: 520px;
+}
+.verify-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 20px;
+  padding: 48px 32px;
+  border: 1px solid var(--hair);
+  border-radius: 12px;
+  background: var(--panel);
+}
+.verify-icon {
+  font-size: 3rem;
+  line-height: 1;
+  transition: color 0.3s;
+}
+.verify-icon.valid { color: var(--accent); }
+.verify-icon.invalid { color: #ef4444; }
+#verify-title { font-size: 1.5rem; font-weight: 700; margin: 0; }
+.verify-details {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-top: 1px solid var(--hair);
+  border-bottom: 1px solid var(--hair);
+  padding: 20px 0;
+}
+.cert-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  gap: 12px;
+}
+.cert-label { color: var(--dim); font-family: "JetBrains Mono", monospace; }
+.cert-value { color: var(--text); font-weight: 600; }
+.cert-status { color: var(--accent); }
+.verify-sub { font-size: 14px; color: var(--muted); margin: 0; }
+.verify-back { font-size: 12px; color: var(--dim); text-decoration: none; transition: color 0.15s; }
+.verify-back:hover { color: var(--accent); }
+.hidden { display: none !important; }
+</style>

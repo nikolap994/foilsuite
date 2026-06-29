@@ -108,7 +108,17 @@ const challengeCount = challenges.length
       ctx.strokeStyle = 'rgba(65,208,127,0.2)'; ctx.lineWidth = 1
       ctx.beginPath(); ctx.moveTo(100, 450); ctx.lineTo(W - 100, 450); ctx.stroke()
 
-      const date = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+      const dateObj = new Date()
+      const dateISO = dateObj.toISOString().slice(0, 10)
+      const date = dateObj.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+
+      // Generate verification token (SHA-256 of name+date+points)
+      const tokenInput = `${player}|${dateISO}|${totalPts}|foillab-v1`
+      const tokenBytes = new TextEncoder().encode(tokenInput)
+      const hashBuf = await crypto.subtle.digest('SHA-256', tokenBytes)
+      const token = Array.from(new Uint8Array(hashBuf)).map(b => b.toString(16).padStart(2, '0')).join('').slice(0, 24)
+      const verifyUrl = `foilsuite.netlify.app/lab/verify?n=${encodeURIComponent(player)}&d=${dateISO}&p=${totalPts}&t=${token}`
+
       ctx.font = '12px monospace'
       ctx.fillStyle = 'rgba(255,255,255,0.2)'
       ctx.textAlign = 'left'
@@ -117,7 +127,10 @@ const challengeCount = challenges.length
       ctx.fillText('foilsuite.netlify.app/lab', W - 60, 490)
       ctx.textAlign = 'center'
       ctx.fillStyle = 'rgba(65,208,127,0.3)'
-      ctx.fillText('FOIL SECURITY · FOILLAB', W / 2, 575)
+      ctx.fillText('FOIL SECURITY · FOILLAB', W / 2, 560)
+      ctx.font = '10px monospace'
+      ctx.fillStyle = 'rgba(255,255,255,0.15)'
+      ctx.fillText(`verify: ${verifyUrl}`, W / 2, 582)
 
       document.getElementById('btn-download').addEventListener('click', () => {
         const a = document.createElement('a')
@@ -127,7 +140,7 @@ const challengeCount = challenges.length
       })
 
       document.getElementById('btn-share').addEventListener('click', async () => {
-        const text = `I just completed all ${challenges.length} FoilLab security challenges with ${totalPts} pts! 🔒⛨ #FoilLab #CyberSecurity #CTF https://foilsuite.netlify.app/lab`
+        const text = `I just completed all ${challenges.length} FoilLab security challenges with ${totalPts} pts! 🔒⛨ Verify: https://${verifyUrl} #FoilLab #CyberSecurity #CTF`
         await navigator.clipboard.writeText(text)
         const status = document.getElementById('share-status')
         status.textContent = '✓ Copied to clipboard!'

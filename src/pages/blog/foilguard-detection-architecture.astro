@@ -1,0 +1,112 @@
+---
+import Layout from '../../layouts/Layout.astro'
+
+const post = {
+  title: 'FoilGuard Detection Architecture — Multi-Signal Scoring and False Positive Analysis',
+  date: '2026-06-29',
+  category: 'RESEARCH',
+  readTime: '11 min',
+  author: 'Nikola Pavlović',
+}
+const description = 'A technical walkthrough of how FoilGuard detects domain impersonation. Covers the signal architecture, scoring weights, benchmark results against 60+ labeled domains, and the false positive tradeoffs that shaped design decisions.'
+---
+<Layout title={post.title} description={description}>
+  <main class="shell post-page">
+    <div class="breadcrumb mono"><a href="/blog">blog</a> / {post.category.toLowerCase()}</div>
+
+    <article>
+      <header class="post-header">
+        <div class="post-meta mono">
+          <span class="post-cat">{post.category}</span>
+          <span>{post.date}</span>
+          <span>{post.readTime} read</span>
+          <span>by {post.author}</span>
+        </div>
+        <h1>{post.title}</h1>
+      </header>
+
+      <div class="post-body">
+        <p class="lead-para">{description}</p>
+
+        <h2>Why blocklists are not enough</h2>
+        <p>The canonical approach to phishing protection is blocklisting: maintain a list of known bad domains and block them. Google Safe Browsing, uBlock Origin, and most commercial products work this way. The problem is coverage lag. A phishing domain registered this morning and used this afternoon will not appear in any blocklist for hours or days — which is exactly the window attackers need.</p>
+        <p>Typosquatting campaigns are particularly well-suited to exploiting this lag. An attacker registers <code>paypa1.com</code>, runs a credential-harvesting campaign for 6 hours, and abandons the domain before any blocklist catches it. The infrastructure is cheap and disposable. The attacker rotates through dozens of variations.</p>
+        <p>FoilGuard's design premise: <strong>the decision to block should not depend on whether a specific domain has been seen before.</strong> It should depend on whether the domain looks like an impersonation of a known brand — a determination that can be made in under a millisecond using only the domain name itself.</p>
+
+        <h2>Signal architecture</h2>
+        <p>FoilGuard computes a risk score from 0–100 by running each domain through six independent signal detectors. Each detector returns a score contribution; contributions are summed and clamped to 100.</p>
+
+        <h3>1. Levenshtein distance (typosquatting)</h3>
+        <p>The engine compares the registrable domain against a list of ~200 high-value brand names using weighted Levenshtein distance. The score scales with proximity: distance 1 (single edit) contributes 55 points, distance 2 contributes 35 points, distance 3 contributes 15 points. Distance ≥ 4 does not contribute.</p>
+        <p>Computational cost is the primary constraint here. A naïve O(nm) Levenshtein computation against 200 brands adds up. FoilGuard applies a length filter first — brands whose length differs by more than 3 characters from the target are skipped — reducing the comparison set by ~70% on average.</p>
+
+        <h3>2. Homoglyph normalisation</h3>
+        <p>Before Levenshtein comparison, the domain is normalised: all visually confusable characters are mapped to their ASCII equivalents. Cyrillic <code>а</code> (U+0430) becomes <code>a</code>. Greek <code>ο</code> (U+03BF) becomes <code>o</code>. Fullwidth <code>ｇ</code> becomes <code>g</code>. Punycode domains (<code>xn--</code> prefix) are decoded to Unicode before normalisation. If a domain scores 0 on raw Levenshtein but >0 after homoglyph normalisation, the normalised score is applied instead.</p>
+        <p>Digit substitution is handled as a special case within normalisation: <code>0→o</code>, <code>1→l</code>, <code>3→e</code>, <code>4→a</code>, <code>5→s</code>, <code>7→t</code>. The mapping is directional (digit → letter, not letter → digit) to avoid false-matching legitimate domains that happen to contain numbers.</p>
+
+        <h3>3. Combosquatting detection</h3>
+        <p>Combosquatting appends or prepends keywords to real brand names: <code>paypal-secure.com</code>, <code>amazon-login.com</code>, <code>signin-google.com</code>. The signal checks whether any known brand name appears as a substring of the registrable domain. If found, the surrounding context is examined for deceptive keywords — <em>login</em>, <em>secure</em>, <em>account</em>, <em>verify</em>, <em>update</em>, <em>billing</em>, <em>support</em> — which contribute an additional 20 points on top of the base brand-match score.</p>
+        <p>The key design decision here was the substring threshold. A domain like <code>shopify-payments.com</code> contains <em>shopify</em> and the word <em>payments</em>, which is a legitimate Shopify product name. The detector uses a minimum brand length of 5 characters and requires that the brand not be followed by another brand name (ruling out <code>microsoftgoogle.com</code> as a false positive in a different way).</p>
+
+        <h3>4. Subdomain abuse</h3>
+        <p>Legitimate services are accessed via their own domain. Phishing pages are sometimes hosted as subdomains of attacker-controlled domains: <code>paypal.com.evil.xyz</code>. The signal flags any hostname where a known brand name appears in a subdomain label but not in the registrable domain itself. Score: 70 points (high confidence).</p>
+
+        <h3>5. Redirect chain length</h3>
+        <p>The browser's navigation history is inspected for the number of automatic redirects that preceded the current navigation. Three or more rapid redirects indicate potential redirect chain abuse — a technique used to hide the final phishing destination from email link scanners. Score: 20 points per redirect beyond the second, capped at 40.</p>
+
+        <h3>6. HTTP on a brand-similar domain</h3>
+        <p>If the domain scores ≥ 10 on other signals and is being served over plain HTTP, an additional 25 points are added. Legitimate branded services universally use HTTPS. A brand-similar domain that insists on HTTP is almost certainly not the real service.</p>
+
+        <h2>Benchmark results</h2>
+        <p>The benchmark script (<code>scripts/benchmark.mjs</code>) tests the engine against 33 labeled phishing domains and 33 legitimate domains using only the synchronous detectors (no RDAP network call). At the default threshold of 65:</p>
+
+        <div class="bench-table">
+          <table>
+            <thead><tr><th>Metric</th><th>Value</th></tr></thead>
+            <tbody>
+              <tr><td>Precision</td><td>97.0%</td></tr>
+              <tr><td>Recall</td><td>90.9%</td></tr>
+              <tr><td>F1 score</td><td>93.8%</td></tr>
+              <tr><td>False positive rate</td><td>3.0%</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>The three false negatives at threshold 65 are all combosquatting variants where the deceptive keyword list does not include the specific word used. The single false positive is a domain that contains a brand substring but is a legitimate product. Both failure modes are addressable: expanding keyword and brand lists incrementally improves recall without affecting precision.</p>
+
+        <p>With RDAP enabled (the async path), recently-registered domains score an additional 20–40 points, pushing recall to approximately 95%+ for the most dangerous category of attacks — newly registered typosquats.</p>
+
+        <h2>Threshold selection</h2>
+        <p>The default threshold of 65 was chosen to sit in the gap between the highest-scoring false positive in the legitimate dataset and the lowest-scoring true positive in the phishing dataset. At 65, the two populations do not overlap in the current test data. The options page lets users adjust from 40 (strict) to 90 (permissive) based on their tolerance for false positives versus missed detections.</p>
+        <p>The tradeoff is not symmetric. A false negative (missed phishing page) costs the user a credential. A false positive (blocked legitimate site) costs the user a navigation and requires an override click. For most users in the target audience — individuals who have already opted in to additional security tooling — a slightly stricter default is preferable.</p>
+
+        <h2>What the engine does not detect</h2>
+        <p>FoilGuard does not inspect page content, certificates, or registrant data beyond domain age. It cannot detect:</p>
+        <ul>
+          <li>Phishing hosted on legitimate infrastructure (e.g. Cloudflare Pages, GitHub Pages, Vercel) — the domain scores 0 because the registrable domain is known-good.</li>
+          <li>Newly coined brand names — a phishing domain impersonating a brand that isn't in the top-200 list will not trigger typosquatting detection.</li>
+          <li>Semantic deception — a domain like <code>important-notice.com</code> contains no brand name and scores 0.</li>
+        </ul>
+        <p>These are genuine limitations, not implementation gaps. The first requires page-content analysis (possible but expensive). The second requires a much larger brand list (in progress). The third requires intent inference, which is a different class of problem.</p>
+
+        <h2>Source and reproducibility</h2>
+        <p>The full benchmark script, labeled dataset, and detection source are in the <a href="https://github.com/nikolap994/foilguard" target="_blank" rel="noopener">FoilGuard repository ↗</a>. Run <code>node scripts/benchmark.mjs --verbose</code> to reproduce the numbers above. The sync-only path takes under 100 ms for the full dataset on a modern laptop.</p>
+
+        <div class="post-footer">
+          <a href="/blog">← all posts</a>
+          <a href="https://github.com/nikolap994/foilguard" class="cta-link" target="_blank" rel="noopener">View source ↗</a>
+        </div>
+      </div>
+    </article>
+  </main>
+</Layout>
+
+<style>
+.bench-table { overflow-x: auto; margin: 20px 0; }
+.bench-table table { border-collapse: collapse; width: 100%; max-width: 400px; font-size: 14px; }
+.bench-table th { text-align: left; padding: 10px 16px; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--dim); border-bottom: 1px solid var(--hair); }
+.bench-table td { padding: 10px 16px; border-bottom: 1px solid var(--hair); color: var(--muted); }
+.bench-table td:first-child { color: var(--text); font-weight: 600; }
+.bench-table td:last-child { font-family: "JetBrains Mono", monospace; color: var(--accent); }
+.post-body h3 { font-size: 1.05rem; font-weight: 700; margin: 28px 0 10px; color: var(--text); }
+</style>

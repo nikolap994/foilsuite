@@ -3,6 +3,38 @@ import Layout from '../../layouts/Layout.astro'
 
 const posts = [
   {
+    slug: 'foilguard-detection-architecture',
+    title: 'FoilGuard Detection Architecture — Multi-Signal Scoring and False Positive Analysis',
+    date: '2026-06-29',
+    category: 'RESEARCH',
+    excerpt: 'A technical walkthrough of how FoilGuard detects domain impersonation: signal architecture, scoring weights, benchmark results against 60+ labeled domains, and the false positive tradeoffs that shaped design decisions.',
+    readTime: '11 min',
+  },
+  {
+    slug: 'ttl-covert-channels',
+    title: 'TTL Covert Channels — Encoding Data in DNS Time-to-Live Fields',
+    date: '2026-06-29',
+    category: 'DEEP DIVE',
+    excerpt: 'A TTL covert channel hides binary data inside a field nobody watches — the Time-to-Live value in DNS responses. This post explains how it works, why it bypasses most detection, and how to find it in a pcap.',
+    readTime: '9 min',
+  },
+  {
+    slug: 'c2-beacon-analysis',
+    title: 'C2 Beacon Analysis — Recognising Command-and-Control Traffic in Packet Captures',
+    date: '2026-06-29',
+    category: 'DEEP DIVE',
+    excerpt: 'After initial compromise, malware phones home on a schedule. This post explains beaconing patterns, how to measure jitter and interval consistency, and how to find a beacon hiding in normal HTTP traffic.',
+    readTime: '7 min',
+  },
+  {
+    slug: 'dns-exfiltration-guide',
+    title: 'DNS Exfiltration — How Attackers Tunnel Data Through Name Queries',
+    date: '2026-06-29',
+    category: 'DEEP DIVE',
+    excerpt: 'DNS was designed to translate names to IPs — not to carry stolen data. This post explains how attackers encode files in DNS queries, why firewalls miss it, and how to detect it in a pcap.',
+    readTime: '8 min',
+  },
+  {
     slug: 'smtp-spoofing-and-email-forensics',
     title: 'How attackers spoof email — and how to catch them',
     date: '2026-06-28',

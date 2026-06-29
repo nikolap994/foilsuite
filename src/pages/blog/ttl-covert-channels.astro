@@ -1,0 +1,101 @@
+---
+import Layout from '../../layouts/Layout.astro'
+
+const post = {
+  title: 'TTL Covert Channels — Encoding Data in DNS Time-to-Live Fields',
+  date: '2026-06-29',
+  category: 'DEEP DIVE',
+  readTime: '9 min',
+  author: 'Nikola Pavlović',
+}
+const description = 'A TTL covert channel hides binary data inside a field that nobody watches — the Time-to-Live value in DNS responses. This post explains how it works, why it bypasses most detection, and how to find it.'
+---
+<Layout title={post.title} description={description}>
+  <main class="shell post-page">
+    <div class="breadcrumb mono"><a href="/blog">blog</a> / {post.category.toLowerCase()}</div>
+
+    <article>
+      <header class="post-header">
+        <div class="post-meta mono">
+          <span class="post-cat">{post.category}</span>
+          <span>{post.date}</span>
+          <span>{post.readTime} read</span>
+          <span>by {post.author}</span>
+        </div>
+        <h1>{post.title}</h1>
+      </header>
+
+      <div class="post-body">
+        <p class="lead-para">{description}</p>
+
+        <h2>What is TTL in DNS?</h2>
+        <p>Every DNS response includes a Time-to-Live field — an integer between 0 and 2,147,483,647 that tells resolvers how many seconds to cache the answer before querying again. A record with TTL 3600 can be cached for one hour. TTL 0 means do not cache.</p>
+        <p>In practice, most records have TTLs that are human-chosen round numbers: 60, 300, 900, 3600, 86400. They are set once by a zone administrator and change rarely. Security tools monitor query names, response IPs, NXDOMAIN rates — but almost nothing monitors TTL values closely.</p>
+        <p>This makes TTL a low-noise covert channel.</p>
+
+        <h2>How TTL encoding works</h2>
+        <p>An attacker who controls a DNS server can return any TTL they choose. Instead of serving 3600, they encode data in the TTL field itself — one value per DNS response. The implant on the victim machine reads the TTL from the DNS response and interprets it as data, not as a cache instruction.</p>
+        <p>A simple scheme uses individual bits:</p>
+        <pre class="code-block"><code># Encoding scheme (example)
+# TTL 64 (0b01000000) = bit 0
+# TTL 65 (0b01000001) = bit 1
+# The victim queries a rotating set of subdomains
+# The attacker responds with TTL encoding the next bit of the payload
+
+# To send the byte 0b10110101 (181):
+# attacker responds to 8 queries with TTLs:
+# 65, 64, 65, 65, 64, 65, 64, 65</code></pre>
+        <p>More efficient schemes encode multiple bits per TTL. With a TTL range of 0–255 (one byte), each response carries one full byte of payload — no encoding overhead. The implant queries the C2 domain, reads the TTL, appends the byte to a buffer, and repeats.</p>
+
+        <h2>Why this bypasses standard defences</h2>
+        <ul>
+          <li><strong>The queries look normal:</strong> short, human-readable subdomain labels, resolving to real IPs. No high-entropy strings.</li>
+          <li><strong>The payload is in the response, not the request:</strong> most DNS exfiltration detection focuses on query names. The TTL field in the response is not inspected.</li>
+          <li><strong>No NXDOMAIN:</strong> the attacker's server returns valid responses. No anomalous response codes.</li>
+          <li><strong>Low query rate:</strong> at 1 byte per query, a 1 KB command takes 1,024 queries. At one query every 2 seconds that is 34 minutes — very low volume, easy to miss.</li>
+        </ul>
+
+        <h2>Detection</h2>
+        <p>TTL covert channels are hard to detect from network metadata alone. The signals to look for:</p>
+        <ul>
+          <li><strong>Non-standard TTL values:</strong> legitimate records use round numbers. A response with TTL 173 or 241 is suspicious — those are not values a human would configure.</li>
+          <li><strong>TTL inconsistency:</strong> the same record returning different TTL values across queries is the strongest signal. A real record has a fixed TTL (decremented by resolvers, but consistent at the authoritative server).</li>
+          <li><strong>High TTL variance for a single domain:</strong> calculate the standard deviation of TTL values observed for one domain over time. Legitimate domains are near-zero. A covert channel has high variance.</li>
+          <li><strong>Query frequency without caching:</strong> if a host keeps re-querying a domain despite receiving non-zero TTLs, it is deliberately ignoring the cache — a sign the application is reading TTLs, not caching DNS results.</li>
+        </ul>
+
+        <h2>Extracting the payload</h2>
+        <p>In a pcap, filter for DNS responses from the suspicious server. Export the TTL fields in order and interpret them as a byte stream:</p>
+        <pre class="code-block"><code>import dpkt, socket
+
+with open('capture.pcap', 'rb') as f:
+    pcap = dpkt.pcap.Reader(f)
+    ttls = []
+    for ts, buf in pcap:
+        eth = dpkt.ethernet.Ethernet(buf)
+        if not isinstance(eth.data, dpkt.ip.IP): continue
+        ip = eth.data
+        if not isinstance(ip.data, dpkt.udp.UDP): continue
+        udp = ip.data
+        try:
+            dns = dpkt.dns.DNS(udp.data)
+            if dns.qr != dpkt.dns.DNS_R: continue  # responses only
+            for rr in dns.an:
+                if rr.name.endswith('c2domain.com'):
+                    ttls.append(rr.ttl)
+        except: pass
+
+payload = bytes(ttls)
+print(payload.decode(errors='replace'))</code></pre>
+
+        <h2>Practice it</h2>
+        <p>The <a href="/lab/challenges/ttl-exfil">Ghost Protocol</a> challenge in FoilLab is rated hard. You are given a packet capture containing a live TTL covert channel session. The encoding scheme and domain are for you to identify. The flag is in the decoded payload.</p>
+
+        <div class="post-footer">
+          <a href="/blog">← all posts</a>
+          <a href="/lab/challenges/ttl-exfil" class="cta-link">Try the challenge →</a>
+        </div>
+      </div>
+    </article>
+  </main>
+</Layout>

@@ -1,0 +1,83 @@
+---
+import Layout from '../../layouts/Layout.astro'
+
+const post = {
+  title: 'C2 Beacon Analysis — Recognising Command-and-Control Traffic in Packet Captures',
+  date: '2026-06-29',
+  category: 'DEEP DIVE',
+  readTime: '7 min',
+  author: 'Nikola Pavlović',
+}
+const description = 'After initial compromise, malware phones home on a schedule. This post explains beaconing patterns, how to measure jitter and interval consistency, and how to find a beacon hiding in normal HTTP traffic.'
+---
+<Layout title={post.title} description={description}>
+  <main class="shell post-page">
+    <div class="breadcrumb mono"><a href="/blog">blog</a> / {post.category.toLowerCase()}</div>
+
+    <article>
+      <header class="post-header">
+        <div class="post-meta mono">
+          <span class="post-cat">{post.category}</span>
+          <span>{post.date}</span>
+          <span>{post.readTime} read</span>
+          <span>by {post.author}</span>
+        </div>
+        <h1>{post.title}</h1>
+      </header>
+
+      <div class="post-body">
+        <p class="lead-para">{description}</p>
+
+        <h2>What is a beacon?</h2>
+        <p>Once malware establishes a foothold on a host, it needs a way to receive instructions and return results to the attacker. Rather than maintaining a persistent connection — which would be immediately obvious — it sleeps for a fixed interval, then wakes, sends a short HTTP or HTTPS request to a command-and-control (C2) server, collects any queued commands, executes them, and sleeps again.</p>
+        <p>This pattern is called <strong>beaconing</strong>. It is the communication heartbeat of nearly every modern piece of malware, from commodity RATs to nation-state implants. The beacon might fire every 60 seconds, every 5 minutes, or once a day depending on the operator's preference for speed versus stealth.</p>
+
+        <h2>The anatomy of a beacon request</h2>
+        <p>A basic beacon HTTP request has recognisable characteristics:</p>
+        <ul>
+          <li><strong>Fixed destination:</strong> always the same IP or domain.</li>
+          <li><strong>Small, consistent payload:</strong> check-in data is small (host ID, task queue). Response is small unless a command is waiting.</li>
+          <li><strong>Consistent User-Agent:</strong> the implant sends the same UA string every time, often a static default from the C2 framework (Cobalt Strike's default UA was <code>Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0)</code> — IE 9, on a modern host).</li>
+          <li><strong>Regular timing:</strong> the interval between requests is consistent, possibly with added jitter to avoid exact-second matching.</li>
+        </ul>
+
+        <h2>Jitter and why it matters for detection</h2>
+        <p>Sophisticated implants add randomness (jitter) to their sleep intervals. Instead of sleeping exactly 300 seconds, they sleep between 240–360 seconds. This breaks naive detection rules that look for exact-interval repetition.</p>
+        <p>However, jitter does not break statistical analysis. If you collect 50 intervals between requests, the <strong>standard deviation</strong> and <strong>coefficient of variation</strong> (CV = σ/μ) will still be much lower than legitimate browsing traffic, which is highly irregular. Legitimate user traffic has a CV close to 1.0 or higher. Beacons typically have a CV below 0.3 even with 20% jitter applied.</p>
+        <pre class="code-block"><code># Python: compute interval statistics from timestamps
+import statistics
+intervals = [301, 298, 304, 299, 303, 297, 302, 300]  # seconds
+mean = statistics.mean(intervals)
+stdev = statistics.stdev(intervals)
+cv = stdev / mean
+print(f'mean={mean:.1f}s  stdev={stdev:.2f}  CV={cv:.3f}')
+# → mean=300.5s  stdev=2.39  CV=0.008  ← unmistakably a beacon</code></pre>
+
+        <h2>Finding beacons in network logs</h2>
+        <p>In a pcap, the workflow is:</p>
+        <ul>
+          <li><strong>Group by destination:</strong> collect all connections to each external IP. Sort by connection count descending. High-frequency connections to unfamiliar IPs are candidates.</li>
+          <li><strong>Extract timestamps:</strong> for each candidate, list the time of every request and compute inter-arrival intervals.</li>
+          <li><strong>Apply statistics:</strong> low CV, consistent payload size, unusual hours (beacons don't take lunch breaks) are high-confidence signals.</li>
+          <li><strong>Inspect headers:</strong> stale or inconsistent User-Agent, missing Accept-Language, Accept-Encoding in a specific order — these are signs of a programmatic HTTP client, not a browser.</li>
+        </ul>
+
+        <h2>Common C2 frameworks and their tells</h2>
+        <ul>
+          <li><strong>Cobalt Strike:</strong> default URI patterns (<code>/jquery-3.3.1.min.js</code>, <code>/pixel.gif</code>), Malleable C2 profiles change this — but many operators use defaults.</li>
+          <li><strong>Metasploit Meterpreter:</strong> default port 4444, binary over TCP — easy to spot if not tunnelled.</li>
+          <li><strong>Sliver:</strong> HTTPS with default self-signed certificates. JA3 fingerprint is distinctive.</li>
+          <li><strong>PoshC2:</strong> often PowerShell User-Agent strings in the request headers.</li>
+        </ul>
+
+        <h2>Practice it</h2>
+        <p>The <a href="/lab/challenges/beacon">Phantom Heartbeat</a> challenge in FoilLab puts you in front of a packet capture where a beacon is hiding among normal web traffic. You need to identify the host, measure the interval, decode the callback, and extract the flag.</p>
+
+        <div class="post-footer">
+          <a href="/blog">← all posts</a>
+          <a href="/lab/challenges/beacon" class="cta-link">Try the challenge →</a>
+        </div>
+      </div>
+    </article>
+  </main>
+</Layout>
