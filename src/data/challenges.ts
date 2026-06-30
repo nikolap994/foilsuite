@@ -143,7 +143,6 @@ Analyze the attached SMTP log. Identify the spoofing technique, locate the hidde
     author: 'nikolap994',
     writeupAvailable: true,
   },
-]
 
   {
     id: 'phish-kit',

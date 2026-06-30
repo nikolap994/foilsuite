@@ -53,7 +53,7 @@ const description = 'Phishing campaigns rarely use a single domain. This post ex
 
         <h2>What the data looks like</h2>
         <p>A passive DNS registration feed for a 72-hour window might look like this in JSON:</p>
-        <pre class="code-block"><code>{
+        <pre class="code-block"><code>{`{
   "domain": "paypal-secure-login.net",
   "registered": "2026-06-14T07:22:00Z",
   "registrar": "QuickReg LLC",
@@ -61,7 +61,7 @@ const description = 'Phishing campaigns rarely use a single domain. This post ex
   "privacy": false,
   "registrant_email": "phish.operator99@proton.me",
   "ip": "185.220.101.47"
-}</code></pre>
+}`}</code></pre>
         <p>A single record like this — with <code>"privacy": false</code> — is the thread that unravels the campaign. Every other record with the same registrar, nameserver pair, and IP range belongs to the same operator.</p>
 
         <h2>Automating the analysis</h2>
