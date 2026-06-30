@@ -1,0 +1,1327 @@
+[
+  {
+    "domain": "spacenews.app",
+    "registered": "2026-05-28T20:00:00Z",
+    "registrar": "Porkbun LLC",
+    "nameservers": [
+      "ns1.godaddy.com",
+      "ns2.godaddy.com"
+    ],
+    "privacy": true,
+    "ip": "192.0.2.1"
+  },
+  {
+    "domain": "taxhelper.com",
+    "registered": "2026-04-24T08:00:00Z",
+    "registrar": "Name.com",
+    "nameservers": [
+      "ns1.cloudflare.com",
+      "ns2.cloudflare.com"
+    ],
+    "privacy": false,
+    "ip": "104.21.44.129",
+    "registrant_email": "taxhelperowner@gmail.com"
+  },
+  {
+    "domain": "digitalmarketing.app",
+    "registered": "2026-05-30T03:00:00Z",
+    "registrar": "Bluehost Inc.",
+    "nameservers": [
+      "ns1.namecheap.com",
+      "ns2.namecheap.com"
+    ],
+    "privacy": true,
+    "ip": "192.0.2.1"
+  },
+  {
+    "domain": "photogallery.com",
+    "registered": "2026-05-11T09:00:00Z",
+    "registrar": "GoDaddy LLC",
+    "nameservers": [
+      "ns1.godaddy.com",
+      "ns2.godaddy.com"
+    ],
+    "privacy": true,
+    "ip": "31.13.92.36"
+  },
+  {
+    "domain": "sportsgear.org",
+    "registered": "2026-06-05T17:00:00Z",
+    "registrar": "Namecheap Inc.",
+    "nameservers": [
+      "ns1.cloudflare.com",
+      "ns2.cloudflare.com"
+    ],
+    "privacy": true,
+    "ip": "104.244.42.1"
+  },
+  {
+    "domain": "paypal-secure.org",
+    "registered": "2026-06-14T11:51:00Z",
+    "registrar": "QuickReg LLC",
+    "nameservers": [
+      "ns1.phastdns.cc",
+      "ns2.phastdns.cc"
+    ],
+    "privacy": true,
+    "ip": "185.220.101.47"
+  },
+  {
+    "domain": "bestpizza.app",
+    "registered": "2026-05-19T16:00:00Z",
+    "registrar": "Porkbun LLC",
+    "nameservers": [
+      "ns1.dreamhost.com",
+      "ns2.dreamhost.com"
+    ],
+    "privacy": true,
+    "ip": "31.13.92.36"
+  },
+  {
+    "domain": "microsoft.net",
+    "registered": "2026-06-13T03:35:00Z",
+    "registrar": "QuickReg LLC",
+    "nameservers": [
+      "ns1.phastdns.cc",
+      "ns2.phastdns.cc"
+    ],
+    "privacy": true,
+    "ip": "185.220.101.47"
+  },
+  {
+    "domain": "dronetech.app",
+    "registered": "2026-04-21T17:00:00Z",
+    "registrar": "Network Solutions",
+    "nameservers": [
+      "ns1.namecheap.com",
+      "ns2.namecheap.com"
+    ],
+    "privacy": true,
+    "ip": "216.58.209.110"
+  },
+  {
+    "domain": "elearning.dev",
+    "registered": "2026-05-24T13:00:00Z",
+    "registrar": "GoDaddy LLC",
+    "nameservers": [
+      "ns1.cloudflare.com",
+      "ns2.cloudflare.com"
+    ],
+    "privacy": true,
+    "ip": "31.13.92.36"
+  },
+  {
+    "domain": "scienceblog.net",
+    "registered": "2026-05-11T17:00:00Z",
+    "registrar": "Hover",
+    "nameservers": [
+      "ns1.google.com",
+      "ns4.google.com"
+    ],
+    "privacy": true,
+    "ip": "203.0.113.42"
+  },
+  {
+    "domain": "bakeryhouse.io",
+    "registered": "2026-04-18T05:00:00Z",
+    "registrar": "Cloudflare Inc.",
+    "nameservers": [
+      "ns1.dreamhost.com",
+      "ns2.dreamhost.com"
+    ],
+    "privacy": true,
+    "ip": "157.240.22.35"
+  },
+  {
+    "domain": "emailmarketing.net",
+    "registered": "2026-05-30T08:00:00Z",
+    "registrar": "Google Domains",
+    "nameservers": [
+      "ns1.cloudflare.com",
+      "ns2.cloudflare.com"
+    ],
+    "privacy": true,
+    "ip": "151.101.1.44"
+  },
+  {
+    "domain": "tutorplatform.com",
+    "registered": "2026-05-28T03:00:00Z",
+    "registrar": "Bluehost Inc.",
+    "nameservers": [
+      "ns1.dreamhost.com",
+      "ns2.dreamhost.com"
+    ],
+    "privacy": false,
+    "ip": "104.244.42.1",
+    "registrant_email": "tutorplatformowner@outlook.com"
+  },
+  {
+    "domain": "amaz0n.info",
+    "registered": "2026-06-15T21:26:00Z",
+    "registrar": "QuickReg LLC",
+    "nameservers": [
+      "ns1.phastdns.cc",
+      "ns2.phastdns.cc"
+    ],
+    "privacy": true,
+    "ip": "185.220.101.47"
+  },
+  {
+    "domain": "robotics.co",
+    "registered": "2026-05-17T04:00:00Z",
+    "registrar": "Cloudflare Inc.",
+    "nameservers": [
+      "dns1.registrar-servers.com",
+      "dns2.registrar-servers.com"
+    ],
+    "privacy": false,
+    "ip": "198.51.100.5",
+    "registrant_email": "roboticsowner@yahoo.com"
+  },
+  {
+    "domain": "eventplanner.dev",
+    "registered": "2026-04-17T07:00:00Z",
+    "registrar": "Network Solutions",
+    "nameservers": [
+      "dns1.registrar-servers.com",
+      "dns2.registrar-servers.com"
+    ],
+    "privacy": true,
+    "ip": "172.67.161.197"
+  },
+  {
+    "domain": "designstudio.org",
+    "registered": "2026-06-03T16:00:00Z",
+    "registrar": "Cloudflare Inc.",
+    "nameservers": [
+      "dns1.registrar-servers.com",
+      "dns2.registrar-servers.com"
+    ],
+    "privacy": true,
+    "ip": "157.240.22.35"
+  },
+  {
+    "domain": "amazon-verify.io",
+    "registered": "2026-06-14T11:09:00Z",
+    "registrar": "QuickReg LLC",
+    "nameservers": [
+      "ns1.phastdns.cc",
+      "ns2.phastdns.cc"
+    ],
+    "privacy": true,
+    "ip": "185.220.101.47"
+  },
+  {
+    "domain": "localplumber.co",
+    "registered": "2026-05-03T19:00:00Z",
+    "registrar": "Porkbun LLC",
+    "nameservers": [
+      "ns1.namecheap.com",
+      "ns2.namecheap.com"
+    ],
+    "privacy": true,
+    "ip": "198.51.100.5"
+  },
+  {
+    "domain": "languageapp.com",
+    "registered": "2026-06-02T02:00:00Z",
+    "registrar": "HostGator",
+    "nameservers": [
+      "ns1.godaddy.com",
+      "ns2.godaddy.com"
+    ],
+    "privacy": false,
+    "ip": "151.101.1.44",
+    "registrant_email": "languageappowner@outlook.com"
+  },
+  {
+    "domain": "carsales.dev",
+    "registered": "2026-04-14T13:00:00Z",
+    "registrar": "Network Solutions",
+    "nameservers": [
+      "ns1.namecheap.com",
+      "ns2.namecheap.com"
+    ],
+    "privacy": true,
+    "ip": "151.101.1.44"
+  },
+  {
+    "domain": "municipaltools.org",
+    "registered": "2026-05-04T20:00:00Z",
+    "registrar": "Google Domains",
+    "nameservers": [
+      "ns1.google.com",
+      "ns4.google.com"
+    ],
+    "privacy": true,
+    "ip": "104.244.42.1"
+  },
+  {
+    "domain": "investmenttips.net",
+    "registered": "2026-05-18T01:00:00Z",
+    "registrar": "Namecheap Inc.",
+    "nameservers": [
+      "ns1.namecheap.com",
+      "ns2.namecheap.com"
+    ],
+    "privacy": true,
+    "ip": "151.101.1.44"
+  },
+  {
+    "domain": "coffeeshop.io",
+    "registered": "2026-06-04T03:00:00Z",
+    "registrar": "DreamHost",
+    "nameservers": [
+      "ns1.namecheap.com",
+      "ns2.namecheap.com"
+    ],
+    "privacy": true,
+    "ip": "203.0.113.42"
+  },
+  {
+    "domain": "meditationapp.io",
+    "registered": "2026-05-01T18:00:00Z",
+    "registrar": "Bluehost Inc.",
+    "nameservers": [
+      "ns1.cloudflare.com",
+      "ns2.cloudflare.com"
+    ],
+    "privacy": true,
+    "ip": "185.199.108.153"
+  },
+  {
+    "domain": "rideshare.app",
+    "registered": "2026-04-19T21:00:00Z",
+    "registrar": "Network Solutions",
+    "nameservers": [
+      "ns1.dreamhost.com",
+      "ns2.dreamhost.com"
+    ],
+    "privacy": true,
+    "ip": "31.13.92.36"
+  },
+  {
+    "domain": "nonprofittools.net",
+    "registered": "2026-05-27T12:00:00Z",
+    "registrar": "Cloudflare Inc.",
+    "nameservers": [
+      "ns1.google.com",
+      "ns4.google.com"
+    ],
+    "privacy": true,
+    "ip": "140.82.121.4"
+  },
+  {
+    "domain": "courtdocs.com",
+    "registered": "2026-06-06T06:00:00Z",
+    "registrar": "Network Solutions",
+    "nameservers": [
+      "ns1.dreamhost.com",
+      "ns2.dreamhost.com"
+    ],
+    "privacy": false,
+    "ip": "192.0.2.1",
+    "registrant_email": "courtdocsowner@outlook.com"
+  },
+  {
+    "domain": "amazon-auth.org",
+    "registered": "2026-06-13T00:48:00Z",
+    "registrar": "QuickReg LLC",
+    "nameservers": [
+      "ns1.phastdns.cc",
+      "ns2.phastdns.cc"
+    ],
+    "privacy": true,
+    "ip": "185.220.101.47"
+  },
+  {
+    "domain": "techpodcast.com",
+    "registered": "2026-05-23T23:00:00Z",
+    "registrar": "Name.com",
+    "nameservers": [
+      "ns1.google.com",
+      "ns4.google.com"
+    ],
+    "privacy": true,
+    "ip": "104.21.44.129"
+  },
+  {
+    "domain": "urbanfitness.org",
+    "registered": "2026-05-23T23:00:00Z",
+    "registrar": "GoDaddy LLC",
+    "nameservers": [
+      "ns1.cloudflare.com",
+      "ns2.cloudflare.com"
+    ],
+    "privacy": false,
+    "ip": "185.199.108.153",
+    "registrant_email": "urbanfitnessowner@gmail.com"
+  },
+  {
+    "domain": "miicrosoft.cc",
+    "registered": "2026-06-13T12:22:00Z",
+    "registrar": "QuickReg LLC",
+    "nameservers": [
+      "ns1.phastdns.cc",
+      "ns2.phastdns.cc"
+    ],
+    "privacy": true,
+    "ip": "185.220.101.47"
+  },
+  {
+    "domain": "myblog.com",
+    "registered": "2026-05-14T07:00:00Z",
+    "registrar": "HostGator",
+    "nameservers": [
+      "ns1.godaddy.com",
+      "ns2.godaddy.com"
+    ],
+    "privacy": true,
+    "ip": "31.13.92.36"
+  },
+  {
+    "domain": "cryptonews.org",
+    "registered": "2026-05-09T10:00:00Z",
+    "registrar": "HostGator",
+    "nameservers": [
+      "ns1.namecheap.com",
+      "ns2.namecheap.com"
+    ],
+    "privacy": true,
+    "ip": "198.51.100.5"
+  },
+  {
+    "domain": "iotplatform.app",
+    "registered": "2026-05-15T10:00:00Z",
+    "registrar": "Cloudflare Inc.",
+    "nameservers": [
+      "ns1.dreamhost.com",
+      "ns2.dreamhost.com"
+    ],
+    "privacy": false,
+    "ip": "157.240.22.35",
+    "registrant_email": "iotplatformowner@outlook.com"
+  },
+  {
+    "domain": "musicstream.co",
+    "registered": "2026-05-06T11:00:00Z",
+    "registrar": "HostGator",
+    "nameservers": [
+      "ns1.cloudflare.com",
+      "ns2.cloudflare.com"
+    ],
+    "privacy": true,
+    "ip": "216.58.209.110"
+  },
+  {
+    "domain": "sustainableliving.io",
+    "registered": "2026-06-03T17:00:00Z",
+    "registrar": "Porkbun LLC",
+    "nameservers": [
+      "ns1.namecheap.com",
+      "ns2.namecheap.com"
+    ],
+    "privacy": true,
+    "ip": "172.67.161.197"
+  },
+  {
+    "domain": "newsdigest.io",
+    "registered": "2026-06-02T03:00:00Z",
+    "registrar": "Name.com",
+    "nameservers": [
+      "ns1.godaddy.com",
+      "ns2.godaddy.com"
+    ],
+    "privacy": false,
+    "ip": "192.0.2.1",
+    "registrant_email": "newsdigestowner@yahoo.com"
+  },
+  {
+    "domain": "3dprinting.org",
+    "registered": "2026-06-11T23:00:00Z",
+    "registrar": "1&1 IONOS SE",
+    "nameservers": [
+      "ns1.dreamhost.com",
+      "ns2.dreamhost.com"
+    ],
+    "privacy": true,
+    "ip": "198.51.100.5"
+  },
+  {
+    "domain": "projectmanager.co",
+    "registered": "2026-04-22T04:00:00Z",
+    "registrar": "GoDaddy LLC",
+    "nameservers": [
+      "dns1.registrar-servers.com",
+      "dns2.registrar-servers.com"
+    ],
+    "privacy": true,
+    "ip": "31.13.92.36"
+  },
+  {
+    "domain": "weatherapp.org",
+    "registered": "2026-05-19T06:00:00Z",
+    "registrar": "Network Solutions",
+    "nameservers": [
+      "ns1.godaddy.com",
+      "ns2.godaddy.com"
+    ],
+    "privacy": false,
+    "ip": "104.21.44.129",
+    "registrant_email": "weatherappowner@outlook.com"
+  },
+  {
+    "domain": "codelearn.app",
+    "registered": "2026-05-30T06:00:00Z",
+    "registrar": "Bluehost Inc.",
+    "nameservers": [
+      "ns1.namecheap.com",
+      "ns2.namecheap.com"
+    ],
+    "privacy": false,
+    "ip": "192.0.2.1",
+    "registrant_email": "codelearnowner@yahoo.com"
+  },
+  {
+    "domain": "agritools.io",
+    "registered": "2026-04-20T11:00:00Z",
+    "registrar": "Name.com",
+    "nameservers": [
+      "dns1.registrar-servers.com",
+      "dns2.registrar-servers.com"
+    ],
+    "privacy": true,
+    "ip": "104.244.42.1"
+  },
+  {
+    "domain": "waterquality.com",
+    "registered": "2026-05-19T09:00:00Z",
+    "registrar": "Bluehost Inc.",
+    "nameservers": [
+      "ns1.cloudflare.com",
+      "ns2.cloudflare.com"
+    ],
+    "privacy": false,
+    "ip": "192.0.2.1",
+    "registrant_email": "waterqualityowner@outlook.com"
+  },
+  {
+    "domain": "paaypal.cc",
+    "registered": "2026-06-14T19:06:00Z",
+    "registrar": "QuickReg LLC",
+    "nameservers": [
+      "ns1.phastdns.cc",
+      "ns2.phastdns.cc"
+    ],
+    "privacy": true,
+    "ip": "185.220.101.47"
+  },
+  {
+    "domain": "petcare.org",
+    "registered": "2026-05-25T11:00:00Z",
+    "registrar": "1&1 IONOS SE",
+    "nameservers": [
+      "ns1.godaddy.com",
+      "ns2.godaddy.com"
+    ],
+    "privacy": true,
+    "ip": "203.0.113.42"
+  },
+  {
+    "domain": "paypal-secure-login.net",
+    "registered": "2026-06-13T11:13:00Z",
+    "registrar": "QuickReg LLC",
+    "nameservers": [
+      "ns1.phastdns.cc",
+      "ns2.phastdns.cc"
+    ],
+    "privacy": false,
+    "ip": "185.220.101.47",
+    "registrant_email": "phish.operator99@proton.me",
+    "registrant_name": "John Carter",
+    "registrant_org": ""
+  },
+  {
+    "domain": "payrollsvc.dev",
+    "registered": "2026-05-03T11:00:00Z",
+    "registrar": "Network Solutions",
+    "nameservers": [
+      "ns1.godaddy.com",
+      "ns2.godaddy.com"
+    ],
+    "privacy": true,
+    "ip": "140.82.121.4"
+  },
+  {
+    "domain": "cloudhost.com",
+    "registered": "2026-05-10T00:00:00Z",
+    "registrar": "Cloudflare Inc.",
+    "nameservers": [
+      "ns1.namecheap.com",
+      "ns2.namecheap.com"
+    ],
+    "privacy": false,
+    "ip": "198.51.100.5",
+    "registrant_email": "cloudhostowner@yahoo.com"
+  },
+  {
+    "domain": "evcharging.dev",
+    "registered": "2026-05-15T16:00:00Z",
+    "registrar": "Cloudflare Inc.",
+    "nameservers": [
+      "dns1.registrar-servers.com",
+      "dns2.registrar-servers.com"
+    ],
+    "privacy": true,
+    "ip": "203.0.113.42"
+  },
+  {
+    "domain": "charityhub.co",
+    "registered": "2026-04-15T20:00:00Z",
+    "registrar": "DreamHost",
+    "nameservers": [
+      "ns1.godaddy.com",
+      "ns2.godaddy.com"
+    ],
+    "privacy": false,
+    "ip": "104.244.42.1",
+    "registrant_email": "charityhubowner@gmail.com"
+  },
+  {
+    "domain": "microsoft-support.net",
+    "registered": "2026-06-13T05:46:00Z",
+    "registrar": "QuickReg LLC",
+    "nameservers": [
+      "ns1.phastdns.cc",
+      "ns2.phastdns.cc"
+    ],
+    "privacy": true,
+    "ip": "185.220.101.47"
+  },
+  {
+    "domain": "travelnotes.io",
+    "registered": "2026-05-19T16:00:00Z",
+    "registrar": "Hover",
+    "nameservers": [
+      "ns1.cloudflare.com",
+      "ns2.cloudflare.com"
+    ],
+    "privacy": true,
+    "ip": "140.82.121.4"
+  },
+  {
+    "domain": "amazon-security.net",
+    "registered": "2026-06-14T09:51:00Z",
+    "registrar": "QuickReg LLC",
+    "nameservers": [
+      "ns1.phastdns.cc",
+      "ns2.phastdns.cc"
+    ],
+    "privacy": true,
+    "ip": "185.220.101.47"
+  },
+  {
+    "domain": "aitools.io",
+    "registered": "2026-05-28T22:00:00Z",
+    "registrar": "DreamHost",
+    "nameservers": [
+      "ns1.godaddy.com",
+      "ns2.godaddy.com"
+    ],
+    "privacy": true,
+    "ip": "31.13.92.36"
+  },
+  {
+    "domain": "localevents.com",
+    "registered": "2026-06-08T04:00:00Z",
+    "registrar": "GoDaddy LLC",
+    "nameservers": [
+      "ns1.namecheap.com",
+      "ns2.namecheap.com"
+    ],
+    "privacy": true,
+    "ip": "104.21.44.129"
+  },
+  {
+    "domain": "noisetrack.app",
+    "registered": "2026-05-22T03:00:00Z",
+    "registrar": "HostGator",
+    "nameservers": [
+      "dns1.registrar-servers.com",
+      "dns2.registrar-servers.com"
+    ],
+    "privacy": true,
+    "ip": "198.51.100.5"
+  },
+  {
+    "domain": "govforms.io",
+    "registered": "2026-04-13T18:00:00Z",
+    "registrar": "Porkbun LLC",
+    "nameservers": [
+      "ns1.cloudflare.com",
+      "ns2.cloudflare.com"
+    ],
+    "privacy": true,
+    "ip": "216.58.209.110"
+  },
+  {
+    "domain": "accountingapp.app",
+    "registered": "2026-04-24T20:00:00Z",
+    "registrar": "Network Solutions",
+    "nameservers": [
+      "ns1.namecheap.com",
+      "ns2.namecheap.com"
+    ],
+    "privacy": false,
+    "ip": "203.0.113.42",
+    "registrant_email": "accountingappowner@yahoo.com"
+  },
+  {
+    "domain": "healthtips.dev",
+    "registered": "2026-05-01T17:00:00Z",
+    "registrar": "Network Solutions",
+    "nameservers": [
+      "ns1.godaddy.com",
+      "ns2.godaddy.com"
+    ],
+    "privacy": true,
+    "ip": "172.67.161.197"
+  },
+  {
+    "domain": "energytools.io",
+    "registered": "2026-04-15T21:00:00Z",
+    "registrar": "Google Domains",
+    "nameservers": [
+      "ns1.google.com",
+      "ns4.google.com"
+    ],
+    "privacy": true,
+    "ip": "198.51.100.5"
+  },
+  {
+    "domain": "invoiceapp.org",
+    "registered": "2026-05-25T05:00:00Z",
+    "registrar": "Porkbun LLC",
+    "nameservers": [
+      "ns1.cloudflare.com",
+      "ns2.cloudflare.com"
+    ],
+    "privacy": true,
+    "ip": "31.13.92.36"
+  },
+  {
+    "domain": "paypa1.io",
+    "registered": "2026-06-14T01:45:00Z",
+    "registrar": "QuickReg LLC",
+    "nameservers": [
+      "ns1.phastdns.cc",
+      "ns2.phastdns.cc"
+    ],
+    "privacy": true,
+    "ip": "185.220.101.47"
+  },
+  {
+    "domain": "vrheadset.net",
+    "registered": "2026-05-01T22:00:00Z",
+    "registrar": "DreamHost",
+    "nameservers": [
+      "dns1.registrar-servers.com",
+      "dns2.registrar-servers.com"
+    ],
+    "privacy": true,
+    "ip": "172.67.161.197"
+  },
+  {
+    "domain": "realestateguide.dev",
+    "registered": "2026-05-17T10:00:00Z",
+    "registrar": "Porkbun LLC",
+    "nameservers": [
+      "ns1.godaddy.com",
+      "ns2.godaddy.com"
+    ],
+    "privacy": true,
+    "ip": "104.21.44.129"
+  },
+  {
+    "domain": "pubrecords.app",
+    "registered": "2026-05-05T05:00:00Z",
+    "registrar": "Porkbun LLC",
+    "nameservers": [
+      "ns1.godaddy.com",
+      "ns2.godaddy.com"
+    ],
+    "privacy": true,
+    "ip": "185.199.108.153"
+  },
+  {
+    "domain": "legaltech.com",
+    "registered": "2026-05-09T00:00:00Z",
+    "registrar": "Namecheap Inc.",
+    "nameservers": [
+      "dns1.registrar-servers.com",
+      "dns2.registrar-servers.com"
+    ],
+    "privacy": true,
+    "ip": "203.0.113.42"
+  },
+  {
+    "domain": "saasreview.dev",
+    "registered": "2026-05-11T22:00:00Z",
+    "registrar": "Google Domains",
+    "nameservers": [
+      "ns1.godaddy.com",
+      "ns2.godaddy.com"
+    ],
+    "privacy": true,
+    "ip": "31.13.92.36"
+  },
+  {
+    "domain": "legaladvice.org",
+    "registered": "2026-05-11T05:00:00Z",
+    "registrar": "Google Domains",
+    "nameservers": [
+      "ns1.cloudflare.com",
+      "ns2.cloudflare.com"
+    ],
+    "privacy": true,
+    "ip": "203.0.113.42"
+  },
+  {
+    "domain": "microsoft-signin.io",
+    "registered": "2026-06-14T03:48:00Z",
+    "registrar": "QuickReg LLC",
+    "nameservers": [
+      "ns1.phastdns.cc",
+      "ns2.phastdns.cc"
+    ],
+    "privacy": true,
+    "ip": "185.220.101.47"
+  },
+  {
+    "domain": "communityapp.co",
+    "registered": "2026-06-11T01:00:00Z",
+    "registrar": "GoDaddy LLC",
+    "nameservers": [
+      "ns1.cloudflare.com",
+      "ns2.cloudflare.com"
+    ],
+    "privacy": true,
+    "ip": "31.13.92.36"
+  },
+  {
+    "domain": "flowerdelivery.app",
+    "registered": "2026-05-24T12:00:00Z",
+    "registrar": "Hover",
+    "nameservers": [
+      "ns1.cloudflare.com",
+      "ns2.cloudflare.com"
+    ],
+    "privacy": false,
+    "ip": "203.0.113.42",
+    "registrant_email": "flowerdeliveryowner@yahoo.com"
+  },
+  {
+    "domain": "fitnessapp.net",
+    "registered": "2026-04-21T10:00:00Z",
+    "registrar": "Network Solutions",
+    "nameservers": [
+      "ns1.namecheap.com",
+      "ns2.namecheap.com"
+    ],
+    "privacy": true,
+    "ip": "104.21.44.129"
+  },
+  {
+    "domain": "climatedata.dev",
+    "registered": "2026-05-29T19:00:00Z",
+    "registrar": "Porkbun LLC",
+    "nameservers": [
+      "ns1.dreamhost.com",
+      "ns2.dreamhost.com"
+    ],
+    "privacy": false,
+    "ip": "104.21.44.129",
+    "registrant_email": "climatedataowner@outlook.com"
+  },
+  {
+    "domain": "webdesign.co",
+    "registered": "2026-05-05T23:00:00Z",
+    "registrar": "Namecheap Inc.",
+    "nameservers": [
+      "ns1.google.com",
+      "ns4.google.com"
+    ],
+    "privacy": true,
+    "ip": "185.199.108.153"
+  },
+  {
+    "domain": "seotools.app",
+    "registered": "2026-06-04T03:00:00Z",
+    "registrar": "Network Solutions",
+    "nameservers": [
+      "ns1.google.com",
+      "ns4.google.com"
+    ],
+    "privacy": true,
+    "ip": "172.67.161.197"
+  },
+  {
+    "domain": "volunteering.io",
+    "registered": "2026-06-07T04:00:00Z",
+    "registrar": "Google Domains",
+    "nameservers": [
+      "ns1.google.com",
+      "ns4.google.com"
+    ],
+    "privacy": true,
+    "ip": "104.21.44.129"
+  },
+  {
+    "domain": "homerepair.co",
+    "registered": "2026-04-25T19:00:00Z",
+    "registrar": "Namecheap Inc.",
+    "nameservers": [
+      "dns1.registrar-servers.com",
+      "dns2.registrar-servers.com"
+    ],
+    "privacy": true,
+    "ip": "31.13.92.36"
+  },
+  {
+    "domain": "timetracker.net",
+    "registered": "2026-06-06T20:00:00Z",
+    "registrar": "Namecheap Inc.",
+    "nameservers": [
+      "ns1.godaddy.com",
+      "ns2.godaddy.com"
+    ],
+    "privacy": true,
+    "ip": "185.199.108.153"
+  },
+  {
+    "domain": "recipehub.app",
+    "registered": "2026-05-21T18:00:00Z",
+    "registrar": "Network Solutions",
+    "nameservers": [
+      "dns1.registrar-servers.com",
+      "dns2.registrar-servers.com"
+    ],
+    "privacy": true,
+    "ip": "104.244.42.1"
+  },
+  {
+    "domain": "fooddelivery.io",
+    "registered": "2026-05-17T14:00:00Z",
+    "registrar": "Porkbun LLC",
+    "nameservers": [
+      "ns1.cloudflare.com",
+      "ns2.cloudflare.com"
+    ],
+    "privacy": true,
+    "ip": "151.101.1.44"
+  },
+  {
+    "domain": "techreviews.co",
+    "registered": "2026-05-04T13:00:00Z",
+    "registrar": "Cloudflare Inc.",
+    "nameservers": [
+      "dns1.registrar-servers.com",
+      "dns2.registrar-servers.com"
+    ],
+    "privacy": true,
+    "ip": "104.21.44.129"
+  },
+  {
+    "domain": "appstore.io",
+    "registered": "2026-04-18T17:00:00Z",
+    "registrar": "Namecheap Inc.",
+    "nameservers": [
+      "ns1.dreamhost.com",
+      "ns2.dreamhost.com"
+    ],
+    "privacy": true,
+    "ip": "104.244.42.1"
+  },
+  {
+    "domain": "dietplan.org",
+    "registered": "2026-06-05T16:00:00Z",
+    "registrar": "Name.com",
+    "nameservers": [
+      "ns1.cloudflare.com",
+      "ns2.cloudflare.com"
+    ],
+    "privacy": true,
+    "ip": "172.67.161.197"
+  },
+  {
+    "domain": "artgallery.co",
+    "registered": "2026-06-04T01:00:00Z",
+    "registrar": "Name.com",
+    "nameservers": [
+      "ns1.google.com",
+      "ns4.google.com"
+    ],
+    "privacy": true,
+    "ip": "198.51.100.5"
+  },
+  {
+    "domain": "startupnews.com",
+    "registered": "2026-05-25T18:00:00Z",
+    "registrar": "Name.com",
+    "nameservers": [
+      "dns1.registrar-servers.com",
+      "dns2.registrar-servers.com"
+    ],
+    "privacy": true,
+    "ip": "157.240.22.35"
+  },
+  {
+    "domain": "fundraising.net",
+    "registered": "2026-04-25T12:00:00Z",
+    "registrar": "HostGator",
+    "nameservers": [
+      "ns1.cloudflare.com",
+      "ns2.cloudflare.com"
+    ],
+    "privacy": true,
+    "ip": "198.51.100.5"
+  },
+  {
+    "domain": "socialanalytics.co",
+    "registered": "2026-06-12T10:00:00Z",
+    "registrar": "Name.com",
+    "nameservers": [
+      "ns1.godaddy.com",
+      "ns2.godaddy.com"
+    ],
+    "privacy": true,
+    "ip": "203.0.113.42"
+  },
+  {
+    "domain": "securityblog.com",
+    "registered": "2026-05-30T12:00:00Z",
+    "registrar": "Google Domains",
+    "nameservers": [
+      "ns1.google.com",
+      "ns4.google.com"
+    ],
+    "privacy": true,
+    "ip": "192.0.2.1"
+  },
+  {
+    "domain": "amazon.net",
+    "registered": "2026-06-14T05:32:00Z",
+    "registrar": "QuickReg LLC",
+    "nameservers": [
+      "ns1.phastdns.cc",
+      "ns2.phastdns.cc"
+    ],
+    "privacy": true,
+    "ip": "185.220.101.47"
+  },
+  {
+    "domain": "gamingzone.co",
+    "registered": "2026-05-08T17:00:00Z",
+    "registrar": "Cloudflare Inc.",
+    "nameservers": [
+      "ns1.godaddy.com",
+      "ns2.godaddy.com"
+    ],
+    "privacy": true,
+    "ip": "157.240.22.35"
+  },
+  {
+    "domain": "workoutlog.net",
+    "registered": "2026-05-05T11:00:00Z",
+    "registrar": "Porkbun LLC",
+    "nameservers": [
+      "ns1.cloudflare.com",
+      "ns2.cloudflare.com"
+    ],
+    "privacy": false,
+    "ip": "104.244.42.1",
+    "registrant_email": "workoutlogowner@gmail.com"
+  },
+  {
+    "domain": "crmtools.org",
+    "registered": "2026-05-20T15:00:00Z",
+    "registrar": "1&1 IONOS SE",
+    "nameservers": [
+      "ns1.dreamhost.com",
+      "ns2.dreamhost.com"
+    ],
+    "privacy": true,
+    "ip": "104.244.42.1"
+  },
+  {
+    "domain": "microsoft-account.io",
+    "registered": "2026-06-13T20:44:00Z",
+    "registrar": "QuickReg LLC",
+    "nameservers": [
+      "ns1.phastdns.cc",
+      "ns2.phastdns.cc"
+    ],
+    "privacy": true,
+    "ip": "185.220.101.47"
+  },
+  {
+    "domain": "fashiontrends.org",
+    "registered": "2026-04-22T11:00:00Z",
+    "registrar": "Namecheap Inc.",
+    "nameservers": [
+      "ns1.godaddy.com",
+      "ns2.godaddy.com"
+    ],
+    "privacy": false,
+    "ip": "140.82.121.4",
+    "registrant_email": "fashiontrendsowner@yahoo.com"
+  },
+  {
+    "domain": "mapservice.com",
+    "registered": "2026-05-20T11:00:00Z",
+    "registrar": "Hover",
+    "nameservers": [
+      "ns1.cloudflare.com",
+      "ns2.cloudflare.com"
+    ],
+    "privacy": true,
+    "ip": "31.13.92.36"
+  },
+  {
+    "domain": "devopstools.net",
+    "registered": "2026-05-27T10:00:00Z",
+    "registrar": "HostGator",
+    "nameservers": [
+      "dns1.registrar-servers.com",
+      "dns2.registrar-servers.com"
+    ],
+    "privacy": false,
+    "ip": "216.58.209.110",
+    "registrant_email": "devopstoolsowner@outlook.com"
+  },
+  {
+    "domain": "hrplatform.co",
+    "registered": "2026-05-03T16:00:00Z",
+    "registrar": "1&1 IONOS SE",
+    "nameservers": [
+      "ns1.cloudflare.com",
+      "ns2.cloudflare.com"
+    ],
+    "privacy": true,
+    "ip": "172.67.161.197"
+  },
+  {
+    "domain": "moviepicks.org",
+    "registered": "2026-05-03T23:00:00Z",
+    "registrar": "Namecheap Inc.",
+    "nameservers": [
+      "ns1.godaddy.com",
+      "ns2.godaddy.com"
+    ],
+    "privacy": true,
+    "ip": "172.67.161.197"
+  },
+  {
+    "domain": "microsofft.org",
+    "registered": "2026-06-14T04:28:00Z",
+    "registrar": "QuickReg LLC",
+    "nameservers": [
+      "ns1.phastdns.cc",
+      "ns2.phastdns.cc"
+    ],
+    "privacy": true,
+    "ip": "185.220.101.47"
+  },
+  {
+    "domain": "recycleapp.org",
+    "registered": "2026-05-12T04:00:00Z",
+    "registrar": "Network Solutions",
+    "nameservers": [
+      "ns1.google.com",
+      "ns4.google.com"
+    ],
+    "privacy": true,
+    "ip": "157.240.22.35"
+  },
+  {
+    "domain": "medtech.co",
+    "registered": "2026-06-10T13:00:00Z",
+    "registrar": "DreamHost",
+    "nameservers": [
+      "ns1.namecheap.com",
+      "ns2.namecheap.com"
+    ],
+    "privacy": false,
+    "ip": "216.58.209.110",
+    "registrant_email": "medtechowner@gmail.com"
+  },
+  {
+    "domain": "carbontrack.net",
+    "registered": "2026-05-25T17:00:00Z",
+    "registrar": "Bluehost Inc.",
+    "nameservers": [
+      "ns1.cloudflare.com",
+      "ns2.cloudflare.com"
+    ],
+    "privacy": true,
+    "ip": "216.58.209.110"
+  },
+  {
+    "domain": "paypal-update.biz",
+    "registered": "2026-06-14T20:38:00Z",
+    "registrar": "QuickReg LLC",
+    "nameservers": [
+      "ns1.phastdns.cc",
+      "ns2.phastdns.cc"
+    ],
+    "privacy": true,
+    "ip": "185.220.101.47"
+  },
+  {
+    "domain": "farmtech.net",
+    "registered": "2026-05-17T11:00:00Z",
+    "registrar": "DreamHost",
+    "nameservers": [
+      "ns1.google.com",
+      "ns4.google.com"
+    ],
+    "privacy": false,
+    "ip": "104.21.44.129",
+    "registrant_email": "farmtechowner@outlook.com"
+  },
+  {
+    "domain": "mathhelper.dev",
+    "registered": "2026-04-26T14:00:00Z",
+    "registrar": "HostGator",
+    "nameservers": [
+      "dns1.registrar-servers.com",
+      "dns2.registrar-servers.com"
+    ],
+    "privacy": true,
+    "ip": "185.199.108.153"
+  },
+  {
+    "domain": "groceryapp.io",
+    "registered": "2026-05-17T03:00:00Z",
+    "registrar": "Hover",
+    "nameservers": [
+      "dns1.registrar-servers.com",
+      "dns2.registrar-servers.com"
+    ],
+    "privacy": true,
+    "ip": "104.244.42.1"
+  },
+  {
+    "domain": "bookclub.com",
+    "registered": "2026-04-17T06:00:00Z",
+    "registrar": "Namecheap Inc.",
+    "nameservers": [
+      "dns1.registrar-servers.com",
+      "dns2.registrar-servers.com"
+    ],
+    "privacy": false,
+    "ip": "172.67.161.197",
+    "registrant_email": "bookclubowner@outlook.com"
+  },
+  {
+    "domain": "solarmonitor.co",
+    "registered": "2026-05-04T01:00:00Z",
+    "registrar": "HostGator",
+    "nameservers": [
+      "ns1.dreamhost.com",
+      "ns2.dreamhost.com"
+    ],
+    "privacy": false,
+    "ip": "216.58.209.110",
+    "registrant_email": "solarmonitorowner@yahoo.com"
+  },
+  {
+    "domain": "smartdevice.dev",
+    "registered": "2026-05-30T11:00:00Z",
+    "registrar": "Name.com",
+    "nameservers": [
+      "ns1.dreamhost.com",
+      "ns2.dreamhost.com"
+    ],
+    "privacy": true,
+    "ip": "198.51.100.5"
+  },
+  {
+    "domain": "ammazon.net",
+    "registered": "2026-06-13T11:24:00Z",
+    "registrar": "QuickReg LLC",
+    "nameservers": [
+      "ns1.phastdns.cc",
+      "ns2.phastdns.cc"
+    ],
+    "privacy": true,
+    "ip": "185.220.101.47"
+  },
+  {
+    "domain": "jobboard.co",
+    "registered": "2026-05-10T16:00:00Z",
+    "registrar": "GoDaddy LLC",
+    "nameservers": [
+      "dns1.registrar-servers.com",
+      "dns2.registrar-servers.com"
+    ],
+    "privacy": true,
+    "ip": "31.13.92.36"
+  },
+  {
+    "domain": "sleeptracker.co",
+    "registered": "2026-05-21T04:00:00Z",
+    "registrar": "HostGator",
+    "nameservers": [
+      "dns1.registrar-servers.com",
+      "dns2.registrar-servers.com"
+    ],
+    "privacy": true,
+    "ip": "104.21.44.129"
+  },
+  {
+    "domain": "airmonitor.net",
+    "registered": "2026-05-12T17:00:00Z",
+    "registrar": "HostGator",
+    "nameservers": [
+      "ns1.google.com",
+      "ns4.google.com"
+    ],
+    "privacy": true,
+    "ip": "192.0.2.1"
+  },
+  {
+    "domain": "homesecurity.io",
+    "registered": "2026-05-07T15:00:00Z",
+    "registrar": "DreamHost",
+    "nameservers": [
+      "ns1.godaddy.com",
+      "ns2.godaddy.com"
+    ],
+    "privacy": true,
+    "ip": "185.199.108.153"
+  },
+  {
+    "domain": "studyguide.dev",
+    "registered": "2026-04-14T17:00:00Z",
+    "registrar": "Google Domains",
+    "nameservers": [
+      "ns1.namecheap.com",
+      "ns2.namecheap.com"
+    ],
+    "privacy": false,
+    "ip": "104.21.44.129",
+    "registrant_email": "studyguideowner@outlook.com"
+  },
+  {
+    "domain": "paypal-login.net",
+    "registered": "2026-06-15T06:21:00Z",
+    "registrar": "QuickReg LLC",
+    "nameservers": [
+      "ns1.phastdns.cc",
+      "ns2.phastdns.cc"
+    ],
+    "privacy": true,
+    "ip": "185.220.101.47"
+  }
+]

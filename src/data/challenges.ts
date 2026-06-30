@@ -145,6 +145,42 @@ Analyze the attached SMTP log. Identify the spoofing technique, locate the hidde
   },
 ]
 
+  {
+    id: 'phish-kit',
+    title: 'Brand Impersonator',
+    category: 'THREAT INTEL',
+    difficulty: 'medium',
+    points: 250,
+    description: 'A threat intel feed captured 72 hours of suspicious domain registrations. Multiple brands are being impersonated. Identify the phishing infrastructure, map the campaign, and extract the operator\'s mistake encoded in the kit metadata.',
+    scenario: `
+**Incident report #2026-005**
+
+Alert triggered at 06:00 UTC by brand-protection rule TYPO-CLUSTER-DETECTED.
+Feed: passive DNS registration monitor (72-hour window)
+Brands affected: 3 major financial institutions
+
+A burst of 18 domain registrations was observed over a 72-hour window. The registrations share infrastructure: same registrar, overlapping nameserver patterns, and consistent WHOIS privacy provider. One domain in the cluster was registered with WHOIS privacy disabled — the registrant's email address was accidentally exposed.
+
+A SHA-256 hash of the operator's exposed contact email is the flag.
+
+Analyze the attached registration feed. Identify which domains belong to the same phishing campaign. Find the one registration where WHOIS privacy was not applied. The registrant email in that record is the secret.
+    `.trim(),
+    files: [
+      { name: 'registrations.json', path: '/lab/challenges/registrations.json', size: '22 KB' },
+    ],
+    hints: [
+      'Start by grouping domains by registrar — legitimate registrations are spread across many registrars; campaign infrastructure is not.',
+      'Look at the nameserver assignments. Phishing kits often share nameservers across all domains in a campaign.',
+      'Filter for records where the "privacy" field is false — there should be exactly one.',
+      'The flag is FOIL{sha256(email)} — compute the SHA-256 of the exposed registrant email address.',
+    ],
+    flagHash: 'ea2fa611abaa38113ba20ff01015a5c480f33886eb7e069353e668e728620bc1',
+    published: '2026-06-30',
+    author: 'nikolap994',
+    writeupAvailable: true,
+  },
+]
+
 export function getChallengeById(id: string): Challenge | undefined {
   return challenges.find(c => c.id === id)
 }

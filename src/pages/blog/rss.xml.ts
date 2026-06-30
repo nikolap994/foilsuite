@@ -2,6 +2,13 @@ const SITE = 'https://foilsuite.netlify.app'
 
 const posts = [
   {
+    slug: 'phishing-infrastructure-analysis',
+    title: 'Phishing Infrastructure Analysis — Mapping Campaigns Through Passive DNS and WHOIS',
+    date: '2026-06-30',
+    category: 'DEEP DIVE',
+    description: 'How analysts pivot from one suspicious domain registration to a full phishing campaign cluster using passive DNS, nameserver correlation, and WHOIS data.',
+  },
+  {
     slug: 'foilguard-detection-architecture',
     title: 'FoilGuard Detection Architecture — Multi-Signal Scoring and False Positive Analysis',
     date: '2026-06-29',

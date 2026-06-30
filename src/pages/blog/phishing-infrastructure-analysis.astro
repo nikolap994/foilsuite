@@ -1,0 +1,105 @@
+---
+import Layout from '../../layouts/Layout.astro'
+
+const post = {
+  title: 'Phishing Infrastructure Analysis — Mapping Campaigns Through Passive DNS and WHOIS',
+  date: '2026-06-30',
+  category: 'DEEP DIVE',
+  readTime: '9 min',
+  author: 'Nikola Pavlović',
+}
+const description = 'Phishing campaigns rarely use a single domain. This post explains how threat analysts pivot from one suspicious registration to an entire infrastructure cluster using registrar data, nameserver patterns, and WHOIS correlation.'
+---
+<Layout title={post.title} description={description}>
+  <main class="shell post-page">
+    <div class="breadcrumb mono"><a href="/blog">blog</a> / {post.category.toLowerCase()}</div>
+
+    <article>
+      <header class="post-header">
+        <div class="post-meta mono">
+          <span class="post-cat">{post.category}</span>
+          <span>{post.date}</span>
+          <span>{post.readTime} read</span>
+          <span>by {post.author}</span>
+        </div>
+        <h1>{post.title}</h1>
+      </header>
+
+      <div class="post-body">
+        <p class="lead-para">{description}</p>
+
+        <h2>Why phishing campaigns cluster</h2>
+        <p>A threat actor running a phishing campaign does not register one domain. They register dozens — insurance against takedowns, A/B testing of lure pages, and separate infrastructure for different target brands. But that scale creates a fingerprint. Registering 20 domains leaves 20 records at the same registrar, on the same nameservers, paid for with the same method, often within hours of each other.</p>
+        <p>Threat intelligence teams exploit this. A single suspicious domain reported by a victim is the starting point. From there, analysts pivot outward through shared infrastructure attributes until the entire campaign is mapped.</p>
+
+        <h2>The four pivot points</h2>
+        <p>Most phishing infrastructure analysis relies on four data sources, used in combination:</p>
+
+        <h2>1. Registrar and registration timestamp</h2>
+        <p>Legitimate domains are spread across hundreds of registrars accumulated over years. A cluster of 15 domains all registered at <code>QuickReg LLC</code> within a 72-hour window is immediately suspicious — especially if those domains contain brand names of financial institutions.</p>
+        <p>Registration timestamps are also telling. Phishing campaigns spin up quickly before a lure email goes out. A burst of brand-adjacent domain registrations on a Monday morning, all pointing at the same infrastructure, often precedes a campaign launched Tuesday.</p>
+
+        <h2>2. Nameservers</h2>
+        <p>The nameserver is where the domain resolves — it is the DNS authority for the zone. Operators who stand up phishing infrastructure quickly tend to reuse the same nameserver provider across all domains in a campaign. A campaign running 18 domains through <code>ns1.phastdns.cc</code> and <code>ns2.phastdns.cc</code> is easy to identify: query passive DNS for all domains whose NS records point to that provider and you have the full campaign list.</p>
+        <p>This pivot works even after domains are taken down. Passive DNS logs the historical NS record; the nameserver to domain mapping persists in threat intel platforms like Censys, SecurityTrails, or VirusTotal's graph.</p>
+
+        <h2>3. IP addresses and hosting</h2>
+        <p>Once a domain resolves, the IP address is another pivot point. Phishing kits deployed across multiple domains on the same server (or same /24 block) are common — the actor bought a VPS and stood up copies of the phishing page on each path. Tools like Shodan and Censys allow you to query all domains that have resolved to an IP or block, extending the cluster.</p>
+        <p>ASN (Autonomous System Number) is a coarser pivot: if all domains in the cluster hosted on AS12345 and that ASN is known for bulletproof hosting, the pattern is confirmed.</p>
+
+        <h2>4. WHOIS registrant data</h2>
+        <p>Since GDPR, most registrars redact registrant contact data by default or sell WHOIS privacy as an add-on. But operators make mistakes. A single domain in a cluster registered without WHOIS privacy — perhaps from a different account, a different day, or a registrar that doesn't offer the option — exposes a registrant email address that links the entire campaign.</p>
+        <p>That email address pivots to every other domain ever registered with it, across all registrars, via tools like DomainTools or WhoisXML API. A campaign operator who uses the same throwaway email across multiple campaigns has effectively signed their entire body of work.</p>
+
+        <h2>What the data looks like</h2>
+        <p>A passive DNS registration feed for a 72-hour window might look like this in JSON:</p>
+        <pre class="code-block"><code>{
+  "domain": "paypal-secure-login.net",
+  "registered": "2026-06-14T07:22:00Z",
+  "registrar": "QuickReg LLC",
+  "nameservers": ["ns1.phastdns.cc", "ns2.phastdns.cc"],
+  "privacy": false,
+  "registrant_email": "phish.operator99@proton.me",
+  "ip": "185.220.101.47"
+}</code></pre>
+        <p>A single record like this — with <code>"privacy": false</code> — is the thread that unravels the campaign. Every other record with the same registrar, nameserver pair, and IP range belongs to the same operator.</p>
+
+        <h2>Automating the analysis</h2>
+        <p>Given a registration feed in JSON, the analysis is straightforward Python:</p>
+        <pre class="code-block"><code>import json
+from collections import Counter
+
+with open('registrations.json') as f:
+    data = json.load(f)
+
+# Find dominant registrar
+registrar_counts = Counter(d['registrar'] for d in data)
+campaign_registrar = registrar_counts.most_common(1)[0][0]
+
+# Extract campaign cluster
+cluster = [d for d in data if d['registrar'] == campaign_registrar]
+
+# Find shared nameservers
+ns_counts = Counter(ns for d in cluster for ns in d['nameservers'])
+print('Nameservers:', ns_counts.most_common(3))
+
+# Find any unprotected registrations
+exposed = [d for d in cluster if not d.get('privacy', True)]
+for e in exposed:
+    print('Exposed registrant:', e.get('registrant_email'))</code></pre>
+
+        <h2>Detection evasion and how it fails</h2>
+        <p>Sophisticated actors try to break these pivots. They use different registrars per domain, rotate nameservers, and always enable WHOIS privacy. But the economics work against them: for a campaign of 20+ domains, every additional anti-analysis step takes time and money. Most phishing operators optimise for speed and cost, not operational security, which is why infrastructure clustering is still a reliable signal years after it was first documented.</p>
+        <p>Even when an actor enables privacy everywhere, the IP pivot often still works. A phishing kit deployed on a single VPS under multiple domain names leaves the same TLS certificate fingerprint, the same HTTP response headers, and the same favicon hash across all of them — all queryable in Censys and Shodan.</p>
+
+        <h2>Practice it</h2>
+        <p>The <a href="/lab/challenges/phish-kit">Brand Impersonator</a> challenge in FoilLab gives you a real passive DNS registration feed with a phishing campaign embedded in normal traffic. Your job is to identify the cluster, find the one unprotected registration, and extract the campaign operator's exposed contact.</p>
+
+        <div class="post-footer">
+          <a href="/blog">← all posts</a>
+          <a href="/lab/challenges/phish-kit" class="cta-link">Try the challenge →</a>
+        </div>
+      </div>
+    </article>
+  </main>
+</Layout>
